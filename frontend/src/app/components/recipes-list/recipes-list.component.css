@@ -1,0 +1,12 @@
+.list {
+  text-align: left;
+  max-width: 750px;
+  margin: auto;
+}
+
+.position-floating-button {
+  height: 100px;
+  position: fixed;
+  bottom: 100px;
+  right: 90px;
+}
