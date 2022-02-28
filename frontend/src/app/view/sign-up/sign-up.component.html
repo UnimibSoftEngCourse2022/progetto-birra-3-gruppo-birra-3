@@ -1,0 +1,74 @@
+<div class="w-full max-w-sm p-6 m-auto bg-white rounded-md shadow-md dark:bg-gray-800">
+    <h1 class="text-3xl font-semibold text-center text-gray-700 dark:text-white">Brand</h1>
+
+    <form class="mt-6" [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div>
+            <label for="firstname" class="block text-sm text-gray-800 dark:text-gray-200">Nome</label>
+            <input autocomplete="off" aria-describedby="firstname-help" autofocus tabindex="1"
+                [ngClass]="{ 'ng-invalid ng-dirty border-red-600 focus:border-red-500 focus:ring-red-500':submitted && f['firstname'].errors }"
+                class="block w-full mt-1 border focus:outline-none" type="text" formControlName="firstname" pInputText
+                placeholder="john@example.com">
+            <div id="firstname-help" *ngIf="submitted && f['firstname'].errors">
+                <small class="p-error block" *ngIf="f['firstname'].errors['required']">firstname è
+                    obbligatoria</small>
+                <small class="p-error block" *ngIf="f['firstname'].errors['required']">firstname must be a valid email
+                    address</small>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <label for="surname" class="block text-sm text-gray-800 dark:text-gray-200">Cognome</label>
+            <input autocomplete="off" aria-describedby="surname-help" autofocus tabindex="1"
+                [ngClass]="{ 'ng-invalid ng-dirty border-red-600 focus:border-red-500 focus:ring-red-500':submitted && f['surname'].errors }"
+                class="block w-full mt-1 border focus:outline-none" type="text" formControlName="surname" pInputText
+                placeholder="john@example.com">
+            <div id="surname-help" *ngIf="submitted && f['surname'].errors">
+                <small class="p-error block" *ngIf="f['surname'].errors['required']">surname è
+                    obbligatoria</small>
+                <small class="p-error block" *ngIf="f['surname'].errors['required']">surname must be a valid email
+                    address</small>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <label for="email" class="block text-sm text-gray-800 dark:text-gray-200">Email</label>
+            <input autocomplete="off" aria-describedby="email-help" autofocus tabindex="1"
+                [ngClass]="{ 'ng-invalid ng-dirty border-red-600 focus:border-red-500 focus:ring-red-500':submitted && f['email'].errors }"
+                class="block w-full mt-1 border focus:outline-none" type="text" formControlName="email" pInputText
+                placeholder="john@example.com">
+            <div id="email-help" *ngIf="submitted && f['email'].errors">
+                <small class="p-error block" *ngIf="f['email'].errors['required']">Email è
+                    obbligatoria</small>
+                <small class="p-error block" *ngIf="f['email'].errors['email']">Email must be a valid email
+                    address</small>
+            </div>
+        </div>
+
+
+        <div class="mt-4">
+            <div class="flex items-center justify-between">
+                <label for="password" class="block text-sm text-gray-800 dark:text-gray-200">Password</label>
+            </div>
+
+            <input autocomplete="off" [type]="passwordTextType ? 'text' : 'password'" aria-describedby="password-help"
+                autofocus tabindex="2"
+                [ngClass]="{ 'ng-invalid ng-dirty border-red-600 focus:border-red-500 focus:ring-red-500':submitted && f['password'].errors }"
+                class="block w-full mt-1 border focus:outline-none" formControlName="password" pInputText
+                placeholder="·········">
+            <div id="password-help" *ngIf="submitted && f['password'].errors">
+                <small class="p-error block" *ngIf="f['password'].errors['required']">password è
+                    obbligatoria</small>
+            </div>
+        </div>
+
+        <div class="mt-6">
+            <button type="submit"
+                class="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600">
+                Registrati
+            </button>
+        </div>
+    </form>
+
+    <p class="mt-5 text-xs font-light text-center text-gray-400"> Hai già un account? <a routerLink="/login"
+            class="font-medium text-gray-700 dark:text-gray-200 hover:underline">Accedi</a></p>
+</div>
