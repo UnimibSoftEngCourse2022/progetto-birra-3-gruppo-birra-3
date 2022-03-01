@@ -1,0 +1,52 @@
+[
+    {
+      "name": "Corn sugar",
+      "type": "sugar",
+      "quantity": null
+    },
+    {
+      "name": "Table sugar",
+      "type": "sugar",
+      "quantity": null
+    },
+    {
+      "name": "Brown Sugar",
+      "type": "sugar",
+      "quantity": null
+    },
+        {
+      "name": "Candi Sugar",
+      "type": "sugar",
+      "quantity": null
+    },
+    {
+      "name": "Honey",
+      "type": "sugar",
+      "quantity": null
+    },
+    {
+      "name": "Maple Syrup",
+      "type": "sugar",
+      "quantity": null
+    },    
+    {
+      "name": "Fructose",
+      "type": "sugar",
+      "quantity": null
+    },
+    {
+      "name": "Molasses",
+      "type": "sugar",
+      "quantity": null
+    },
+    {
+      "name": "Milk sugar",
+      "type": "sugar",
+      "quantity": null
+    },
+    {
+      "name": "Invert Sugar",
+      "type": "sugar",
+      "quantity": null
+    }
+  ]
