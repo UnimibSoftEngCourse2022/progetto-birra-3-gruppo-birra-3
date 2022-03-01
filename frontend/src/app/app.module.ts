@@ -1,13 +1,11 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AddRecipeComponent } from './components/add-recipe/add-recipe.component';
-import { RecipeDetailsComponent } from './components/recipe-details/recipe-details.component';
 import { RecipesListComponent } from './components/recipes-list/recipes-list.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -21,8 +19,6 @@ import { DropdownModule } from 'primeng/dropdown';
 import { DialogModule } from 'primeng/dialog';
 import { RatingModule } from 'primeng/rating';
 import { RippleModule } from 'primeng/ripple';
-import { BeerListComponent } from './components/beer-list/beer-list.component';
-import { BeerService } from './services/beer/beer.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.component';
 import { ToastModule } from 'primeng/toast';
@@ -30,16 +26,26 @@ import { MessageService } from 'primeng/api';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { CascadeSelectModule } from 'primeng/cascadeselect';
+import { LoginComponent } from './view/login/login.component';
+import { ErrorInterceptor, JwtInterceptor } from './auth/helpers';
+import { MenuModule } from 'primeng/menu';
+import { NgxSpinnerModule } from "ngx-spinner";
+import { SignUpComponent } from './view/sign-up/sign-up.component';
+import { AvatarModule } from 'primeng/avatar';
+import { AvatarGroupModule } from 'primeng/avatargroup';
+
 @NgModule({
   declarations: [
     AppComponent,
-    AddRecipeComponent,
-    RecipeDetailsComponent,
     RecipesListComponent,
-    BeerListComponent,
     BreadcrumbsComponent,
+    LoginComponent,
+    SignUpComponent,
   ],
   imports: [
+    AvatarModule,
+    AvatarGroupModule,
+    MenuModule,
     ToastModule,
     PanelModule,
     DropdownModule,
@@ -49,8 +55,10 @@ import { CascadeSelectModule } from 'primeng/cascadeselect';
     DataViewModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     BrowserModule,
     BrowserAnimationsModule,
+    NgxSpinnerModule,
     AppRoutingModule,
     MenubarModule,
     SpeedDialModule,
@@ -61,7 +69,12 @@ import { CascadeSelectModule } from 'primeng/cascadeselect';
     MessagesModule,
     MessageModule,
   ],
-  providers: [BeerService, MessageService],
-  bootstrap: [AppComponent]
+  providers: [
+    MessageService,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+  ],
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }
