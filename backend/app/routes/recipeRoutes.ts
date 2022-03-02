@@ -1,26 +1,17 @@
-import * as recipes from "../controllers/recipeController";
-import express from "express";
+import recipeController from "../controllers/recipeController";
+import { Router } from "express";
+import { authMiddleware } from "../middleware/authMiddleware";
 
-const recipeRouter = express.Router();
+const router = Router();
 
-recipeRouter.post("/", recipes.create);
+router.post("/", [authMiddleware], recipeController.create);
 
-//   // // Retrieve all recipes
-recipeRouter.get("/", recipes.findAllRecipes);
+router.get("/", [authMiddleware], recipeController.findAll);
 
-//   // // Retrieve all published recipes
-recipeRouter.get("/published", recipes.findAllPublished);
+router.get("/:id", [authMiddleware], recipeController.findOne);
 
-//   // // Retrieve a single recipes with id
-recipeRouter.get("/:id", recipes.findOneRecipe);
+router.put("/:id", [authMiddleware], recipeController.update);
 
-//   // // Update a recipes with id
-recipeRouter.put("/:id", recipes.updateRecipe);
+router.delete("/:id", [authMiddleware], recipeController.delete);
 
-//   // // Delete a recipes with id
-recipeRouter.delete("/:id", recipes.deleteRecipe);
-
-//   // // Create a new recipes
-recipeRouter.delete("/", recipes.deleteAll);
-
-export { recipeRouter };
+export default router;

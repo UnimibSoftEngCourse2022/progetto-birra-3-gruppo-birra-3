@@ -1,8 +1,11 @@
 import express from "express";
 import cors, { CorsOptions } from "cors";
-import db from "./app/models";
-import { recipeRouter } from "./app/routes/recipeRoutes";
+import dbModel from "./app/models/dbModel";
 import { config } from "dotenv";
+import { errorHandler } from "./app/handler/errorHandler";
+import routerRecipes from "./app/routes/recipeRoutes";
+import authRoutes from "./app/routes/authRoutes";
+
 const app = express();
 
 config();
@@ -23,8 +26,11 @@ app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
-db.mongoose
-  .connect(db.url)
+// Errore Handler
+app.use(errorHandler);
+
+dbModel.mongoose
+  .connect(dbModel.url)
   .then(() => {
     console.log("Connected to the database!");
   })
@@ -33,15 +39,13 @@ db.mongoose
     process.exit();
   });
 
-// simple route
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to backend application." });
 });
 
-// recipeRoutes(express);
-app.use("/api/recipes", recipeRouter);
+app.use("/api/recipes", routerRecipes);
+app.use("/api/auth", authRoutes);
 
-// set port, listen for requests
 const PORT = process.env.NODE_DOCKER_PORT || 8080;
 
 app.listen(PORT, () => {
