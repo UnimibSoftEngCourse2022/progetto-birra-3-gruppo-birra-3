@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { ErrorCode } from "../errors/errorCode";
 import { ErrorException } from "../errors/errorException";
 import { responseHandler } from "../handler/responseHandler";
-import { RecipeModel } from "../models/recipeModel";
+import RecipeModel from "../models/recipeModel";
 
 class RecipeController {
   static create = async (req: Request, res: Response, next: NextFunction) => {
@@ -76,7 +76,9 @@ class RecipeController {
         throw new ErrorException(ErrorCode.BadRequest);
       }
 
-      let recipe = await RecipeModel.findByIdAndRemove(id, { useFindAndModify: false });
+      let recipe = await RecipeModel.findByIdAndRemove(id, {
+        useFindAndModify: false,
+      });
 
       if (!recipe) {
         // Errore perché mongo se non rispetta la condizione ritorna un array vuoto
@@ -104,7 +106,9 @@ class RecipeController {
         throw new ErrorException(ErrorCode.BadRequest);
       }
 
-      let recipe = await RecipeModel.findByIdAndUpdate(id, body, { useFindAndModify: false })
+      let recipe = await RecipeModel.findByIdAndUpdate(id, body, {
+        useFindAndModify: false,
+      });
 
       if (!recipe) {
         // Errore perché mongo se non rispetta la condizione ritorna un array vuoto

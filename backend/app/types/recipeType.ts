@@ -1,9 +1,9 @@
-import { ingredient } from "./IngredientType";
+import { Ingredient } from "./IngredientType";
 
 export type Recipe = {
   _id: string;
   title: string;
   color: string;
   description: string;
-  ingredients: ingredient[];
+  ingredients: Ingredient[];
 };

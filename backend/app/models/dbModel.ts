@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { url } from "../config/dbConfig";
-import { RecipeModel } from "./recipeModel";
+import RecipeModel from "./recipeModel";
 import UserModel from "./userModel";
 
 type MongoDb = {
