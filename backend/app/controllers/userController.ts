@@ -1,22 +1,36 @@
-import { NextFunction, Response } from "express";
+import { NextFunction, Response, Request } from "express";
 import RecipeClass from "../class/RecipeClass";
 import { responseHandler } from "../handler/responseHandler";
+import { tokenData } from "../helpers/jwtHelper";
 import UserModel from "../models/userModel";
-import { Ingredient } from "../types/IngredientType";
+import { Ingredient } from "../types/ingredientType";
 
 class UserController {
-  private static userId: string = "";
+  static getUser = async (req: Request, res: Response, next: NextFunction) => {
+    const tokenData: tokenData = req.token;
+
+    try {
+      const user = await UserModel.findOne({ _id: tokenData._id });
+
+      responseHandler(res, user);
+    } catch (err) {
+      next(err);
+    }
+  };
 
   //ingredients
 
   static updateIngredientQuantity = async (
+    req: Request,
     res: Response,
-    ingredient: Ingredient,
     next: NextFunction
   ) => {
     try {
+      const tokenData: tokenData = req.token;
+      const ingredient: Ingredient = req.body.ingredient;
+
       const updatedDocument = await UserModel.findOneAndUpdate(
-        { id: this.userId },
+        { _id: tokenData._id },
         { $set: { "ingredients.$[igredient].quantity": ingredient.quantity } },
         {
           arrayFilters: [
@@ -35,14 +49,15 @@ class UserController {
   };
 
   static addIngredient = async (
+    req: Request,
     res: Response,
-    ingredient: Ingredient,
     next: NextFunction
   ) => {
-    const userId = "";
+    const tokenData: tokenData = req.token;
+    const ingredient: Ingredient = req.body.ingredient;
 
     const conditions = {
-      id: this.userId,
+      _id: tokenData._id,
       "ingredients.name": { $ne: ingredient.name },
     };
 
@@ -72,14 +87,17 @@ class UserController {
   };
 
   static removeIngredient = async (
+    req: Request,
     res: Response,
-    ingredient: Ingredient,
     next: NextFunction
   ) => {
+    const tokenData: tokenData = req.token;
+    const ingredient: Ingredient = req.body.ingredient;
+
     try {
       const removedIngredient = await UserModel.findOneAndUpdate(
         {
-          id: this.userId,
+          id: tokenData._id,
         },
         { $pull: { ingredients: ingredient } }
       );
@@ -87,30 +105,6 @@ class UserController {
       responseHandler(res, removedIngredient);
     } catch (error) {
       next(error);
-    }
-  };
-
-  //ID UTENTE MAI PASSATO. CE LO PESCHIAMO DA UN MIDDLEWARE. JWT LO SETTA DIRETTAMENTE.
-
-  //RECIPES.
-
-  static addRecipe = async (
-    res: Response,
-    recipe: RecipeClass,
-    next: NextFunction
-  ) => {
-    const conditions = {
-      id: this.userId,
-    };
-    try {
-      const addedRecipe = await UserModel.findOneAndUpdate(conditions, {
-        $push: {
-          recipes: recipe,
-        },
-      });
-      responseHandler(res, addedRecipe);
-    } catch (err) {
-      next(err);
     }
   };
 }

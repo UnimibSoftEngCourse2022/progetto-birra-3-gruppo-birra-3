@@ -2,7 +2,10 @@ import jwt from "jsonwebtoken";
 import { ErrorException } from "../errors/errorException";
 import { ErrorCode } from "../errors/errorCode";
 import config from "../config/authConfig";
-
+export type tokenData = {
+  _id: string;
+  email: string;
+};
 export const generateAuthToken = (user: any | null): string | null => {
   let token = null;
 
@@ -15,10 +18,10 @@ export const generateAuthToken = (user: any | null): string | null => {
   return token;
 };
 
-export const verifyToken = (token: string): { _id: string; email: string } => {
+export const verifyToken = (token: string): tokenData => {
   try {
     let tokenData = jwt.verify(token, config.jwtSecret);
-    return tokenData as { _id: string; email: string };
+    return tokenData as tokenData;
   } catch (error) {
     throw new ErrorException(ErrorCode.Unauthenticated);
   }
