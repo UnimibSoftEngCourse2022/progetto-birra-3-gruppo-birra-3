@@ -28,8 +28,11 @@ import { MessageModule } from 'primeng/message';
 import { CascadeSelectModule } from 'primeng/cascadeselect';
 import { LoginComponent } from './view/login/login.component';
 import { ErrorInterceptor, JwtInterceptor } from './auth/helpers';
+import { HeaderComponent } from './components/header/header.component';
 import { MenuModule } from 'primeng/menu';
+import { Error404Component } from './components/error404/error404.component';
 import { NgxSpinnerModule } from "ngx-spinner";
+import { FormRecipeComponent } from './components/form-recipe/form-recipe.component';
 import { SignUpComponent } from './view/sign-up/sign-up.component';
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
@@ -37,9 +40,12 @@ import { AvatarGroupModule } from 'primeng/avatargroup';
 @NgModule({
   declarations: [
     AppComponent,
+    FormRecipeComponent,
     RecipesListComponent,
     BreadcrumbsComponent,
     LoginComponent,
+    HeaderComponent,
+    Error404Component,
     SignUpComponent,
   ],
   imports: [

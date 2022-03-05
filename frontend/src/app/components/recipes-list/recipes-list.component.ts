@@ -4,6 +4,8 @@ import { Recipe } from 'src/app/models/recipe/recipe.model';
 import { RecipeService } from 'src/app/services/recipe/recipe.service';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from "ngx-spinner";
+
 @Component({
   selector: 'app-recipes-list',
   templateUrl: './recipes-list.component.html',
@@ -17,10 +19,13 @@ export class RecipesListComponent implements OnInit {
   currentRecipe: Recipe = {};
   currentIndex = -1;
   title = '';
-  constructor(private recipeService: RecipeService,
+  constructor(
+    private spinner: NgxSpinnerService,
+    private recipeService: RecipeService,
     private router: Router) { }
 
   ngOnInit(): void {
+    this.spinner.show();
     this.retrieveRecipes();
 
     this.itemsFloatingButton = [
@@ -39,35 +44,53 @@ export class RecipesListComponent implements OnInit {
     ];
   }
 
+  addRecipe() {
+    this.router.navigate(['/recipes/add']);
+  }
+
+  stopLoading() {
+    setTimeout(() => {
+      this.spinner.hide();
+    }, 700);
+  }
+
   retrieveRecipes(): void {
     this.recipeService.getAll()
       .subscribe({
         next: (data) => {
-          this.recipes = data;
-          console.log(data);
+          setTimeout(() => {
+            this.recipes = data;
+            this.spinner.hide();
+          }, 700);
         },
-        error: (e) => console.error(e)
+        error: (e) => {
+          console.error(e);
+          this.stopLoading();
+        }
       });
   }
+
   refreshList(): void {
     this.retrieveRecipes();
     this.currentRecipe = {};
     this.currentIndex = -1;
   }
+
   setActiveRecipe(recipe: Recipe, index: number): void {
     this.currentRecipe = recipe;
     this.currentIndex = index;
   }
+
   removeAllRecipes(): void {
     this.recipeService.deleteAll()
       .subscribe({
         next: (res) => {
-          console.log(res);
           this.refreshList();
         },
         error: (e) => console.error(e)
       });
   }
+
   searchTitle(): void {
     this.currentRecipe = {};
     this.currentIndex = -1;
@@ -75,7 +98,6 @@ export class RecipesListComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.recipes = data;
-          console.log(data);
         },
         error: (e) => console.error(e)
       });
@@ -85,7 +107,6 @@ export class RecipesListComponent implements OnInit {
     this.recipeService.delete(id)
       .subscribe({
         next: (res) => {
-          console.log(res);
           this.recipes = this.recipes?.filter(x => x.id != id);
         },
         error: (e) => console.error(e)

@@ -165,7 +165,7 @@ export class FormRecipeComponent implements OnInit {
     };
 
     if (this.editMode) {
-      this.recipeService.update(this.recipe._id, data)
+      this.recipeService.update(this.recipe.id, data)
         .subscribe({
           next: (res) => {
             this.submitted = true;
@@ -193,7 +193,7 @@ export class FormRecipeComponent implements OnInit {
 
   deleteRecipe(): void {
     if (this.editMode) {
-      this.recipeService.delete(this.recipe._id)
+      this.recipeService.delete(this.recipe.id)
         .subscribe({
           next: (res) => {
             this.router.navigate(['/recipes']);
