@@ -1,4 +1,4 @@
-import { INGREDIENTS_ENUM } from "../enums/IngredientEnums";
+import { INGREDIENTS_ENUM } from "../enums/ingredientEnums";
 
 export type Ingredient = {
   name?: string;

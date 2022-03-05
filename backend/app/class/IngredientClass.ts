@@ -1,5 +1,5 @@
 import { prop } from "@typegoose/typegoose";
-import { INGREDIENTS_ENUM } from "../enums/IngredientEnums";
+import { INGREDIENTS_ENUM } from "../enums/ingredientEnums";
 
 class IngredientClass {
   @prop({ required: true })

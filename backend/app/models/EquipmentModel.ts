@@ -1,5 +1,5 @@
 import { getModelForClass } from "@typegoose/typegoose";
-import EquipmentClass from "../class/EquipmentClass";
+import EquipmentClass from "../class/equipmentClass";
 import { DB_COLLECTIONS_ENUM } from "../enums/dbEnums";
 
 const EquimentModel = getModelForClass(EquipmentClass, {
