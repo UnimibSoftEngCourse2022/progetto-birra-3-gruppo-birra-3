@@ -12,7 +12,7 @@ userRouter.put(
   UserController.updateIngredientQuantity
 );
 userRouter.delete(
-  "/igrendient",
+  "/ingredient",
   [authMiddleware],
   UserController.removeIngredient
 );

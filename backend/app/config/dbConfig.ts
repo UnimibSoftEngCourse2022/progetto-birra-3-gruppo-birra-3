@@ -12,8 +12,9 @@ const {
   REMOTE_DB_PASSWORD,
   REMOTE_DB_USER,
 } = process.env;
-// const url = `mongodb://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?authSource=admin`;
-const url = `mongodb+srv://${REMOTE_DB_USER}:${REMOTE_DB_PASSWORD}@clusterbirra.q0mxq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const url = `mongodb://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?authSource=admin`;
+
+// const url = `mongodb+srv://${REMOTE_DB_USER}:${REMOTE_DB_PASSWORD}@clusterbirra.q0mxq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 
 export { url };
 

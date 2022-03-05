@@ -27,11 +27,11 @@ class UserController {
   ) => {
     try {
       const tokenData: tokenData = req.token;
-      const ingredient: Ingredient = req.body.ingredient;
+      const ingredient: Ingredient = req.body;
 
-      const updatedDocument = await UserModel.findOneAndUpdate(
+      await UserModel.updateOne(
         { _id: tokenData._id },
-        { $set: { "ingredients.$[igredient].quantity": ingredient.quantity } },
+        { $set: { "ingredients.$[ingredient].quantity": ingredient.quantity } },
         {
           arrayFilters: [
             {
@@ -42,7 +42,7 @@ class UserController {
         }
       );
 
-      responseHandler(res, updatedDocument);
+      responseHandler(res, ingredient);
     } catch (err) {
       next(err);
     }
@@ -54,36 +54,39 @@ class UserController {
     next: NextFunction
   ) => {
     const tokenData: tokenData = req.token;
-    const ingredient: Ingredient = req.body.ingredient;
+    const ingredient: Ingredient = req.body;
 
-    const conditions = {
-      _id: tokenData._id,
-      "ingredients.name": { $ne: ingredient.name },
-    };
-
-    try {
-      const addedIngr = await UserModel.findOneAndUpdate(
-        conditions,
-        {
-          $addToSet: {
-            ingredients: ingredient,
-          },
+    const usersWithIngredients = await UserModel.find({
+      ingredients: {
+        $elemMatch: {
+          name: ingredient.name,
         },
-        {},
-        (error, doc) => {
-          if (error) {
-            next(error);
-          }
-          if (doc === null) {
-            responseHandler(res, null);
-          }
-        }
-      );
+      },
+    });
 
-      responseHandler(res, addedIngr);
-    } catch (err) {
-      next(err);
+    const isAlreadyInArray =
+      usersWithIngredients.findIndex((value) => {
+        return value.email === tokenData.email;
+      }) !== -1;
+
+    if (!isAlreadyInArray) {
+      try {
+        await UserModel.updateOne(
+          {
+            _id: tokenData._id,
+          },
+          {
+            $addToSet: {
+              ingredients: ingredient,
+            },
+          }
+        );
+        responseHandler(res, ingredient);
+      } catch (err) {
+        next(err);
+      }
     }
+    responseHandler(res, {});
   };
 
   static removeIngredient = async (
@@ -92,7 +95,7 @@ class UserController {
     next: NextFunction
   ) => {
     const tokenData: tokenData = req.token;
-    const ingredient: Ingredient = req.body.ingredient;
+    const ingredient: Ingredient = req.body;
 
     try {
       const removedIngredient = await UserModel.findOneAndUpdate(
