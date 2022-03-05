@@ -82,14 +82,14 @@
 
                             <div class="flex justify-end mt-3 item-center">
                                 <div class="mr-1">
-                                    <button routerLink="/recipes/edit/{{ recipe.id }}"
+                                    <button routerLink="/recipes/{{ recipe._id }}/edit"
                                         class="px-2 py-1 text-xs font-bold text-white uppercase transition-colors duration-200 transform bg-blue-800 rounded dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:bg-blue-700 dark:focus:bg-blue-600">
                                         Modifica
                                     </button>
                                 </div>
 
                                 <div>
-                                    <button (click)="deleteRecipe(recipe.id)"
+                                    <button (click)="deleteRecipe(recipe._id)"
                                         class="px-2 py-1 text-xs font-bold text-white uppercase transition-colors duration-200 transform bg-red-800 rounded dark:bg-red-700 hover:bg-red-700 dark:hover:bg-red-600 focus:outline-none focus:bg-red-700 dark:focus:bg-red-600">
                                         Elimina
                                     </button>
@@ -105,5 +105,5 @@
 </section>
 
 <div class="position-floating-button">
-    <p-speedDial [model]="itemsFloatingButton" direction="up" [mask]="true"></p-speedDial>
+    <p-speedDial (onClick)="addRecipe()"></p-speedDial>
 </div>

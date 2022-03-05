@@ -1,5 +1,5 @@
 export class Recipe {
-    id?: any;
+    _id?: any;
     title?: string;
     color?: string;
     description?: string;

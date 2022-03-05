@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Recipe } from 'src/app/models/recipe/recipe.model';
 import { RecipeService } from 'src/app/services/recipe/recipe.service';
 import { MessageService } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgxSpinnerService } from "ngx-spinner";
+import { Recipe } from 'src/app/models/recipe/recipe.model';
 
 interface Colors {
   name: string,
