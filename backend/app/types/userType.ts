@@ -1,4 +1,4 @@
-import { Ingredient } from "./ingredientType";
+import { Ingredient } from "./IngredientType";
 import { Recipe } from "./recipeType";
 export type IUser = {
   _id: string;

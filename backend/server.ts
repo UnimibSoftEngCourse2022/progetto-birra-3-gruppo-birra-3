@@ -2,9 +2,10 @@ import express from "express";
 import cors, { CorsOptions } from "cors";
 import dbModel from "./app/models/dbModel";
 import { config } from "dotenv";
-import { errorHandler } from "./app/handler/errorHandler";
-import routerRecipes from "./app/routes/recipeRoutes";
-import authRoutes from "./app/routes/authRoutes";
+import { errorHandler } from "./app/handler/ErrorHandler";
+import recipeRoutes from "./app/routes/recipeRoutes";
+import equipmentRoutes from "./app/routes/EquipmentRoutes";
+import authRoutes from "./app/routes/AuthRoutes";
 
 const app = express();
 
@@ -43,7 +44,8 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to backend application." });
 });
 
-app.use("/api/recipes", routerRecipes);
+app.use("/api/recipes", recipeRoutes);
+app.use("/api/equipment", equipmentRoutes);
 app.use("/api/auth", authRoutes);
 
 const PORT = process.env.NODE_DOCKER_PORT || 8080;

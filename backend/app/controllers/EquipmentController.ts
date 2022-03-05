@@ -2,19 +2,18 @@ import { NextFunction, Request, Response } from "express";
 import { ErrorCode } from "../errors/ErrorCode";
 import { ErrorException } from "../errors/ErrorException";
 import { responseHandler } from "../handler/ResponseHandler";
-import RecipeModel from "../models/recipeModel";
+import EquipmentModel from "../models/recipeModel";
 
-class RecipeController {
+class EquipmentController {
   static create = async (req: Request, res: Response, next: NextFunction) => {
     try {
       let body: any = req.body;
 
-      // Campi obbligatori tutti
-      if (!body || !body.title || !body.color || !body.description) {
+      if (!body || !body.title) {
         throw new ErrorException(ErrorCode.BadRequest);
       }
 
-      let recipe = await RecipeModel.create(body);
+      let recipe = await EquipmentModel.create(body);
 
       if (!recipe) {
         throw new ErrorException(ErrorCode.BadRequest);
@@ -34,7 +33,7 @@ class RecipeController {
         ? { title: { $regex: new RegExp(title.trim()), $options: "i" } }
         : {};
 
-      let recipes = await RecipeModel.find(condition);
+      let recipes = await EquipmentModel.find(condition);
 
       if (!recipes) {
         // Errore perché mongo se non rispetta la condizione ritorna un array vuoto
@@ -55,7 +54,7 @@ class RecipeController {
         throw new ErrorException(ErrorCode.BadRequest);
       }
 
-      let recipe = await RecipeModel.findById(id);
+      let recipe = await EquipmentModel.findById(id);
 
       if (!recipe) {
         // Errore perché mongo se non rispetta la condizione ritorna un array vuoto
@@ -76,7 +75,7 @@ class RecipeController {
         throw new ErrorException(ErrorCode.BadRequest);
       }
 
-      let recipe = await RecipeModel.findByIdAndRemove(id, {
+      let recipe = await EquipmentModel.findByIdAndRemove(id, {
         useFindAndModify: false,
       });
 
@@ -106,7 +105,7 @@ class RecipeController {
         throw new ErrorException(ErrorCode.BadRequest);
       }
 
-      let recipe = await RecipeModel.findByIdAndUpdate(id, body, {
+      let recipe = await EquipmentModel.findByIdAndUpdate(id, body, {
         useFindAndModify: false,
       });
 
@@ -122,4 +121,4 @@ class RecipeController {
   };
 }
 
-export default RecipeController;
+export default EquipmentController;

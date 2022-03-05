@@ -1,4 +1,4 @@
-import { ErrorCode } from "./errorCode";
+import { ErrorCode } from "./ErrorCode";
 
 export class ErrorException extends Error {
     public status: any = null;

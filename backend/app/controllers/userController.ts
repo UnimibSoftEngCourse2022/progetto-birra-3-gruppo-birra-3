@@ -1,6 +1,6 @@
 import { NextFunction, Response } from "express";
 import RecipeClass from "../class/RecipeClass";
-import { responseHandler } from "../handler/responseHandler";
+import { responseHandler } from "../handler/ResponseHandler";
 import UserModel from "../models/userModel";
 import { Ingredient } from "../types/IngredientType";
 

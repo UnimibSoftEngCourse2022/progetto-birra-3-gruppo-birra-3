@@ -1,9 +1,15 @@
-import { prop } from "@typegoose/typegoose";
+import { prop, Ref } from "@typegoose/typegoose";
+import { isEmail } from "../utils/validationUtils";
 import IngredientClass from "./IngredientClass";
 import RecipeClass from "./RecipeClass";
 
 class UserClass {
-  @prop({ required: true, lowercase: true, index: true, unique: true })
+  @prop({
+    required: true, lowercase: true, index: true, unique: true, validate: {
+      validator: (val: string) => isEmail(val),
+      message: `{VALUE} is not a valid email`
+    }
+  })
   email!: string;
 
   @prop({ required: true })
@@ -18,8 +24,8 @@ class UserClass {
   @prop({ required: false })
   token?: string;
 
-  @prop({ type: () => IngredientClass, default: [] })
-  ingredients?: IngredientClass[];
+  @prop({ ref: () => IngredientClass, type: () => IngredientClass, default: [] })
+  ingredients?: Ref<IngredientClass>[];
 
   @prop({ type: () => RecipeClass, default: [] })
   recipes?: RecipeClass[];

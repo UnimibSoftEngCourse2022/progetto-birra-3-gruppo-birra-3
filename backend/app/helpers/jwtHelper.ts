@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
-import { ErrorException } from "../errors/errorException";
-import { ErrorCode } from "../errors/errorCode";
+import { ErrorException } from "../errors/ErrorException";
+import { ErrorCode } from "../errors/ErrorCode";
 import config from "../config/authConfig";
 
 export const generateAuthToken = (user: any | null): string | null => {
