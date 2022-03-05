@@ -10,7 +10,7 @@
                 <input aria-describedby="title-help"
                     [ngClass]="{ 'ng-invalid ng-dirty border-red-600 focus:border-red-500 focus:ring-red-500':submitted && f['title'].errors }"
                     class="block w-full mt-1 border focus:outline-none" type="text" formControlName="title" pInputText
-                    [(ngModel)]="recipe.title" placeholder="Lager, Pils, Pumpkin Ale, Marzen, Tropical Ipa...">
+                    [(ngModel)]="model.title" placeholder="Lager, Pils, Pumpkin Ale, Marzen, Tropical Ipa...">
                 <small id="title-help" class="p-error block"
                     *ngIf="submitted && f['title'].errors && f['title'].errors['required']">Titolo è
                     obbligatorio</small>
@@ -21,7 +21,7 @@
                 <input aria-describedby="description-help"
                     [ngClass]="{ 'ng-invalid ng-dirty border-red-600 focus:border-red-500 focus:ring-red-500':submitted && f['description'].errors }"
                     class="block w-full mt-1  focus:outline-none" type="text" formControlName="description" pInputText
-                    [(ngModel)]="recipe.description" placeholder="Lager, Pils, Pumpkin Ale, Marzen, Tropical Ipa...">
+                    [(ngModel)]="model.description" placeholder="Lager, Pils, Pumpkin Ale, Marzen, Tropical Ipa...">
                 <small id="description-help" class="p-error block"
                     *ngIf="submitted && f['description'].errors && f['description'].errors['required']">Descrizione è
                     obbligatorio</small>

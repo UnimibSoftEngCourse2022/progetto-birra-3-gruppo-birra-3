@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { first } from 'rxjs';
 import { AuthenticationService } from 'src/app/auth/service/authentication.service';
 
@@ -21,7 +22,8 @@ export class SignUpComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private _route: ActivatedRoute,
     private _router: Router,
-    private _authenticationService: AuthenticationService
+    private _authenticationService: AuthenticationService,
+    private messageService: MessageService
   ) {
     // redirect to home if already logged in
     if (this._authenticationService.sessionUserValue) {
@@ -58,6 +60,7 @@ export class SignUpComponent implements OnInit {
           this._router.navigate([this.returnUrl]);
         },
         error => {
+          this.messageService.add({ severity: 'error', summary: 'Service Message', detail: 'Via MessageService' });
           this.error = error;
           this.loading = false;
         }

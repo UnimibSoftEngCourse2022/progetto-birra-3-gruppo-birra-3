@@ -25,7 +25,7 @@ export class FormRecipeComponent implements OnInit {
     return this.form.controls;
   }
 
-  public recipe: Recipe;
+  public model: Recipe;
 
   submitted = false;
 
@@ -34,7 +34,7 @@ export class FormRecipeComponent implements OnInit {
   selectedColor: Colors | null = null;
 
   constructor(private spinner: NgxSpinnerService, private route: ActivatedRoute, private _formBuilder: FormBuilder, private recipeService: RecipeService, private messageService: MessageService, private router: Router) {
-    this.recipe = new Recipe();
+    this.model = new Recipe();
   }
 
   ngOnInit() {
@@ -103,9 +103,9 @@ export class FormRecipeComponent implements OnInit {
       }];
 
     this.submitted = false;
-    this.recipe.title = "";
-    this.recipe.description = "";
-    this.recipe.color = "";
+    this.model.title = "";
+    this.model.description = "";
+    this.model.color = "";
 
     this.form = this._formBuilder.group({
       title: [null, [Validators.required]],
@@ -133,8 +133,8 @@ export class FormRecipeComponent implements OnInit {
           this.editMode = true;
 
           setTimeout(() => {
-            this.recipe = data;
-            this.selectedColor = this.colors.find(x => x.code == this.recipe.color);
+            this.model = data;
+            this.selectedColor = this.colors.find(x => x.code == this.model.color);
             this.spinner.hide();
           }, 700);
         },
@@ -159,13 +159,13 @@ export class FormRecipeComponent implements OnInit {
     this.loading = true;
 
     let data = {
-      title: this.recipe.title,
+      title: this.model.title,
       color: this.selectedColor!.code,
-      description: this.recipe.description
+      description: this.model.description
     };
 
     if (this.editMode) {
-      this.recipeService.update(this.recipe._id, data)
+      this.recipeService.update(this.model._id, data)
         .subscribe({
           next: (res) => {
             this.submitted = true;
@@ -193,7 +193,7 @@ export class FormRecipeComponent implements OnInit {
 
   deleteRecipe(): void {
     if (this.editMode) {
-      this.recipeService.delete(this.recipe._id)
+      this.recipeService.delete(this.model._id)
         .subscribe({
           next: (res) => {
             this.router.navigate(['/recipes']);
