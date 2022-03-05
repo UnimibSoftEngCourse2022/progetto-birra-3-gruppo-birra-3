@@ -1,0 +1,32 @@
+<section class="max-w-4xl p-6 mx-auto bg-white rounded-md border-2 dark:bg-gray-800">
+    <h2 class="text-lg font-semibold text-gray-700 capitalize dark:text-white" *ngIf="editMode">Modifica ricetta</h2>
+    <h2 class="text-lg font-semibold text-gray-700 capitalize dark:text-white" *ngIf="!editMode">Aggiungi nuova ricetta
+    </h2>
+
+    <form class="mt-6" [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-1">
+            <div>
+                <label for="title" class="text-gray-700 dark:text-gray-200">Titolo</label>
+                <input aria-describedby="title-help"
+                    [ngClass]="{ 'ng-invalid ng-dirty border-red-600 focus:border-red-500 focus:ring-red-500':submitted && f['title'].errors }"
+                    class="block w-full mt-1 border focus:outline-none" type="text" formControlName="title" pInputText
+                    [(ngModel)]="model.title" placeholder="Lager, Pils, Pumpkin Ale, Marzen, Tropical Ipa...">
+                <small id="title-help" class="p-error block"
+                    *ngIf="submitted && f['title'].errors && f['title'].errors['required']">Titolo è
+                    obbligatorio</small>
+            </div>
+
+        </div>
+
+        <div class="flex justify-end mt-6">
+            <button type="button"
+                class="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-gray-500 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600"
+                (click)="goBack()">Annulla</button>
+            <button type="button" *ngIf="editMode"
+                class="ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-red-500 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600"
+                (click)="deleteEquipment()">Elimina</button>
+            <button type="submit"
+                class="ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-green-700 rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600">Salva</button>
+        </div>
+    </form>
+</section>

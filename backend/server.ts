@@ -3,7 +3,8 @@ import cors, { CorsOptions } from "cors";
 import dbModel from "./app/models/dbModel";
 import { config } from "dotenv";
 import { errorHandler } from "./app/handler/errorHandler";
-import routerRecipes from "./app/routes/recipeRoutes";
+import recipeRoutes from "./app/routes/recipeRoutes";
+import equipmentRoutes from "./app/routes/EquipmentRoutes";
 import authRoutes from "./app/routes/authRoutes";
 import ingredientRouter from "./app/routes/ingredientsRoutes";
 
@@ -44,7 +45,8 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to backend application." });
 });
 
-app.use("/api/recipes", routerRecipes);
+app.use("/api/recipes", recipeRoutes);
+app.use("/api/equipment", equipmentRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/ingredient", ingredientRouter);
 

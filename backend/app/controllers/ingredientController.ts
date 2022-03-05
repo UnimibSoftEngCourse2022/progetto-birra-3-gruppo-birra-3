@@ -1,5 +1,4 @@
 import { NextFunction, Response, Request } from "express";
-import RecipeClass from "../class/RecipeClass";
 import { responseHandler } from "../handler/responseHandler";
 import { tokenData } from "../helpers/jwtHelper";
 import UserModel from "../models/userModel";

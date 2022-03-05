@@ -3,7 +3,9 @@ import IngredientClass from "./IngredientClass";
 import RecipeClass from "./RecipeClass";
 
 class UserClass {
-  @prop({ required: true, lowercase: true, index: true, unique: true })
+  @prop({
+    required: true, lowercase: true, index: true, unique: true
+  })
   email!: string;
 
   @prop({ required: true })
