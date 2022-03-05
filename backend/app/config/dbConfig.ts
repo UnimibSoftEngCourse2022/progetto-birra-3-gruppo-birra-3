@@ -1,7 +1,7 @@
 import path from "path";
 import * as dotenv from "dotenv";
 
-dotenv.config({ path: path.resolve(__dirname, "../../.env.sample") });
+dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
 const {
   DB_USER,
@@ -13,7 +13,6 @@ const {
   REMOTE_DB_USER,
 } = process.env;
 // const url = `mongodb://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?authSource=admin`;
-
 const url = `mongodb+srv://${REMOTE_DB_USER}:${REMOTE_DB_PASSWORD}@clusterbirra.q0mxq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 
 export { url };
