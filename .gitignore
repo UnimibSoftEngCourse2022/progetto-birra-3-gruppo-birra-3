@@ -112,3 +112,4 @@ frontend/.vscode
 sonar-scanner.sh
 report-task.txt
 .scannerwork
+/.scannerwork/
