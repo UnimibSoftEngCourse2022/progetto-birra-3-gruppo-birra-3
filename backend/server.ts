@@ -5,7 +5,7 @@ import { config } from "dotenv";
 import { errorHandler } from "./app/handler/errorHandler";
 import routerRecipes from "./app/routes/recipeRoutes";
 import authRoutes from "./app/routes/authRoutes";
-import userRoutes from "./app/routes/userRoutes";
+import ingredientRouter from "./app/routes/ingredientsRoutes";
 
 const app = express();
 
@@ -46,7 +46,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/recipes", routerRecipes);
 app.use("/api/auth", authRoutes);
-app.use("/api/user", userRoutes);
+app.use("/api/ingredient", ingredientRouter);
 
 const PORT = process.env.NODE_DOCKER_PORT || 8080;
 

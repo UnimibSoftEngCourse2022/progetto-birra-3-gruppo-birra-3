@@ -5,19 +5,7 @@ import { tokenData } from "../helpers/jwtHelper";
 import UserModel from "../models/userModel";
 import { Ingredient } from "../types/ingredientType";
 
-class UserController {
-  static getUser = async (req: Request, res: Response, next: NextFunction) => {
-    const tokenData: tokenData = req.token;
-
-    try {
-      const user = await UserModel.findOne({ _id: tokenData._id });
-
-      responseHandler(res, user);
-    } catch (err) {
-      next(err);
-    }
-  };
-
+class IngredientController {
   //ingredients
 
   static updateIngredientQuantity = async (
@@ -98,13 +86,13 @@ class UserController {
     const ingredient: Ingredient = req.body;
 
     try {
-      const removedIngredient = await UserModel.findOneAndUpdate(
+      const removedIngredient = await UserModel.updateOne(
         {
           id: tokenData._id,
         },
         { $pull: { ingredients: ingredient } }
       );
-
+      console.log("Hello Yes", removedIngredient);
       responseHandler(res, removedIngredient);
     } catch (error) {
       next(error);
@@ -112,4 +100,4 @@ class UserController {
   };
 }
 
-export default UserController;
+export default IngredientController;
