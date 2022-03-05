@@ -4,15 +4,14 @@ import { Observable } from 'rxjs';
 import { Ingredient } from 'src/app/models/ingredient/ingredient.model';
 import { environment } from 'src/environments/environment';
 
-const baseUrl = environment.backendApi + 'recipes';
-
+const baseUrl = environment.backendApi + 'ingredient';
 
 @Injectable({
   providedIn: 'root'
 })
 export class IngredientService {
   constructor(private http: HttpClient) { }
-  
+
   getAll(): Observable<Ingredient[]> {
     return this.http.get<Ingredient[]>(baseUrl);
   }

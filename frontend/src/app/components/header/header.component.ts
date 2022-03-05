@@ -55,7 +55,10 @@ export class HeaderComponent implements OnInit {
     ];
 
     this.userSession = this._authenticationService.sessionUserValue;
-    this.userSession.avatar = "./../../../assets/birra-bionda-2.png";
+
+    if (this.userSession) {
+      this.userSession.avatar = "./../../../assets/birra-bionda-2.png";
+    }
   }
 
   logOut() {
