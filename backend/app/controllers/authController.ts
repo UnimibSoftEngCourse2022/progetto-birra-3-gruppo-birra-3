@@ -71,8 +71,12 @@ class AuthController {
 
       userBody.password = hashPassword(userBody.password);
 
-
-      let userCreate = await UserModel.create({ email: userBody.email, firstname: userBody.firstname, surname: userBody.surname, password: userBody.password });
+      let userCreate = await UserModel.create({
+        email: userBody.email,
+        firstname: userBody.firstname,
+        surname: userBody.surname,
+        password: userBody.password,
+      });
 
       if (!userCreate) {
         throw new ErrorException(ErrorCode.NotFound);

@@ -2,10 +2,11 @@ import express from "express";
 import cors, { CorsOptions } from "cors";
 import dbModel from "./app/models/dbModel";
 import { config } from "dotenv";
-import recipeRoutes from "./app/routes/recipeRoutes";
-import equipmentRoutes from "./app/routes/equipmentRoutes";
-import authRoutes from "./app/routes/authRoutes";
 import { errorHandler } from "./app/handler/errorHandler";
+import recipeRoutes from "./app/routes/recipeRoutes";
+import equipmentRoutes from "./app/routes/EquipmentRoutes";
+import authRoutes from "./app/routes/authRoutes";
+import ingredientRouter from "./app/routes/ingredientsRoutes";
 
 const app = express();
 
@@ -47,6 +48,7 @@ app.get("/", (req, res) => {
 app.use("/api/recipes", recipeRoutes);
 app.use("/api/equipment", equipmentRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/ingredient", ingredientRouter);
 
 const PORT = process.env.NODE_DOCKER_PORT || 8080;
 

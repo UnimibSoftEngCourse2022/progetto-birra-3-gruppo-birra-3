@@ -1,4 +1,4 @@
-import EquipmentController from "../controllers/equipmentController";
+import EquipmentController from "../controllers/EquipmentController";
 import { Router } from "express";
 import { authMiddleware } from "../middleware/authMiddleware";
 
