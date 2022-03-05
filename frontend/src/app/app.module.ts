@@ -36,6 +36,8 @@ import { FormRecipeComponent } from './components/form-recipe/form-recipe.compon
 import { SignUpComponent } from './view/sign-up/sign-up.component';
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
+import { FormIngredientComponent } from './components/form-ingredient/form-ingredient.component';
+import { FormEquipmentComponent } from './components/form-equipment/form-equipment.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +49,8 @@ import { AvatarGroupModule } from 'primeng/avatargroup';
     HeaderComponent,
     Error404Component,
     SignUpComponent,
+    FormIngredientComponent,
+    FormEquipmentComponent
   ],
   imports: [
     AvatarModule,
