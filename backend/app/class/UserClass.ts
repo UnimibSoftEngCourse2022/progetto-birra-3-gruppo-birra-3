@@ -24,7 +24,7 @@ class UserClass {
   @prop({ required: false })
   token?: string;
 
-  @prop({ ref: () => IngredientClass, type: () => IngredientClass, default: [] })
+  @prop({ ref: () => IngredientClass, default: [] })
   ingredients?: Ref<IngredientClass>[];
 
   @prop({ type: () => RecipeClass, default: [] })
