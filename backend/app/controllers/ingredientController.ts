@@ -2,7 +2,7 @@ import { NextFunction, Response, Request } from "express";
 import { responseHandler } from "../handler/responseHandler";
 import { tokenData } from "../helpers/jwtHelper";
 import UserModel from "../models/userModel";
-import { Ingredient } from "../types/ingredientType";
+import { Ingredient } from "../types/IngredientType";
 
 class IngredientController {
   //ingredients
@@ -72,7 +72,9 @@ class IngredientController {
       } catch (err) {
         next(err);
       }
+      return;
     }
+
     responseHandler(res, {});
   };
 
@@ -91,7 +93,6 @@ class IngredientController {
         },
         { $pull: { ingredients: ingredient } }
       );
-      console.log("Hello Yes", removedIngredient);
       responseHandler(res, removedIngredient);
     } catch (error) {
       next(error);

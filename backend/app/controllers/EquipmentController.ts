@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { ErrorCode } from "../errors/errorCode";
 import { ErrorException } from "../errors/errorException";
 import { responseHandler } from "../handler/responseHandler";
-import EquipmentModel from "../models/equipmentModel";
+import EquipmentModel from "../models/EquipmentModel";
 
 class EquipmentController {
   static create = async (req: Request, res: Response, next: NextFunction) => {

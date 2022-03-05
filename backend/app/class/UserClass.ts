@@ -1,10 +1,13 @@
 import { prop } from "@typegoose/typegoose";
-import IngredientClass from "./ingredientClass";
-import RecipeClass from "./recipeClass";
+import IngredientClass from "./IngredientClass";
+import RecipeClass from "./RecipeClass";
 
 class UserClass {
   @prop({
-    required: true, lowercase: true, index: true, unique: true
+    required: true,
+    lowercase: true,
+    index: true,
+    unique: true,
   })
   email!: string;
 

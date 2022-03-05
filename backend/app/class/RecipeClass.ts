@@ -1,5 +1,5 @@
 import { prop } from "@typegoose/typegoose";
-import IngredientClass from "./ingredientClass";
+import IngredientClass from "./IngredientClass";
 
 class RecipeClass {
   @prop({
