@@ -26,7 +26,7 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'equipment', children: [
+    path: 'equipments', children: [
       { path: '', canActivate: [AuthGuard], component: RecipesListComponent },
       { path: 'add', canActivate: [AuthGuard], component: FormEquipmentComponent },
       {
@@ -39,7 +39,7 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'ingredient', children: [
+    path: 'ingredients', children: [
       { path: '', canActivate: [AuthGuard], component: RecipesListComponent },
       { path: 'add', canActivate: [AuthGuard], component: FormRecipeComponent },
       {
