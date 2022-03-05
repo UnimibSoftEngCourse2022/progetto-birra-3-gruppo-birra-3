@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Recipe } from 'src/app/models/recipe/recipe.model';
 import { RecipeService } from 'src/app/services/recipe/recipe.service';
 import { MessageService } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgxSpinnerService } from "ngx-spinner";
+import { Recipe } from 'src/app/models/recipe/recipe.model';
 
 interface Colors {
   name: string,
@@ -165,7 +165,7 @@ export class FormRecipeComponent implements OnInit {
     };
 
     if (this.editMode) {
-      this.recipeService.update(this.recipe.id, data)
+      this.recipeService.update(this.recipe._id, data)
         .subscribe({
           next: (res) => {
             this.submitted = true;
@@ -193,7 +193,7 @@ export class FormRecipeComponent implements OnInit {
 
   deleteRecipe(): void {
     if (this.editMode) {
-      this.recipeService.delete(this.recipe.id)
+      this.recipeService.delete(this.recipe._id)
         .subscribe({
           next: (res) => {
             this.router.navigate(['/recipes']);

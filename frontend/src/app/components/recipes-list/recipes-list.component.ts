@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { Recipe } from 'src/app/models/recipe/recipe.model';
 import { RecipeService } from 'src/app/services/recipe/recipe.service';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from "ngx-spinner";
+import { Recipe } from 'src/app/models/recipe/recipe.model';
 
 @Component({
   selector: 'app-recipes-list',
@@ -107,7 +107,7 @@ export class RecipesListComponent implements OnInit {
     this.recipeService.delete(id)
       .subscribe({
         next: (res) => {
-          this.recipes = this.recipes?.filter(x => x.id != id);
+          this.recipes = this.recipes?.filter(x => x._id != id);
         },
         error: (e) => console.error(e)
       });
