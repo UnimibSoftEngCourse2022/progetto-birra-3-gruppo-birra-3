@@ -5,17 +5,17 @@ import { authMiddleware } from "../middleware/authMiddleware";
 const ingredientRouter = Router();
 
 ingredientRouter.post(
-  "/ingredient",
+  "/add",
   [authMiddleware],
   IngredientController.addIngredient
 );
 ingredientRouter.put(
-  "/ingredient",
+  "/update",
   [authMiddleware],
   IngredientController.updateIngredientQuantity
 );
 ingredientRouter.delete(
-  "/ingredient",
+  "/remove",
   [authMiddleware],
   IngredientController.removeIngredient
 );
