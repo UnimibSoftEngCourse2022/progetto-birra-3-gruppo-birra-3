@@ -2,10 +2,10 @@ import express from "express";
 import cors, { CorsOptions } from "cors";
 import dbModel from "./app/models/dbModel";
 import { config } from "dotenv";
-import { errorHandler } from "./app/handler/ErrorHandler";
 import recipeRoutes from "./app/routes/recipeRoutes";
-import equipmentRoutes from "./app/routes/EquipmentRoutes";
-import authRoutes from "./app/routes/AuthRoutes";
+import equipmentRoutes from "./app/routes/equipmentRoutes";
+import authRoutes from "./app/routes/authRoutes";
+import { errorHandler } from "./app/handler/errorHandler";
 
 const app = express();
 

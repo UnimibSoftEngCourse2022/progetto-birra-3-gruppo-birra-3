@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import { ErrorCode } from "../errors/ErrorCode";
-import { ErrorException } from "../errors/ErrorException";
-import { generateAuthToken } from "../helpers/JwtHelper";
-import { responseHandler } from "../handler/ResponseHandler";
+import { ErrorCode } from "../errors/errorCode";
+import { ErrorException } from "../errors/errorException";
+import { generateAuthToken } from "../helpers/jwtHelper";
+import { responseHandler } from "../handler/responseHandler";
 import { comparePassword, hashPassword } from "../utils/passwordUtils";
 import UserModel from "../models/userModel";
 

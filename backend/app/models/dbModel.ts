@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { url } from "../config/dbConfig";
-import EquimentModel from "./EquipmentModel";
+import EquimentModel from "./equipmentModel";
 import RecipeModel from "./recipeModel";
 import UserModel from "./userModel";
 

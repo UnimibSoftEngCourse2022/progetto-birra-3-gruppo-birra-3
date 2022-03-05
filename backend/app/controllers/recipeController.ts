@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { ErrorCode } from "../errors/ErrorCode";
-import { ErrorException } from "../errors/ErrorException";
-import { responseHandler } from "../handler/ResponseHandler";
+import { ErrorCode } from "../errors/errorCode";
+import { ErrorException } from "../errors/errorException";
+import { responseHandler } from "../handler/responseHandler";
 import RecipeModel from "../models/recipeModel";
 
 class RecipeController {

@@ -1,5 +1,5 @@
 import { prop } from "@typegoose/typegoose";
-import IngredientClass from "./IngredientClass";
+import IngredientClass from "./ingredientClass";
 
 class RecipeClass {
   @prop({ sparse: true, required: true, unique: true, index: true })

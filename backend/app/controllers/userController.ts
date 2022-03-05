@@ -1,8 +1,8 @@
 import { NextFunction, Response } from "express";
-import RecipeClass from "../class/RecipeClass";
-import { responseHandler } from "../handler/ResponseHandler";
+import RecipeClass from "../class/recipeClass";
+import { responseHandler } from "../handler/responseHandler";
 import UserModel from "../models/userModel";
-import { Ingredient } from "../types/IngredientType";
+import { Ingredient } from "../types/ingredientType";
 
 class UserController {
   private static userId: string = "";

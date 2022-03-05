@@ -1,6 +1,6 @@
 import recipeController from "../controllers/recipeController";
 import { Router } from "express";
-import { authMiddleware } from "../middleware/AuthMiddleware";
+import { authMiddleware } from "../middleware/authMiddleware";
 
 const router = Router();
 
