@@ -108,3 +108,8 @@ dist
 yarn.lock
 
 frontend/.vscode
+/sonar-scanner-4.6.2.2472/
+sonar-scanner.sh
+report-task.txt
+.scannerwork
+/.scannerwork/

@@ -5,12 +5,8 @@
 }
 
 .position-floating-button {
-  height: 100px;
   position: fixed;
-  bottom: 100px;
-  right: 90px;
   height: 64px;
-  position: fixed;
   bottom: 25px;
   right: 25px;
   width: 64px;

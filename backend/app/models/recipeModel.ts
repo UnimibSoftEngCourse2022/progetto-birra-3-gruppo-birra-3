@@ -1,5 +1,5 @@
 import { getModelForClass } from "@typegoose/typegoose";
-import RecipeClass from "../class/recipeClass";
+import RecipeClass from "../class/RecipeClass";
 import { DB_COLLECTIONS_ENUM } from "../enums/dbEnums";
 
 const RecipeModel = getModelForClass(RecipeClass, {

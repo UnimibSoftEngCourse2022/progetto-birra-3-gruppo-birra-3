@@ -1,9 +1,14 @@
 import { prop } from "@typegoose/typegoose";
-import IngredientClass from "./ingredientClass";
+import IngredientClass from "./IngredientClass";
 
 class RecipeClass {
-  @prop({ sparse: true, required: true, unique: true, index: true })
-  public title!: string;
+  @prop({
+    required: true,
+    unique: true,
+    index: true,
+    sparse: true,
+  })
+  public title?: string;
   @prop({ required: true })
   public color!: string;
   @prop({ required: true })

@@ -1,10 +1,14 @@
 import { prop } from "@typegoose/typegoose";
-import IngredientClass from "./ingredientClass";
-import RecipeClass from "./recipeClass";
+import IngredientClass from "./IngredientClass";
+import RecipeClass from "./RecipeClass";
+import brewingHistoryType from "../types/brewingHistoryType";
 
 class UserClass {
   @prop({
-    required: true, lowercase: true, index: true, unique: true
+    required: true,
+    lowercase: true,
+    index: true,
+    unique: true,
   })
   email!: string;
 
@@ -25,6 +29,9 @@ class UserClass {
 
   @prop({ type: () => RecipeClass, default: [] })
   recipes?: RecipeClass[];
+
+  @prop({ default: [] })
+  brewingHistory?: brewingHistoryType[];
 }
 
 export default UserClass;

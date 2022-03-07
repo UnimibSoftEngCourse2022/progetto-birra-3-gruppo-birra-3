@@ -7,5 +7,7 @@ namespace NodeJS {
     DB_PORT: number;
 
     NODE_DOCKER_PORT: number;
+    REMOTE_DB_USER: string;
+    REMOTE_DB_PASSWORD: string;
   }
 }
