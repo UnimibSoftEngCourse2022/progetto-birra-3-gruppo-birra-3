@@ -38,6 +38,8 @@ import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { FormIngredientComponent } from './components/form-ingredient/form-ingredient.component';
 import { FormEquipmentComponent } from './components/form-equipment/form-equipment.component';
+import { BrewPageComponent } from './components/brew-page/brew-page.component';
+import { DropDownIngredientComponent } from './components/drop-down-ingredient/drop-down-ingredient.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,9 @@ import { FormEquipmentComponent } from './components/form-equipment/form-equipme
     Error404Component,
     SignUpComponent,
     FormIngredientComponent,
-    FormEquipmentComponent
+    FormEquipmentComponent,
+    BrewPageComponent,
+    DropDownIngredientComponent
   ],
   imports: [
     AvatarModule,

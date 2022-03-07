@@ -1,6 +1,6 @@
 <section class="max-w-4xl p-6 mx-auto bg-white rounded-md border-2 dark:bg-gray-800">
-    <h2 class="text-lg font-semibold text-gray-700 capitalize dark:text-white" *ngIf="editMode">Modifica ricetta</h2>
-    <h2 class="text-lg font-semibold text-gray-700 capitalize dark:text-white" *ngIf="!editMode">Aggiungi nuova ricetta
+    <h2 class="text-lg font-semibold text-gray-700 capitalize dark:text-white" *ngIf="editMode">Modifica ingredienti</h2>
+    <h2 class="text-lg font-semibold text-gray-700 capitalize dark:text-white" *ngIf="!editMode">Aggiungi ingredienti
     </h2>
 
     <form class="mt-6" [formGroup]="form" (ngSubmit)="onSubmit()">
@@ -12,10 +12,12 @@
                     class="block w-full mt-1 border focus:outline-none" type="text" formControlName="name" pInputText
                     [(ngModel)]="model.name" placeholder="Lager, Pils, Pumpkin Ale, Marzen, Tropical Ipa...">
                 <small id="name-help" class="p-error block"
-                    *ngIf="submitted && f['name'].errors && f['name'].errors['required']">Titolo è
+                    *ngIf="submitted && f['name'].errors && f['name'].errors['required']">Queto campo è
                     obbligatorio</small>
             </div>
-
+            <div>
+                <app-drop-down-ingredient></app-drop-down-ingredient>
+            </div>
         </div>
 
         <div class="flex justify-end mt-6">

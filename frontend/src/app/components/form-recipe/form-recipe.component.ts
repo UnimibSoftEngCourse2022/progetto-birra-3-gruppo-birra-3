@@ -6,7 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgxSpinnerService } from "ngx-spinner";
 import { Recipe } from 'src/app/models/recipe/recipe.model';
 
-interface Colors {
+export interface Colors {
   name: string,
   code: string
 }
