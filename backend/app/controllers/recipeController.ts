@@ -8,7 +8,6 @@ import UserModel from "../models/userModel";
 import brewingHistoryType from "../types/brewingHistoryType";
 import { Ingredient } from "../types/IngredientType";
 import { Recipe } from "../types/recipeType";
-import { IUser } from "../types/userType";
 
 class RecipeController {
   static create = async (req: Request, res: Response, next: NextFunction) => {
@@ -145,7 +144,8 @@ class RecipeController {
         recipeName: recipe.title,
       };
 
-      recipeIngredients.forEach(async (ingredient) => {
+      for (let i = 0; i < recipeIngredients.length; i++) {
+        const ingredient = recipeIngredients[i];
         const updateArray = await UserModel.updateOne(
           { _id: tokenData._id },
           {
@@ -167,7 +167,7 @@ class RecipeController {
         if (updateArray.modifiedCount === 0) {
           return res.status(409).send("Not Enough Materials");
         }
-      });
+      }
 
       await UserModel.updateOne(
         { _id: tokenData._id },
