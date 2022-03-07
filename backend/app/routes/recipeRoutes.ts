@@ -14,4 +14,6 @@ router.put("/:id", [authMiddleware], recipeController.update);
 
 router.delete("/:id", [authMiddleware], recipeController.delete);
 
+router.post("/brewRecipe", [authMiddleware], recipeController.brewRecipe);
+
 export default router;

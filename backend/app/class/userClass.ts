@@ -1,6 +1,7 @@
 import { prop } from "@typegoose/typegoose";
 import IngredientClass from "./IngredientClass";
 import RecipeClass from "./RecipeClass";
+import brewingHistoryType from "../types/brewingHistoryType";
 
 class UserClass {
   @prop({
@@ -28,6 +29,9 @@ class UserClass {
 
   @prop({ type: () => RecipeClass, default: [] })
   recipes?: RecipeClass[];
+
+  @prop({ default: [] })
+  brewingHistory?: brewingHistoryType[];
 }
 
 export default UserClass;

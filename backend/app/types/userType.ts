@@ -1,4 +1,5 @@
-import { Ingredient } from "./ingredientType";
+import brewingHistoryType from "./brewingHistoryType";
+import { Ingredient } from "./IngredientType";
 import { Recipe } from "./recipeType";
 export type IUser = {
   _id: string;
@@ -9,4 +10,5 @@ export type IUser = {
   token: string;
   ingredients?: Ingredient[];
   recipes?: Recipe[];
+  brewingHistory?: brewingHistoryType[];
 };

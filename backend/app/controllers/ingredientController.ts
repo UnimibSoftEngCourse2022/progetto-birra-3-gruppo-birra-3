@@ -18,7 +18,7 @@ class IngredientController {
 
       await UserModel.updateOne(
         { _id: tokenData._id },
-        { $set: { "ingredients.$[ingredient].quantity": ingredient.quantity } },
+        { $inc: { "ingredients.$[ingredient].quantity": ingredient.quantity } },
         {
           arrayFilters: [
             {
