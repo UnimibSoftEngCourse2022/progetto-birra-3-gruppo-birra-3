@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import UserClass from "../class/UserClass";
 import { ErrorCode } from "../errors/errorCode";
 import { ErrorException } from "../errors/errorException";
 import { responseHandler } from "../handler/responseHandler";
@@ -134,6 +133,7 @@ class RecipeController {
     next: NextFunction
   ) => {
     try {
+      // @ts-ignore
       const tokenData: tokenData = req.token;
 
       const recipe: Recipe = req.body;

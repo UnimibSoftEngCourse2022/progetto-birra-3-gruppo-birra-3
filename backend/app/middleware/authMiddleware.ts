@@ -1,7 +1,7 @@
-import { Request, Response, NextFunction } from 'express';
-import { ErrorCode } from '../errors/errorCode';
-import { ErrorException } from '../errors/errorException';
-import { verifyToken } from '../helpers/jwtHelper';
+import {ErrorCode} from '../errors/errorCode';
+import {ErrorException} from '../errors/errorException';
+import {verifyToken} from '../helpers/jwtHelper';
+import {NextFunction, Request, Response} from "express";
 
 export const authMiddleware = (
   req: Request,
@@ -14,8 +14,7 @@ export const authMiddleware = (
       const token = auth.slice(7);
 
       try {
-        const tokenData = verifyToken(token);
-        req.token = tokenData;
+        req.token = verifyToken(token);
         next();
       } catch (error) {
         next(new ErrorException(ErrorCode.Unauthenticated));
