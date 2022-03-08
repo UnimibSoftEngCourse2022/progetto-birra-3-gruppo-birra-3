@@ -4,7 +4,7 @@ import dbModel from "./app/models/dbModel";
 import { config } from "dotenv";
 import { errorHandler } from "./app/handler/errorHandler";
 import recipeRoutes from "./app/routes/recipeRoutes";
-import equipmentRoutes from "./app/routes/EquipmentRoutes";
+import equipmentRoutes from "./app/routes/equipementRoutes";
 import authRoutes from "./app/routes/authRoutes";
 import ingredientRouter from "./app/routes/ingredientsRoutes";
 
