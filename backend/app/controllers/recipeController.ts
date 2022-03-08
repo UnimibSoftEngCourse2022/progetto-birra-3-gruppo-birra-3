@@ -3,11 +3,13 @@ import { ErrorCode } from "../errors/errorCode";
 import { ErrorException } from "../errors/errorException";
 import { responseHandler } from "../handler/responseHandler";
 import { tokenData } from "../helpers/jwtHelper";
+import { findUserById } from "../helpers/userHelper";
 import RecipeModel from "../models/recipeModel";
 import UserModel from "../models/userModel";
 import brewingHistoryType from "../types/brewingHistoryType";
 import { Ingredient } from "../types/IngredientType";
 import { Recipe } from "../types/recipeType";
+import { IUser } from "../types/userType";
 
 class RecipeController {
   static create = async (req: Request, res: Response, next: NextFunction) => {
@@ -56,16 +58,7 @@ class RecipeController {
     try {
       let id: string = req.params.id as string;
 
-      if (!id) {
-        throw new ErrorException(ErrorCode.BadRequest);
-      }
-
-      let recipe = await RecipeModel.findById(id);
-
-      if (!recipe) {
-        // Errore perché mongo se non rispetta la condizione ritorna un array vuoto
-        throw new ErrorException(ErrorCode.BadRequest);
-      }
+      const recipe = fetchRecipeById(id);
 
       responseHandler(res, recipe);
     } catch (error) {
@@ -135,18 +128,39 @@ class RecipeController {
       // @ts-ignore
       const tokenData: tokenData = req.token;
 
-      const recipe: Recipe = req.body;
+      const recipeId: string = req.body;
+
+      const recipe = await fetchRecipeById(recipeId);
+
       //Recipe Ingreedients
       const recipeIngredients: Ingredient[] = recipe.ingredients;
+
+      const user: IUser = await findUserById(tokenData._id);
 
       const brewingHistory: brewingHistoryType = {
         date: new Date(),
         recipeName: recipe.title,
       };
 
-      for (let i = 0; i < recipeIngredients.length; i++) {
-        const ingredient = recipeIngredients[i];
-        const updateArray = await UserModel.updateOne(
+      const canBrew = recipeIngredients.every((recipeIngredient) => {
+        const canIngredientBeUsed = user.ingredients?.findIndex(
+          (userIngredient) => {
+            return (
+              userIngredient.name === recipeIngredient.name &&
+              userIngredient.type === recipeIngredient.type &&
+              userIngredient.quantity >= recipeIngredient.quantity
+            );
+          }
+        );
+        return canIngredientBeUsed !== -1;
+      });
+
+      if (!canBrew) {
+        return res.status(409).send({ error: "Ti mancano ingredienti" });
+      }
+
+      recipeIngredients.forEach(async (ingredient) => {
+        await UserModel.updateOne(
           { _id: tokenData._id },
           {
             $inc: {
@@ -158,16 +172,11 @@ class RecipeController {
               {
                 "ingredient.name": ingredient.name,
                 "ingredient.type": ingredient.type,
-                "ingredient.quantity": { $gte: ingredient.quantity },
               },
             ],
           }
         );
-
-        if (updateArray.modifiedCount === 0) {
-          return res.status(409).send("Not Enough Materials");
-        }
-      }
+      });
 
       await UserModel.updateOne(
         { _id: tokenData._id },
@@ -186,3 +195,16 @@ class RecipeController {
 }
 
 export default RecipeController;
+
+const fetchRecipeById = async (recipeId: string): Promise<Recipe> => {
+  if (!recipeId) {
+    throw new ErrorException(ErrorCode.BadRequest);
+  }
+
+  const recipe = await RecipeModel.findById(recipeId);
+
+  if (!recipe) {
+    throw new ErrorException(ErrorCode.BadRequest);
+  }
+  return recipe as unknown as Recipe;
+};
