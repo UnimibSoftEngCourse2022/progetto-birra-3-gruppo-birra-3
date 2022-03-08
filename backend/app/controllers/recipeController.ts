@@ -3,6 +3,7 @@ import { ErrorCode } from "../errors/errorCode";
 import { ErrorException } from "../errors/errorException";
 import { responseHandler } from "../handler/responseHandler";
 import { tokenData } from "../helpers/jwtHelper";
+import { fetchRecipeById } from "../helpers/recipeHelper";
 import { findUserById } from "../helpers/userHelper";
 import RecipeModel from "../models/recipeModel";
 import UserModel from "../models/userModel";
@@ -14,20 +15,26 @@ import { IUser } from "../types/userType";
 class RecipeController {
   static create = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      let body: any = req.body;
+      let body: Recipe = req.body;
 
       // Campi obbligatori tutti
-      if (!body || !body.title || !body.color || !body.description) {
+      if (
+        !body ||
+        !body.title ||
+        !body.color ||
+        !body.description ||
+        !body.ingredients
+      ) {
         throw new ErrorException(ErrorCode.BadRequest);
       }
 
-      let recipe = await RecipeModel.create(body);
+      const recipe = await RecipeModel.create(body);
 
       if (!recipe) {
         throw new ErrorException(ErrorCode.BadRequest);
       }
 
-      responseHandler(res, recipe);
+      return responseHandler(res, recipe);
     } catch (error) {
       next(error);
     }
@@ -97,10 +104,16 @@ class RecipeController {
         throw new ErrorException(ErrorCode.BadRequest);
       }
 
-      let body: any = req.body;
+      let body: Recipe = req.body;
 
       // Campi obbligatori tutti
-      if (!body || !body.title || !body.color || !body.description) {
+      if (
+        !body ||
+        !body.title ||
+        !body.color ||
+        !body.description ||
+        !body.ingredients
+      ) {
         throw new ErrorException(ErrorCode.BadRequest);
       }
 
@@ -195,16 +208,3 @@ class RecipeController {
 }
 
 export default RecipeController;
-
-const fetchRecipeById = async (recipeId: string): Promise<Recipe> => {
-  if (!recipeId) {
-    throw new ErrorException(ErrorCode.BadRequest);
-  }
-
-  const recipe = await RecipeModel.findById(recipeId);
-
-  if (!recipe) {
-    throw new ErrorException(ErrorCode.BadRequest);
-  }
-  return recipe as unknown as Recipe;
-};
