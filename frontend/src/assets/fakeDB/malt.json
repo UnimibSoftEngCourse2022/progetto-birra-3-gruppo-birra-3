@@ -18,7 +18,7 @@
         "name": "Munich Malts",
         "type": "malt",
         "quantity": null
-    }, 
+    },
     {
         "name": "Carapils Dextrin Malt",
         "type": "malt",
@@ -48,7 +48,7 @@
           "name": "Black Barley",
           "type": "malt",
           "quantity": null
-      }, 
+      },
       {
           "name": "Black Patnetin",
           "type": "malt",
@@ -68,7 +68,7 @@
           "name": "Munchener",
           "type": "malt",
           "quantity": null
-      }, 
+      },
       {
           "name": "Crystal",
           "type": "malt",
@@ -88,7 +88,7 @@
           "name": "English Crystal",
           "type": "malt",
           "quantity": null
-      }, 
+      },
       {
           "name": "Brown Malt",
           "type": "malt",
@@ -108,7 +108,7 @@
           "name": "Aromatic",
           "type": "malt",
           "quantity": null
-      }, 
+      },
       {
           "name": "Belgian Special",
           "type": "malt",
@@ -128,14 +128,14 @@
           "name": "CaraMunich",
           "type": "malt",
           "quantity": null
-      }, 
+      },
       {
           "name": "Rauchmalt",
           "type": "malt",
           "quantity": null
       },
       {
-          "name": "Honey Malt:",
+          "name": "Honey Malt",
           "type": "malt",
           "quantity": null
       },
@@ -149,5 +149,5 @@
         "type": "malt",
         "quantity": null
     }
-     
+
   ]

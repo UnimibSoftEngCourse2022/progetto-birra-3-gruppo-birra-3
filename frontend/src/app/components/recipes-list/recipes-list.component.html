@@ -13,8 +13,6 @@
         </div>
     </div>
 </div>
-
-
 <section class="bg-white dark:bg-gray-900 z-10 mt-2">
     <div class="container px-6 py-8 mx-auto">
         <div class="lg:flex lg:-mx-2">
@@ -32,7 +30,7 @@
                         <p class="text-gray-500 dark:text-gray-300">Sort</p>
                         <select class="font-medium text-gray-700 bg-transparent dark:text-gray-500 focus:outline-none"
                             [disabled]="!recipes || recipes?.length == 0">
-                            <option value="#" *ngFor="let item of [0,1,2,3,4]">Filtro {{item}}</option>
+                            <option value="#" *ngFor="let item of ['A-Z','Z-A']">{{item}}</option>
                         </select>
                     </div>
                 </div>

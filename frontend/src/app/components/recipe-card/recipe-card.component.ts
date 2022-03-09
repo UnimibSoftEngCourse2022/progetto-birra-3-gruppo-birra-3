@@ -1,10 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { Recipe } from 'src/app/models/recipe/recipe.model';
 import { ChronologyService } from 'src/app/services/chronology/chronology.service';
 import { RecipeService } from 'src/app/services/recipe/recipe.service';
-import { RecipesListComponent } from '../recipes-list/recipes-list.component';
 
 @Component({
   selector: 'app-recipe-card',
@@ -17,7 +14,6 @@ export class RecipeCardComponent implements OnInit {
   constructor(
    private recipeService : RecipeService,
    private chronologyService : ChronologyService,
-   private router: Router
   ) { }
 
   ngOnInit(): void {

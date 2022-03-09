@@ -19,14 +19,4 @@ export class ChronologyComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
-  brewBeer(id: string): void {
-    this.chronologyService.brew(id)
-      .subscribe({
-        next: (res) => {
-          this.recipes = this.recipes?.filter(x => x._id != id);
-        },
-        error: (e) => console.error(e)
-      });
-  }
 }

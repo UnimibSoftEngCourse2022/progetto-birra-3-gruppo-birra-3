@@ -35,4 +35,8 @@ export class IngredientService {
   findByTitle(title: any): Observable<Ingredient[]> {
     return this.http.get<Ingredient[]>(`${baseUrl}?title=${title}`);
   }
+
+  getAllByType(type: string): Observable<Ingredient[]> {
+    return this.http.get<Ingredient[]>('../../../assets/fakeDB/'+ type +'.json');
+  }
 }

@@ -26,7 +26,6 @@
     {
         "name" : " Thermometer",
         "quantity" : null
-
     },
     {
         "name" : "pH Testing Equipment",
@@ -39,7 +38,7 @@
 
     },
     {
-        "name" : "Double Bubble Airlock", 
+        "name" : "Double Bubble Airlock",
         "quantity" : null
 
     },

@@ -14,7 +14,7 @@ export class ChronologyService {
 
   constructor(private http: HttpClient) { }
 
-brew(id: any): Observable<Recipe> {
+  brew(id: any): Observable<Recipe> {
     return this.http.get(`${baseUrl}/${id}`);
   }
 }
