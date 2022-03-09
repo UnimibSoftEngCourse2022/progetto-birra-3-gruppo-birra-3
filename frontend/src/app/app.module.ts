@@ -41,6 +41,8 @@ import { FormEquipmentComponent } from './components/form-equipment/form-equipme
 import { BrewPageComponent } from './components/brew-page/brew-page.component';
 import { DropDownIngredientComponent } from './components/drop-down-ingredient/drop-down-ingredient.component';
 import { DropDownEquipmentComponent } from './components/drop-down-equipment/drop-down-equipment.component';
+import { ChronologyComponent } from './components/chronology/chronology.component';
+import { RecipeCardComponent } from './components/recipe-card/recipe-card.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +58,9 @@ import { DropDownEquipmentComponent } from './components/drop-down-equipment/dro
     FormEquipmentComponent,
     BrewPageComponent,
     DropDownIngredientComponent,
-    DropDownEquipmentComponent
+    DropDownEquipmentComponent,
+    ChronologyComponent,
+    RecipeCardComponent
   ],
   imports: [
     AvatarModule,

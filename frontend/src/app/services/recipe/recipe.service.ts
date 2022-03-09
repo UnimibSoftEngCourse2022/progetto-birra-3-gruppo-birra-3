@@ -5,7 +5,6 @@ import { environment } from '../../../environments/environment';
 import { Recipe } from '../../models/recipe/recipe.model';
 
 const baseUrl = environment.backendApi + 'recipes';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -38,5 +37,9 @@ export class RecipeService {
 
   findByTitle(title: any): Observable<Recipe[]> {
     return this.http.get<Recipe[]>(`${baseUrl}?title=${title}`);
+  }
+
+  brewBeer(id: any): Observable<Recipe> {
+    return this.http.get(`${baseUrl}/${id}`);
   }
 }

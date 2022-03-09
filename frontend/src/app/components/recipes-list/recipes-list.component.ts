@@ -102,14 +102,4 @@ export class RecipesListComponent implements OnInit {
         error: (e) => console.error(e)
       });
   }
-
-  deleteRecipe(id: string): void {
-    this.recipeService.delete(id)
-      .subscribe({
-        next: (res) => {
-          this.recipes = this.recipes?.filter(x => x._id != id);
-        },
-        error: (e) => console.error(e)
-      });
-  }
 }
