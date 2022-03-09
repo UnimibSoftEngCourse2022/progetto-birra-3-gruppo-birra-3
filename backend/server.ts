@@ -4,9 +4,10 @@ import dbModel from "./app/models/dbModel";
 import { config } from "dotenv";
 import { errorHandler } from "./app/handler/errorHandler";
 import recipeRoutes from "./app/routes/recipeRoutes";
-import equipmentRoutes from "./app/routes/EquipmentRoutes";
+import equipmentRoutes from "./app/routes/equipementRoutes";
 import authRoutes from "./app/routes/authRoutes";
 import ingredientRouter from "./app/routes/ingredientsRoutes";
+import userRouter from "./app/routes/userRoutes";
 
 const app = express();
 
@@ -49,6 +50,7 @@ app.use("/api/recipes", recipeRoutes);
 app.use("/api/equipment", equipmentRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/ingredient", ingredientRouter);
+app.use("/api/user", userRouter);
 
 const PORT = process.env.NODE_DOCKER_PORT || 8080;
 

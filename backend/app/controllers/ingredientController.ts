@@ -43,39 +43,25 @@ class IngredientController {
     const tokenData: tokenData = req.token;
     const ingredient: Ingredient = req.body;
 
-    const usersWithIngredients = await UserModel.find({
-      ingredients: {
-        $elemMatch: {
-          name: ingredient.name,
+    try {
+      const updateIngredient = await UserModel.updateOne(
+        {
+          _id: tokenData._id,
+          "ingredients.name": { $ne: ingredient.name },
         },
-      },
-    });
-
-    const isAlreadyInArray =
-      usersWithIngredients.findIndex((value) => {
-        return value.email === tokenData.email;
-      }) !== -1;
-
-    if (!isAlreadyInArray) {
-      try {
-        await UserModel.updateOne(
-          {
-            _id: tokenData._id,
+        {
+          $push: {
+            ingredients: ingredient,
           },
-          {
-            $addToSet: {
-              ingredients: ingredient,
-            },
-          }
-        );
-        responseHandler(res, ingredient);
-      } catch (err) {
-        next(err);
+        }
+      );
+      if (updateIngredient.modifiedCount !== 0) {
+        return responseHandler(res, ingredient);
       }
-      return;
+    } catch (err) {
+      next(err);
     }
-
-    responseHandler(res, {});
+    return responseHandler(res, {});
   };
 
   static removeIngredient = async (
