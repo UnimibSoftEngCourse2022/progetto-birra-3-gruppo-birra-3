@@ -1,9 +1,15 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Ingredient } from 'src/app/models/ingredient/ingredient.model';
 import { environment } from '../../../environments/environment';
 import { Recipe } from '../../models/recipe/recipe.model';
-import { Ingredient } from 'src/app/models/ingredient/ingredient.model';
+import {
+  calculateBeerColor,
+  calculateSRM,
+  getMaltLovibond,
+  getMCU,
+} from './helper/beerColorHelper';
 
 const baseUrl = environment.backendApi + 'recipes';
 @Injectable({
@@ -77,5 +83,14 @@ export class RecipeService {
     });
 
     return missingIngredients;
+  }
+
+  getBeerColor(batchSize: number, malt: string, maltAmount: number) {
+    const maltLovibond = getMaltLovibond(malt);
+    const MCU = getMCU(maltLovibond, maltAmount, batchSize);
+    const SRM = calculateSRM(MCU);
+    const beerColor = calculateBeerColor(SRM);
+
+    return beerColor;
   }
 }
