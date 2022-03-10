@@ -20,9 +20,9 @@ export class BrewTodayService {
   }
 
   whatShouldIBrewToday(userRecipes: Recipe[], userIngredients: Ingredient[]) {
-    const ingrQuantityTotal = userIngredients.reduce((prevVal, nextIngr) => {
-      return prevVal + nextIngr.quantity!;
-    }, 0);
+    // const ingrQuantityTotal = userIngredients.reduce((prevVal, nextIngr) => {
+    //   return prevVal + nextIngr.quantity!;
+    // }, 0);
 
     //Tiro fuori solo le ricette ritornabili
     const filteredRecipes = userRecipes.filter((recipe) => {
