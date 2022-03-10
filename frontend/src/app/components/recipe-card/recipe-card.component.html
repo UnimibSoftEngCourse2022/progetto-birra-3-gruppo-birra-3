@@ -9,6 +9,36 @@
         <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
             {{recipe?.description}}
         </p>
+        <div style=" padding: 8px; margin-top: 8px; margin-bottom: 8px; border: 1px solid #4CAF50;
+            " class="bg-white rounded-lg">
+            <h1>Ingredienti </h1>
+            <br>
+            <div *ngFor="let ingredient of recipe?.ingredients; let i = index">
+                <ol>
+                    <li class="flex text-base text-body-color mb-4">
+                        <span class="
+                               bg-primary
+                               text-black
+                               rounded
+                               mr-2
+                               text-base
+                               flex
+                               items-center
+                               justify-center
+                               h-6
+                               max-w-[24px]
+                               w-full
+                               background-color:bg-blue-600
+                               ">
+                            {{i}}
+                        </span>
+                        {{ingredient.name}}
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+
         <!--TODO gestire stelle-->
         <div class="flex mt-2 item-center">
             <svg class="w-5 h-5 text-gray-700 fill-current dark:text-gray-300" viewBox="0 0 24 24">
@@ -50,7 +80,7 @@
                     Elimina
                 </button>
             </div>
-            <app-button-brew ></app-button-brew>
+            <app-button-brew></app-button-brew>
             <div>
                 <button (click)="brewRecipe(recipe?._id)"
                     class="px-2 py-1 text-xs font-bold text-white uppercase transition-colors duration-200 transform bg-green-800 rounded dark:bg-green-700 hover:bg-green-700 dark:hover:bg-green-600 focus:outline-none focus:bg-green-700 dark:focus:bg-green-600">
