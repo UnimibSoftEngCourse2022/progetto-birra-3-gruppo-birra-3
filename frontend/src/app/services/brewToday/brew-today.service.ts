@@ -30,26 +30,49 @@ export class BrewTodayService {
       return canBrewRecipe(recipeIngredients!, userIngredients);
     });
 
-    const sortedFilteredArray = filteredRecipes
-      .map((recipe) => {
-        const recipeIngrQuantityVal = recipe.ingredients?.reduce(
+    // const sortedFilteredArray = filteredRecipes
+    //   .map((recipe) => {
+    //     const recipeIngrQuantityVal = recipe.ingredients?.reduce(
+    //       (prevVal, nextIngr) => {
+    //         return prevVal + nextIngr.quantity!;
+    //       },
+    //       0
+    //     );
+    //     return {
+    //       ...recipe,
+    //       ...{
+    //         remainingIngrAfterBrew: ingrQuantityTotal - recipeIngrQuantityVal!,
+    //       },
+    //     };
+    //   })
+    //   .sort(
+    //     (val1, val2) =>
+    //       val1.remainingIngrAfterBrew - val2.remainingIngrAfterBrew
+    //   );
+
+    const bestCandidate: Recipe = filteredRecipes.reduce(
+      (previousRecipe, currentRecipe) => {
+        const previousRecipeIngrQuantityVal =
+          previousRecipe.ingredients?.reduce((prevVal, nextIngr) => {
+            return prevVal + nextIngr.quantity!;
+          }, 0);
+        const currentRecipeIngrQuantityVal = currentRecipe.ingredients?.reduce(
           (prevVal, nextIngr) => {
             return prevVal + nextIngr.quantity!;
           },
           0
         );
-        return {
-          ...recipe,
-          ...{
-            remainingIngrAfterBrew: ingrQuantityTotal - recipeIngrQuantityVal!,
-          },
-        };
-      })
-      .sort(
-        (val1, val2) =>
-          val1.remainingIngrAfterBrew - val2.remainingIngrAfterBrew
-      );
-    const bestCandidate = sortedFilteredArray[0];
+
+        if (currentRecipeIngrQuantityVal! < previousRecipeIngrQuantityVal!) {
+          return currentRecipe;
+        } else {
+          return previousRecipe;
+        }
+      },
+      filteredRecipes[0]
+    );
+
+    // const bestCandidate = sortedFilteredArray[0];
     return bestCandidate;
   }
 }
