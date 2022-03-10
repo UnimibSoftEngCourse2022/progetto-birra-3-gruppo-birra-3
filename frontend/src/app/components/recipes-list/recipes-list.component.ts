@@ -102,4 +102,5 @@ export class RecipesListComponent implements OnInit {
         error: (e) => console.error(e)
       });
   }
+  
 }

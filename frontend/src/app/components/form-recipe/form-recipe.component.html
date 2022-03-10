@@ -16,16 +16,6 @@
                     obbligatorio</small>
             </div>
 
-            <div>
-                <label for="description" class="text-gray-700 dark:text-gray-200">Descrizione</label>
-                <input aria-describedby="description-help"
-                    [ngClass]="{ 'ng-invalid ng-dirty border-red-600 focus:border-red-500 focus:ring-red-500':submitted && f['description'].errors }"
-                    class="block w-full mt-1  focus:outline-none" type="text" formControlName="description" pInputText
-                    [(ngModel)]="model.description" placeholder="Lager, Pils, Pumpkin Ale, Marzen, Tropical Ipa...">
-                <small id="description-help" class="p-error block"
-                    *ngIf="submitted && f['description'].errors && f['description'].errors['required']">Descrizione è
-                    obbligatorio</small>
-            </div>
 
             <div>
                 <label for="color" class="text-gray-700 dark:text-gray-200">Colore</label>
@@ -62,7 +52,17 @@
             </div>
 
         </div>
-
+        <app-form-ingredient></app-form-ingredient>
+        <div>
+            <label for="description" class="text-gray-700 dark:text-gray-200">Note</label>
+            <input aria-describedby="description-help"
+                [ngClass]="{ 'ng-invalid ng-dirty border-red-600 focus:border-red-500 focus:ring-red-500':submitted && f['description'].errors }"
+                class="block w-full mt-1  focus:outline-none" type="text" formControlName="description" pInputText
+                [(ngModel)]="model.description" placeholder="Puoi aggiungere qui le">
+            <small id="description-help" class="p-error block"
+                *ngIf="submitted && f['description'].errors && f['description'].errors['required']">Descrizione è
+                obbligatorio</small>
+        </div>
         <div class="flex justify-end mt-6">
             <button type="button"
                 class="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-gray-500 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600"
