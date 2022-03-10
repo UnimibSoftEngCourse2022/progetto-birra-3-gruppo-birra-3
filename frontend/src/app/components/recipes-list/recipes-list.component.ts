@@ -60,6 +60,7 @@ export class RecipesListComponent implements OnInit {
       next: (data) => {
         setTimeout(() => {
           this.recipes = data;
+          // this.recipes.push(mockedRecipe);
           this.spinner.hide();
         }, 700);
       },
@@ -101,3 +102,33 @@ export class RecipesListComponent implements OnInit {
     });
   }
 }
+
+// const mockedRecipe: Recipe = {
+//   _id: 11,
+//   color: 'red',
+//   description: 'pipo pipo',
+//   published: false,
+//   title: 'skarapappa',
+//   ingredients: [
+//     {
+//       name: 'pippo',
+//       quantity: 10,
+//       type: 'malt',
+//     },
+//     {
+//       name: 'pippo2da daòdalò djalòdja òdl jadlòajdlòajdlòa',
+//       quantity: 10,
+//       type: 'malt',
+//     },
+//     {
+//       name: 'pippo2da daòdalò djalòdja òdl jadlòajdlòajdlòa',
+//       quantity: 10,
+//       type: 'malt',
+//     },
+//     {
+//       name: 'pippo2da daòdalò djalòdja òdl jadlòajdlòajdlòa',
+//       quantity: 10,
+//       type: 'malt',
+//     },
+//   ],
+// };

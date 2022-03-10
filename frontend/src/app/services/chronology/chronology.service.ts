@@ -6,15 +6,9 @@ import { environment } from 'src/environments/environment';
 
 const baseUrl = environment.backendApi + 'chronology';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ChronologyService {
-
-  constructor(private http: HttpClient) { }
-
-  brew(id: any): Observable<Recipe> {
-    return this.http.get(`${baseUrl}/${id}`);
-  }
+  constructor(private http: HttpClient) {}
 }
