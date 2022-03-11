@@ -18,63 +18,47 @@ export class BrewTodayService {
     //controlli
     return this.http.get<Recipe[]>(baseUrl);
   }
+}
+export function whatShouldIBrewToday(
+  userRecipes: Recipe[],
+  userIngredients: Ingredient[]
+) {
+  //Tiro fuori solo le ricette ritornabili
+  const filteredRecipes = userRecipes.filter((recipe) => {
+    const recipeIngredients = recipe.ingredients;
 
-  whatShouldIBrewToday(userRecipes: Recipe[], userIngredients: Ingredient[]) {
-    // const ingrQuantityTotal = userIngredients.reduce((prevVal, nextIngr) => {
-    //   return prevVal + nextIngr.quantity!;
-    // }, 0);
-
-    //Tiro fuori solo le ricette ritornabili
-    const filteredRecipes = userRecipes.filter((recipe) => {
-      const recipeIngredients = recipe.ingredients;
-      return canBrewRecipe(recipeIngredients!, userIngredients);
-    });
-
-    // const sortedFilteredArray = filteredRecipes
-    //   .map((recipe) => {
-    //     const recipeIngrQuantityVal = recipe.ingredients?.reduce(
-    //       (prevVal, nextIngr) => {
-    //         return prevVal + nextIngr.quantity!;
-    //       },
-    //       0
-    //     );
-    //     return {
-    //       ...recipe,
-    //       ...{
-    //         remainingIngrAfterBrew: ingrQuantityTotal - recipeIngrQuantityVal!,
-    //       },
-    //     };
-    //   })
-    //   .sort(
-    //     (val1, val2) =>
-    //       val1.remainingIngrAfterBrew - val2.remainingIngrAfterBrew
-    //   );
-
-    const bestCandidate: Recipe = filteredRecipes.reduce(
-      (previousRecipe, currentRecipe) => {
-        const previousRecipeIngrQuantityVal =
-          previousRecipe.ingredients?.reduce((prevVal, nextIngr) => {
-            return prevVal + nextIngr.quantity!;
-          }, 0);
-        const currentRecipeIngrQuantityVal = currentRecipe.ingredients?.reduce(
-          (prevVal, nextIngr) => {
-            return prevVal + nextIngr.quantity!;
-          },
-          0
-        );
-
-        if (currentRecipeIngrQuantityVal! < previousRecipeIngrQuantityVal!) {
-          return currentRecipe;
-        } else {
-          return previousRecipe;
-        }
-      },
-      filteredRecipes[0]
-    );
-
-    // const bestCandidate = sortedFilteredArray[0];
-    return bestCandidate;
+    return canBrewRecipe(recipeIngredients!, userIngredients);
+  });
+  console.log('filtered rec', filteredRecipes);
+  if (filteredRecipes.length === 0) {
+    return null;
   }
+
+  const bestCandidate: Recipe = filteredRecipes.reduce(
+    (previousRecipe, currentRecipe) => {
+      const previousRecipeIngrQuantityVal = previousRecipe.ingredients?.reduce(
+        (prevVal, nextIngr) => {
+          return prevVal + nextIngr.quantity!;
+        },
+        0
+      );
+      const currentRecipeIngrQuantityVal = currentRecipe.ingredients?.reduce(
+        (prevVal, nextIngr) => {
+          return prevVal + nextIngr.quantity!;
+        },
+        0
+      );
+
+      if (currentRecipeIngrQuantityVal! < previousRecipeIngrQuantityVal!) {
+        return currentRecipe;
+      } else {
+        return previousRecipe;
+      }
+    },
+    filteredRecipes[0]
+  );
+
+  return bestCandidate;
 }
 
 //WHAT SHOULD I BREW TODAY -> TIRA FUORI UNA RICETTA
