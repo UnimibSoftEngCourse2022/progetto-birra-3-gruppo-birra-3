@@ -86,11 +86,6 @@ export class FormIngredientComponent implements OnInit {
     } else {
       this.stopLoading();
     }
-    this._ingredients.push({
-      name: 'POPPO',
-      quantity: 1,
-      type: 'malt',
-    });
   }
   //END ON INIT
 
