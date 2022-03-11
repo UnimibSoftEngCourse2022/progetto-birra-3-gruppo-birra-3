@@ -1,10 +1,7 @@
-declare namespace Express {
-    type tokenData = {
-        _id: string;
-        email: string;
-    };
+import {UserSession} from "../app/types/userSessionType";
 
-    export interface Request {
-        token: tokenData;
+declare namespace Express {
+    export interface Request{
+        userSession: UserSession;
     }
 }

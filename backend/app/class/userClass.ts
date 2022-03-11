@@ -1,37 +1,42 @@
-import { prop } from "@typegoose/typegoose";
+import {prop} from "@typegoose/typegoose";
 import IngredientClass from "./ingredientClass";
-import brewingHistoryType from "../types/brewingHistoryType";
 import RecipeClass from "./recipeClass";
+import EquipmentProfileClass from "./equipmentProfileClass";
+import BrewingHistoryClass from "./brewingHistoryClass";
 
 class UserClass {
-  @prop({
-    required: true,
-    lowercase: true,
-    index: true,
-    unique: true,
-  })
-  email!: string;
+    @prop({
+        required: true,
+        lowercase: true,
+        index: true,
+        unique: true,
+    })
+    email!: string;
 
-  @prop({ required: true })
-  firstname!: string;
+    @prop({required: true})
+    firstname!: string;
 
-  @prop({ required: true })
-  surname!: string;
+    @prop({required: true})
+    surname!: string;
 
-  @prop({ required: true })
-  password!: string;
+    @prop({required: true})
+    password!: string;
 
-  @prop({ required: false })
-  token?: string;
+    @prop({required: false})
+    token?: string;
 
-  @prop({ type: () => IngredientClass, default: [] })
-  ingredients?: IngredientClass[];
+    // TODO Vedere caricamento inverso
+    @prop({ref: () => EquipmentProfileClass, default: []})
+    public equipmentProfiles?: EquipmentProfileClass[];
 
-  @prop({ type: () => RecipeClass, default: [] })
-  recipes?: RecipeClass[];
+    @prop({ref: () => IngredientClass, default: []})
+    public ingredients?: IngredientClass[];
 
-  @prop({ default: [] })
-  brewingHistory?: brewingHistoryType[];
+    @prop({ref: () => RecipeClass, default: []})
+    public recipes?: RecipeClass[];
+
+    @prop({ref: () => BrewingHistoryClass, default: []})
+    public brewingHistory?: BrewingHistoryClass[];
 }
 
 export default UserClass;

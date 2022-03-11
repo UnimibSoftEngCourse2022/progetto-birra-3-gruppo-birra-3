@@ -1,6 +1,7 @@
 import { ErrorCode } from "./errorCode";
 
 export class ErrorException extends Error {
+  public name: any = null;
   public status: any = null;
   public message: any = null;
 

@@ -1,6 +1,6 @@
 import { INGREDIENTS_ENUM } from "../enums/ingredientEnums";
 
-export type Ingredient = {
+export type IngredientType = {
   name?: string;
   type?: INGREDIENTS_ENUM;
   quantity: number;
