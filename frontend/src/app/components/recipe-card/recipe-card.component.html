@@ -82,7 +82,7 @@
             </div>
             <app-button-brew></app-button-brew>
             <div>
-                <button (click)="brewRecipe(recipe!)" [disabled]="!canBrewRecipe"
+                <button (click)="brewRecipe(recipe!._id)" [disabled]="!canBrewRecipe"
                     class="px-2 py-1 text-xs font-bold text-white uppercase transition-colors duration-200 transform bg-green-800 rounded dark:bg-green-700 hover:bg-green-700 dark:hover:bg-green-600 focus:outline-none focus:bg-green-700 dark:focus:bg-green-600">
                     Brew
                 </button>

@@ -47,10 +47,6 @@ export class RecipeService {
     return this.http.get<Recipe[]>(RECIPE_ENDPOINTS.FIND_BY_TITLE(title));
   }
 
-  brewBeer(BeerRecipe: Recipe): Observable<any> {
-    return this.http.post(RECIPE_ENDPOINTS.BREW_RECIPE, BeerRecipe);
-  }
-
   getNextBatchList(recipeIngredients: Ingredient[]): Ingredient[] {
     const userCurrentIgrendients: Ingredient[] = [];
 

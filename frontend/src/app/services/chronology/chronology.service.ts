@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { Recipe } from 'src/app/models/recipe/recipe.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import BREW_HISTORY_ENDPOINTS from 'src/app/utils/brewHistoryEndpoints';
 
 const baseUrl = environment.backendApi + 'chronology';
 
@@ -11,4 +12,9 @@ const baseUrl = environment.backendApi + 'chronology';
 })
 export class ChronologyService {
   constructor(private http: HttpClient) {}
+
+  //TODO ZORAN CHECK
+  brewBeer(recipeId: string): Observable<any> {
+    return this.http.post(BREW_HISTORY_ENDPOINTS.BREW_BEER, recipeId);
+  }
 }

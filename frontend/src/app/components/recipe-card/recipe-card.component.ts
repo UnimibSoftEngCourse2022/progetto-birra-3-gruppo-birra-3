@@ -34,12 +34,12 @@ export class RecipeCardComponent implements OnInit {
     });
   }
 
-  brewRecipe(recipe: Recipe): void {
+  brewRecipe(recipeId: string): void {
     //TODO ZORAN -> la implementazione è corretta?
     //Voglio che dopo che faccio brewBeer, mi rifetchi il brewing history
     console.log('test');
-    this.recipeService.brewBeer(recipe).subscribe(() => {
-      //TODO
+    this.chronologyService.brewBeer(recipeId).subscribe(() => {
+      //TODO ZORAN
       //RIFETCHARE USER.
     });
   }
