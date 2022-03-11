@@ -12,11 +12,9 @@
 
     <div *ngIf="isUpdateQuantity">
         <form #updateQuantityForm="ngForm" (ngSubmit)="submitFN(updateQuantityForm.value.updateInput)">
-            <input type="tel" ngModel name="updateInput" placeholder="1" [value]="amount"
+            <input type="number" min="0" step="1" ngModel name="updateInput" placeholder="1" [value]="amount"
                 style="border: 1px solid; margin-top: 10px; margin-bottom: 10px;">
             <button mat-raised-button style="width: 100%;">Salva</button>
         </form>
     </div>
-
-
 </mat-card>
