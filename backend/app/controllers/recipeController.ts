@@ -1,210 +1,210 @@
-import { NextFunction, Request, Response } from "express";
-import { ErrorCode } from "../errors/errorCode";
-import { ErrorException } from "../errors/errorException";
-import { responseHandler } from "../handler/responseHandler";
-import { tokenData } from "../helpers/jwtHelper";
-import { fetchRecipeById } from "../helpers/recipeHelper";
-import { findUserById } from "../helpers/userHelper";
+import {NextFunction, Request, Response} from "express";
+import {ErrorCode} from "../errors/errorCode";
+import {ErrorException} from "../errors/errorException";
+import {responseHandler} from "../handler/responseHandler";
 import RecipeModel from "../models/recipeModel";
-import UserModel from "../models/userModel";
-import brewingHistoryType from "../types/brewingHistoryType";
-import { Ingredient } from "../types/IngredientType";
-import { Recipe } from "../types/recipeType";
-import { IUser } from "../types/userType";
+import {IngredientType} from "../types/ingredientType";
+import {UserSession} from "../types/userSessionType";
+import IngredientModel from "../models/ingredientModel";
+import RecipeClass from "../class/recipeClass";
+import {getParamsForLike} from "../utils/mongoDBUtils";
 
 class RecipeController {
-  static create = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      let body: Recipe = req.body;
+    static create = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            let body: { title: string, description: string, color: string, equipmentId: string, ingredients: IngredientType[] } = req.body;
 
-      // Campi obbligatori tutti
-      if (
-        !body ||
-        !body.title ||
-        !body.color ||
-        !body.description ||
-        !body.ingredients
-      ) {
-        throw new ErrorException(ErrorCode.BadRequest);
-      }
+            // @ts-ignore
+            const userSession: UserSession = req.userSession;
 
-      const recipe = await RecipeModel.create(body);
+            if (!body) {
+                throw new ErrorException(ErrorCode.BadRequest);
+            }
 
-      if (!recipe) {
-        throw new ErrorException(ErrorCode.BadRequest);
-      }
+            // TODO Fixare la validazione dei dati in body
 
-      return responseHandler(res, recipe);
-    } catch (error) {
-      next(error);
-    }
-  };
+            if (!body.ingredients) {
+                body.ingredients = [];
+            }
 
-  static findAll = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      let title: string = req.query.title as string;
+            if (!body.equipmentId) {
+                body.equipmentId = "1";
+            }
 
-      let condition = title
-        ? { title: { $regex: new RegExp(title.trim()), $options: "i" } }
-        : {};
+            const ingredients = await IngredientModel.insertMany(body.ingredients);
 
-      let recipes = await RecipeModel.find(condition);
+            if (!ingredients) {
+                throw new ErrorException(ErrorCode.BadRequest);
+            }
 
-      if (!recipes) {
-        // Errore perché mongo se non rispetta la condizione ritorna un array vuoto
-        throw new ErrorException(ErrorCode.BadRequest);
-      }
+            let recipe: RecipeClass = new RecipeClass();
+            recipe.title = body.title;
+            recipe.color = body.color;
+            recipe.description = body.description;
+            recipe.userId = userSession._id;
 
-      responseHandler(res, recipes);
-    } catch (error) {
-      next(error);
-    }
-  };
+            // Recupero gli id della Equipments appena creati
+            recipe.ingredients = ingredients.map(x => x._id);
 
-  static findOne = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      let id: string = req.params.id as string;
+            const recipeCreated = await RecipeModel.create(recipe);
 
-      const recipe = fetchRecipeById(id);
+            if (!recipeCreated) {
+                throw new ErrorException(ErrorCode.BadRequest);
+            }
 
-      responseHandler(res, recipe);
-    } catch (error) {
-      next(error);
-    }
-  };
-
-  static delete = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      let id: string = req.params.id as string;
-
-      if (!id) {
-        throw new ErrorException(ErrorCode.BadRequest);
-      }
-
-      let recipe = await RecipeModel.findByIdAndRemove(id, {
-        useFindAndModify: false,
-      });
-
-      if (!recipe) {
-        // Errore perché mongo se non rispetta la condizione ritorna un array vuoto
-        throw new ErrorException(ErrorCode.BadRequest);
-      }
-
-      responseHandler(res, recipe);
-    } catch (error) {
-      next(error);
-    }
-  };
-
-  static update = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      let id: string = req.params.id as string;
-
-      if (!id) {
-        throw new ErrorException(ErrorCode.BadRequest);
-      }
-
-      let body: Recipe = req.body;
-
-      // Campi obbligatori tutti
-      if (
-        !body ||
-        !body.title ||
-        !body.color ||
-        !body.description ||
-        !body.ingredients
-      ) {
-        throw new ErrorException(ErrorCode.BadRequest);
-      }
-
-      let recipe = await RecipeModel.findByIdAndUpdate(id, body, {
-        useFindAndModify: false,
-      });
-
-      if (!recipe) {
-        // Errore perché mongo se non rispetta la condizione ritorna un array vuoto
-        throw new ErrorException(ErrorCode.BadRequest);
-      }
-
-      responseHandler(res, recipe);
-    } catch (error) {
-      next(error);
-    }
-  };
-
-  static brewRecipe = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
-    try {
-      // @ts-ignore
-      const tokenData: tokenData = req.token;
-
-      const recipeId: string = req.body;
-
-      const recipe = await fetchRecipeById(recipeId);
-
-      //Recipe Ingreedients
-      const recipeIngredients: Ingredient[] = recipe.ingredients;
-
-      const user: IUser = await findUserById(tokenData._id);
-
-      const brewingHistory: brewingHistoryType = {
-        date: new Date(),
-        recipeName: recipe.title,
-      };
-
-      const canBrew = recipeIngredients.every((recipeIngredient) => {
-        const canIngredientBeUsed = user.ingredients?.findIndex(
-          (userIngredient) => {
-            return (
-              userIngredient.name === recipeIngredient.name &&
-              userIngredient.type === recipeIngredient.type &&
-              userIngredient.quantity >= recipeIngredient.quantity
-            );
-          }
-        );
-        return canIngredientBeUsed !== -1;
-      });
-
-      if (!canBrew) {
-        return res.status(409).send({ error: "Ti mancano ingredienti" });
-      }
-
-      recipeIngredients.forEach(async (ingredient) => {
-        await UserModel.updateOne(
-          { _id: tokenData._id },
-          {
-            $inc: {
-              "ingredients.$[ingredient].quantity": -ingredient.quantity,
-            },
-          },
-          {
-            arrayFilters: [
-              {
-                "ingredient.name": ingredient.name,
-                "ingredient.type": ingredient.type,
-              },
-            ],
-          }
-        );
-      });
-
-      await UserModel.updateOne(
-        { _id: tokenData._id },
-        {
-          $push: {
-            brewingHistory: brewingHistory,
-          },
+            responseHandler(res, recipe);
+        } catch (error) {
+            next(error);
         }
-      );
+    };
 
-      return responseHandler(res, brewingHistory);
-    } catch (error) {
-      next(error);
-    }
-  };
+    static findAll = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const query: any = req.query as any;
+            //@ts-ignore
+            const userSession: UserSession = req.userSession;
+
+            let _params = {
+                ...{
+                    userId: userSession._id
+                },
+                ...getParamsForLike(query)
+            };
+
+            const result = await RecipeModel.find(_params).populate("ingredients").exec();
+
+            if (!result) {
+                throw new ErrorException(ErrorCode.BadRequest);
+            }
+
+            responseHandler(res, result);
+        } catch (error) {
+            next(error);
+        }
+    };
+
+    static findOne = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const id: string = req.params.id;
+
+            if (!id) {
+                throw new ErrorException(ErrorCode.BadRequest);
+            }
+
+            const _params = {
+                //@ts-ignore
+                userId: req.userSession._id,
+                _id: id
+            };
+
+            const result = await RecipeModel.findOne(_params).populate("ingredients");
+
+            if (!result) {
+                throw new ErrorException(ErrorCode.BadRequest);
+            }
+
+            responseHandler(res, result);
+        } catch (error) {
+            next(error);
+        }
+    };
+
+    static delete = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const id: string = req.params.id;
+
+            if (!id) {
+                throw new ErrorException(ErrorCode.BadRequest);
+            }
+
+            const _params = {
+                //@ts-ignore
+                userId: req.userSession._id,
+                _id: id
+            };
+
+            const result = await RecipeModel.findOneAndDelete(_params, {
+                useFindAndModify: false,
+            });
+
+            if (!result) {
+                throw new ErrorException(ErrorCode.BadRequest);
+            }
+
+            responseHandler(res, result);
+        } catch (error) {
+            next(error);
+        }
+    };
+
+    static update = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const id: string = req.params.id;
+
+            if (!id) {
+                throw new ErrorException(ErrorCode.BadRequest);
+            }
+
+            const body: any = req.body;
+
+            // Campi obbligatori tutti
+            if (!body || !body.title || !body.color || !body.description) {
+                throw new ErrorException(ErrorCode.BadRequest);
+            }
+
+            const _params = {
+                //@ts-ignore
+                userId: req.userSession._id,
+                _id: id
+            };
+
+            let recipe = await RecipeModel.findOneAndUpdate(_params, body, {
+                useFindAndModify: false,
+            });
+
+            if (!recipe) {
+                throw new ErrorException(ErrorCode.BadRequest);
+            }
+
+            responseHandler(res, recipe);
+        } catch (error) {
+            next(error);
+        }
+    };
+
+    static brewRecipe = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) => {
+        try {
+            // @ts-ignore
+            const userSession: UserSession = req.userSession;
+
+            const id: string = req.params.id;
+
+            const _params = {
+                //@ts-ignore
+                userId: req.userSession._id,
+                _id: id
+            };
+
+            let recipe = await RecipeModel.findOne(_params).populate("ingredients");
+
+            if (!recipe) {
+                throw new ErrorException(ErrorCode.BadRequest);
+            }
+
+            /**
+             * TODO Controllo se posso produrre la birra, dagli ingredienti dell'utente
+             * Se può allora salvo in historyBrew il ref della ricetta
+             * */
+
+            return responseHandler(res, {});
+        } catch (error) {
+            next(error);
+        }
+    };
 }
 
 export default RecipeController;
