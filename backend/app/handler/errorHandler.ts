@@ -10,7 +10,7 @@ export const errorHandler = (
   next: NextFunction
 ) => {
   if (err instanceof ErrorException) {
-    res.status(err.status).send(err);
+    res.status(err.status).json(err);
   } else {
     // TODO Aggiungere logger Email all'admin per gestire le eccezzioni mancanti
     res

@@ -1,89 +1,142 @@
-import { NextFunction, Response, Request } from "express";
-import { responseHandler } from "../handler/responseHandler";
-import { tokenData } from "../helpers/jwtHelper";
+import {NextFunction, Response, Request} from "express";
+import {responseHandler} from "../handler/responseHandler";
 import UserModel from "../models/userModel";
-import { Ingredient } from "../types/IngredientType";
+import {IngredientType} from "../types/ingredientType";
+import {UserSession} from "../types/userSessionType";
+import {ErrorException} from "../errors/errorException";
+import {ErrorCode} from "../errors/errorCode";
+import IngredientModel from "../models/ingredientModel";
+import RecipeModel from "../models/recipeModel";
 
 class IngredientController {
-  //ingredients
+    static update = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const id: string = req.params.id;
 
-  static updateIngredientQuantity = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
-    try {
-      const tokenData: tokenData = req.token;
-      const ingredient: Ingredient = req.body;
+            if (!id) {
+                throw new ErrorException(ErrorCode.BadRequest);
+            }
 
-      await UserModel.updateOne(
-        { _id: tokenData._id },
-        { $inc: { "ingredients.$[ingredient].quantity": ingredient.quantity } },
-        {
-          arrayFilters: [
-            {
-              "ingredient.name": ingredient.name,
-              "ingredient.type": ingredient.type,
-            },
-          ],
+            const ingredient: IngredientType = req.body;
+
+            // Campi obbligatori tutti
+            if (!ingredient || !ingredient.name || !ingredient.type || !ingredient.quantity) {
+                throw new ErrorException(ErrorCode.BadRequest);
+            }
+
+            const _params = {
+                //@ts-ignore
+                userId: req.userSession._id,
+                _id: id
+            };
+
+            let result = await IngredientModel.findOneAndUpdate(_params, ingredient, {
+                useFindAndModify: false,
+            });
+
+            if (!result) {
+                throw new ErrorException(ErrorCode.BadRequest);
+            }
+
+            responseHandler(res, result);
+        } catch (error) {
+            next(error);
         }
-      );
+    };
 
-      responseHandler(res, ingredient);
-    } catch (err) {
-      next(err);
-    }
-  };
+    static delete = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const id: string = req.params.id;
 
-  static addIngredient = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
-    const tokenData: tokenData = req.token;
-    const ingredient: Ingredient = req.body;
+            if (!id) {
+                throw new ErrorException(ErrorCode.BadRequest);
+            }
 
-    try {
-      const updateIngredient = await UserModel.updateOne(
-        {
-          _id: tokenData._id,
-          "ingredients.name": { $ne: ingredient.name },
-        },
-        {
-          $push: {
-            ingredients: ingredient,
-          },
+            const _params = {
+                //@ts-ignore
+                userId: req.userSession._id,
+                _id: id
+            };
+
+            const result = await IngredientModel.findOneAndDelete(_params, {
+                useFindAndModify: false,
+            });
+
+            if (!result) {
+                throw new ErrorException(ErrorCode.BadRequest);
+            }
+
+            responseHandler(res, result);
+        } catch (error) {
+            next(error);
         }
-      );
-      if (updateIngredient.modifiedCount !== 0) {
-        return responseHandler(res, ingredient);
-      }
-    } catch (err) {
-      next(err);
-    }
-    return responseHandler(res, {});
-  };
+    };
 
-  static removeIngredient = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
-    const tokenData: tokenData = req.token;
-    const ingredient: Ingredient = req.body;
+    static addIngredientToUser = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const ingredient: IngredientType = req.body;
+            // @ts-ignore
+            const userSession: UserSession = req.userSession;
 
-    try {
-      const removedIngredient = await UserModel.updateOne(
-        {
-          id: tokenData._id,
-        },
-        { $pull: { ingredients: ingredient } }
-      );
-      responseHandler(res, removedIngredient);
-    } catch (error) {
-      next(error);
-    }
-  };
+            if (!ingredient || !ingredient.name || !ingredient.type || !ingredient.quantity) {
+                throw new ErrorException(ErrorCode.BadRequest);
+            }
+
+            const newIngredient = await IngredientModel.create(ingredient);
+
+            try {
+                await UserModel.updateOne(
+                    {
+                        _id: userSession._id,
+                    },
+                    {
+                        $push: {
+                            ingredients: newIngredient._id,
+                        },
+                    }
+                );
+
+                return responseHandler(res, newIngredient);
+            } catch (err) {
+                next(err);
+            }
+        } catch (error) {
+            next(error);
+        }
+    };
+
+    static addIngredientToRecipe = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const body: { recipeId: string, ingredient: IngredientType } = req.body;
+            // @ts-ignore
+            const userSession: UserSession = req.userSession;
+
+            if (!body || !body.recipeId || !body.ingredient.name || !body.ingredient.type || !body.ingredient.quantity) {
+                throw new ErrorException(ErrorCode.BadRequest);
+            }
+
+            const newIngredient = await IngredientModel.create(body.ingredient);
+
+            try {
+                await RecipeModel.updateOne(
+                    {
+                        _id: userSession._id,
+                    },
+                    {
+                        $push: {
+                            ingredients: newIngredient._id,
+                        },
+                    }
+                );
+
+                return responseHandler(res, newIngredient);
+            } catch (err) {
+                next(err);
+            }
+        } catch (error) {
+            next(error);
+        }
+    };
 }
 
 export default IngredientController;

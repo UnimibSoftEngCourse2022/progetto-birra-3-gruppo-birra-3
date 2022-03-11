@@ -1,4 +1,5 @@
 export class Equipment {
-    _id?: any;
-    title?: string;
+    _id?: string;
+    name?: string;
+    quantity? : number;
 }

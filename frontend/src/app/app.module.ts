@@ -44,6 +44,8 @@ import { DropDownEquipmentComponent } from './components/drop-down-equipment/dro
 import { ChronologyComponent } from './components/chronology/chronology.component';
 import { RecipeCardComponent } from './components/recipe-card/recipe-card.component';
 import {InputNumberModule} from 'primeng/inputnumber';
+import { EquipmentCardComponent } from './components/equipment-card/equipment-card.component';
+import { EquipmentListComponent } from './components/equipments-list/equipment-list.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +63,9 @@ import {InputNumberModule} from 'primeng/inputnumber';
     DropDownIngredientComponent,
     DropDownEquipmentComponent,
     ChronologyComponent,
-    RecipeCardComponent
+    RecipeCardComponent,
+    EquipmentCardComponent,
+    EquipmentListComponent
   ],
   imports: [
     InputNumberModule,

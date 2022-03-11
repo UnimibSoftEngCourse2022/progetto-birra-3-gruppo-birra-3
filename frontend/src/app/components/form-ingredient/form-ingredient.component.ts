@@ -164,7 +164,13 @@ export class FormIngredientComponent implements OnInit {
     }
   }
 
+  //TODO
   addIngredient(): void {
+
+  }
+
+  //TODO
+  addIngredientList(): void {
 
   }
 
