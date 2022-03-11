@@ -1,6 +1,6 @@
-import EquipmentController from "../controllers/equipmentController";
 import { Router } from "express";
 import { authMiddleware } from "../middleware/authMiddleware";
+import EquipmentController from "../controllers/equipmentController";
 
 const router = Router();
 

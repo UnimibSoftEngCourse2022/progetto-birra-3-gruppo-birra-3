@@ -4,7 +4,7 @@ import dbModel from "./app/models/dbModel";
 import {config} from "dotenv";
 import {errorHandler} from "./app/handler/errorHandler";
 import recipeRoutes from "./app/routes/recipeRoutes";
-import equipmentRoutes from "./app/routes/equipmentRoutes";
+import equipmentsRoutes from "./app/routes/equipmentsRoutes";
 import authRoutes from "./app/routes/authRoutes";
 import ingredientsRoutes from "./app/routes/ingredientsRoutes";
 import brewingHistoryRoutes from "./app/routes/brewingHistoryRoutes";
@@ -48,7 +48,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/recipes", recipeRoutes);
-app.use("/api/equipment", equipmentRoutes);
+app.use("/api/equipment", equipmentsRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/ingredient", ingredientsRoutes);
 app.use("/api/brew-history", brewingHistoryRoutes);
