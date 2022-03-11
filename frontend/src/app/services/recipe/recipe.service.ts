@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Ingredient } from 'src/app/models/ingredient/ingredient.model';
+import RECIPE_ENDPOINTS from 'src/app/utils/recipeEndpoints';
 import { environment } from '../../../environments/environment';
 import { Recipe } from '../../models/recipe/recipe.model';
 import {
@@ -11,7 +12,7 @@ import {
   getMCU,
 } from './helper/beerColorHelper';
 
-const baseUrl = environment.backendApi + 'recipes';
+const baseUrl = RECIPE_ENDPOINTS.BASE_URL;
 @Injectable({
   providedIn: 'root',
 })
@@ -23,7 +24,7 @@ export class RecipeService {
   }
 
   get(id: any): Observable<Recipe> {
-    return this.http.get(`${baseUrl}/${id}`);
+    return this.http.get(RECIPE_ENDPOINTS.BASE_URL_ID_PARAM(id));
   }
 
   create(data: any): Observable<any> {
@@ -31,11 +32,11 @@ export class RecipeService {
   }
 
   update(id: any, data: any): Observable<any> {
-    return this.http.put(`${baseUrl}/${id}`, data);
+    return this.http.put(RECIPE_ENDPOINTS.BASE_URL_ID_PARAM(id), data);
   }
 
   delete(id: any): Observable<any> {
-    return this.http.delete(`${baseUrl}/${id}`);
+    return this.http.delete(RECIPE_ENDPOINTS.BASE_URL_ID_PARAM(id));
   }
 
   deleteAll(): Observable<any> {
@@ -43,11 +44,7 @@ export class RecipeService {
   }
 
   findByTitle(title: any): Observable<Recipe[]> {
-    return this.http.get<Recipe[]>(`${baseUrl}?title=${title}`);
-  }
-
-  brewBeer(id: any): Observable<Recipe> {
-    return this.http.get(`${baseUrl}/${id}`);
+    return this.http.get<Recipe[]>(RECIPE_ENDPOINTS.FIND_BY_TITLE(title));
   }
 
   getNextBatchList(recipeIngredients: Ingredient[]): Ingredient[] {

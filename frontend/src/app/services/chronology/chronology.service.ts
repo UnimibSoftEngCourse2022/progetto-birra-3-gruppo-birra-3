@@ -3,18 +3,18 @@ import { Observable } from 'rxjs';
 import { Recipe } from 'src/app/models/recipe/recipe.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import BREW_HISTORY_ENDPOINTS from 'src/app/utils/brewHistoryEndpoints';
 
 const baseUrl = environment.backendApi + 'chronology';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ChronologyService {
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
-
-  brew(id: any): Observable<Recipe> {
-    return this.http.get(`${baseUrl}/${id}`);
+  //TODO ZORAN CHECK
+  brewBeer(recipeId: string): Observable<any> {
+    return this.http.post(BREW_HISTORY_ENDPOINTS.BREW_BEER, recipeId);
   }
 }
