@@ -1,6 +1,6 @@
-import { environment } from 'src/environments/environment';
+import { brewHistoryBaseEndpoint } from './baseEndpoints';
 
-const historyEndpoint = environment.backendApi + 'brew-history';
+const historyEndpoint = brewHistoryBaseEndpoint();
 
 const BREW_HISTORY_ENDPOINTS = {
   BASE_URL: historyEndpoint,

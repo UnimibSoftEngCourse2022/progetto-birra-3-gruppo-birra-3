@@ -1,6 +1,7 @@
 import { environment } from 'src/environments/environment';
+import { recipeBaseEndpoint } from './baseEndpoints';
 
-const recipeEndpoint = environment.backendApi + 'recipes';
+const recipeEndpoint = recipeBaseEndpoint();
 
 const RECIPE_ENDPOINTS = {
   BASE_URL: recipeEndpoint,
