@@ -1,33 +1,13 @@
-<div class="flex w-screen max-w-md mx-auto overflow-hidden bg-white rounded-lg border-2 dark:bg-gray-800">
+<div class="flex w-screen max-w-md mx-auto overflow-hidden bg-white rounded-lg border-2 dark:bg-gray-800 ">
     <div class="w-2/3 p-4 md:p-4">
         <!-- TODO Manca il titolo in equipment modficare il modello in base a come gestiamo il DB -->
-        <h1 class="text-2xl font-bold text-gray-800 dark:text-white">{{equipment}}</h1>
-        <div class="flex mt-2 item-center">
-            <svg class="w-5 h-5 text-gray-700 fill-current dark:text-gray-300" viewBox="0 0 24 24">
-                <path
-                    d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z" />
-            </svg>
 
-            <svg class="w-5 h-5 text-gray-700 fill-current dark:text-gray-300" viewBox="0 0 24 24">
-                <path
-                    d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z" />
-            </svg>
+        <h1 class="text-xl font-bold text-gray-800 dark:text-white">Nome</h1>
 
-            <svg class="w-5 h-5 text-gray-700 fill-current dark:text-gray-300" viewBox="0 0 24 24">
-                <path
-                    d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z" />
-            </svg>
+        <p class="text-sm ">{{equipment?.name}}</p>
 
-            <svg class="w-5 h-5 text-gray-500 fill-current" viewBox="0 0 24 24">
-                <path
-                    d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z" />
-            </svg>
-
-            <svg class="w-5 h-5 text-gray-500 fill-current" viewBox="0 0 24 24">
-                <path
-                    d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z" />
-            </svg>
-        </div>
+        <h3 class="text-xl font-bold text-gray-800 dark:text-white">Quantità</h3>
+        <p class="text-sm ">{{equipment?.quantity + '/GL'}}</p>
 
         <div class="flex justify-end mt-3 item-center">
             <div class="mr-1">

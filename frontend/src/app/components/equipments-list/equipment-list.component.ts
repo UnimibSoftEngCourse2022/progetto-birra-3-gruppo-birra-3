@@ -9,7 +9,7 @@ import { EquipmentService } from 'src/app/services/equipment/equipment.service';
 @Component({
   selector: 'app-equipment-list',
   templateUrl: './equipment-list.component.html',
-  styleUrls: ['./equipment-list.component.css']
+  styleUrls: ['./equipment-list.component.css'],
 })
 export class EquipmentListComponent implements OnInit {
   faSearch = faSearch;
@@ -23,7 +23,7 @@ export class EquipmentListComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private equipmentService: EquipmentService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.spinner.show();
@@ -34,14 +34,14 @@ export class EquipmentListComponent implements OnInit {
         icon: 'pi pi-pencil',
         command: () => {
           this.router.navigate(['/recipes/add']);
-        }
+        },
       },
       {
         icon: 'pi pi-refresh',
         command: () => {
-          alert("Reload");
-        }
-      }
+          alert('Reload');
+        },
+      },
     ];
   }
   addEquipments() {
@@ -49,19 +49,19 @@ export class EquipmentListComponent implements OnInit {
   }
 
   retrieveEquipments(): void {
-    this.equipmentService.getAll()
-      .subscribe({
-        next: (data) => {
-          setTimeout(() => {
-            this.equipments = data;
-            this.spinner.hide();
-          }, 700);
-        },
-        error: (e) => {
-          console.error(e);
-          this.stopLoading();
-        }
-      });
+    this.equipmentService.getAll().subscribe({
+      next: (data) => {
+        setTimeout(() => {
+          this.equipments = data;
+
+          this.spinner.hide();
+        }, 700);
+      },
+      error: (e) => {
+        console.error(e);
+        this.stopLoading();
+      },
+    });
   }
 
   stopLoading() {
@@ -72,13 +72,11 @@ export class EquipmentListComponent implements OnInit {
   searchTitleEquipment(): void {
     this.currentEquipment = {};
     this.currentIndex = -1;
-    this.equipmentService.findByTitle(this.title)
-      .subscribe({
-        next: (data) => {
-          this.equipments = data;
-        },
-        error: (e) => console.error(e)
-      });
+    this.equipmentService.findByTitle(this.title).subscribe({
+      next: (data) => {
+        this.equipments = data;
+      },
+      error: (e) => console.error(e),
+    });
   }
-
 }
