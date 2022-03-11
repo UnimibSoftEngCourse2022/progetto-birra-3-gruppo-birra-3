@@ -1,10 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { MessageService } from 'primeng/api';
-import { Ingredient } from 'src/app/models/ingredient/ingredient.model';
-import { IngredientService } from 'src/app/services/ingredient/ingredient.service';
+import {Component, Input, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {NgxSpinnerService} from 'ngx-spinner';
+import {MessageService} from 'primeng/api';
+import {Ingredient} from 'src/app/models/ingredient/ingredient.model';
+import {IngredientService} from 'src/app/services/ingredient/ingredient.service';
+import {INGREDIENTS_ENUM} from "../../enum/ingredients";
 
 @Component({
   selector: 'app-form-ingredient',
@@ -22,11 +23,36 @@ export class FormIngredientComponent implements OnInit {
   }
 
   public model: Ingredient;
+  loadData: boolean = true;
+
+  private _ingredients: Ingredient[];
+
+  public selectedType: any;
+
+  public types: any = [
+    {
+      name: INGREDIENTS_ENUM.MALT
+    },
+    {
+      name: INGREDIENTS_ENUM.HOP
+    },
+    {
+      name: INGREDIENTS_ENUM.SUGAR
+    },
+    {
+      name: INGREDIENTS_ENUM.ADDITIVE
+    },
+    {
+      name: INGREDIENTS_ENUM.YEAST
+    }
+  ];
 
   submitted = false;
 
   constructor(private spinner: NgxSpinnerService, private route: ActivatedRoute, private _formBuilder: FormBuilder, private ingredientService: IngredientService, private messageService: MessageService, private router: Router) {
     this.model = new Ingredient();
+    this._ingredients = []
+    this.selectedType = "";
   }
 
   ngOnInit() {
@@ -40,7 +66,6 @@ export class FormIngredientComponent implements OnInit {
       this.spinner.show();
     }
 
- 
     this.submitted = false;
     this.model.name = "";
 
@@ -53,6 +78,10 @@ export class FormIngredientComponent implements OnInit {
     } else {
       this.stopLoading();
     }
+  }
+
+  public addIngredients() {
+    // TODO Add New Form
   }
 
   stopLoading() {
@@ -102,7 +131,7 @@ export class FormIngredientComponent implements OnInit {
           next: (res) => {
             this.submitted = true;
             this.goBack();
-            this.messageService.add({ severity: 'success', summary: 'Service Message', detail: 'Via MessageService' });
+            this.messageService.add({severity: 'success', summary: 'Service Message', detail: 'Via MessageService'});
           },
           error: (e) => console.error(e)
         });
@@ -112,7 +141,7 @@ export class FormIngredientComponent implements OnInit {
           next: (res) => {
             this.submitted = true;
             this.goBack();
-            this.messageService.add({ severity: 'success', summary: 'Service Message', detail: 'Via MessageService' });
+            this.messageService.add({severity: 'success', summary: 'Service Message', detail: 'Via MessageService'});
           },
           error: (e) => console.error(e)
         });
@@ -135,5 +164,25 @@ export class FormIngredientComponent implements OnInit {
     }
   }
 
+  //TODO
+  addIngredient(): void {
 
+  }
+
+  //TODO
+  addIngredientList(): void {
+
+  }
+
+  public setSelected(event: any) {
+    console.log(event);
+  }
+
+  public onChangeType(){
+    this.loadData = true;
+
+    setTimeout(() =>{
+      this.loadData = false;
+    }, 250);
+  }
 }

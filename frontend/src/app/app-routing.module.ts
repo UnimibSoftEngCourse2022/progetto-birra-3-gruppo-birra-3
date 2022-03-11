@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './auth/helpers';
 import { BrewPageComponent } from './components/brew-page/brew-page.component';
+import { ChronologyComponent } from './components/chronology/chronology.component';
+import { EquipmentListComponent } from './components/equipments-list/equipment-list.component';
 import { Error404Component } from './components/error404/error404.component';
 import { FormEquipmentComponent } from './components/form-equipment/form-equipment.component';
 import { FormIngredientComponent } from './components/form-ingredient/form-ingredient.component';
@@ -29,7 +31,7 @@ const routes: Routes = [
   },
   {
     path: 'equipments', children: [
-      { path: '', canActivate: [AuthGuard], component: RecipesListComponent },
+      { path: '', canActivate: [AuthGuard], component: EquipmentListComponent },
       { path: 'add', canActivate: [AuthGuard], component: FormEquipmentComponent },
       {
         path: ':id',
@@ -59,8 +61,7 @@ const routes: Routes = [
       { path: '', canActivate: [AuthGuard], component: BrewPageComponent }, 
     ] 
   },
-
-
+  { path: 'chronology', component: ChronologyComponent},
   { path: '**', component: Error404Component },
 ];
 @NgModule({

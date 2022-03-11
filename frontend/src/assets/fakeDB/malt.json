@@ -1,153 +1,152 @@
 [
-    {
-      "name": "Wheat Malt",
-      "type": "malt",
-      "quantity": null
-    },
-    {
-      "name": "Rye Malt",
-      "type": "malt",
-      "quantity": null
-    },
-    {
-      "name": "Vienna Malt",
-      "type": "malt",
-      "quantity": null
-    },
-    {
-        "name": "Munich Malts",
-        "type": "malt",
-        "quantity": null
-    }, 
-    {
-        "name": "Carapils Dextrin Malt",
-        "type": "malt",
-        "quantity": null
-    },
-    {
-        "name": "Victory Malt",
-        "type": "malt",
-        "quantity": null
-    },
-    {
-        "name": "Special Roast",
-        "type": "malt",
-        "quantity": null
-      },
-      {
-        "name": "Chocolate Malt",
-        "type": "malt",
-        "quantity": null
-      },
-      {
-        "name": "Roasted Barley",
-        "type": "malt",
-        "quantity": null
-      },
-      {
-          "name": "Black Barley",
-          "type": "malt",
-          "quantity": null
-      }, 
-      {
-          "name": "Black Patnetin",
-          "type": "malt",
-          "quantity": null
-      },
-      {
-          "name": "German Pale Malt",
-          "type": "malt",
-          "quantity": null
-      },
-      {
-        "name": "Weizen",
-        "type": "malt",
-        "quantity": null
-      },
-      {
-          "name": "Munchener",
-          "type": "malt",
-          "quantity": null
-      }, 
-      {
-          "name": "Crystal",
-          "type": "malt",
-          "quantity": null
-      },
-      {
-          "name": "Carafa Special",
-          "type": "malt",
-          "quantity": null
-      },
-      {
-        "name": "English Pale Malt",
-        "type": "malt",
-        "quantity": null
-      },
-      {
-          "name": "English Crystal",
-          "type": "malt",
-          "quantity": null
-      }, 
-      {
-          "name": "Brown Malt",
-          "type": "malt",
-          "quantity": null
-      },
-      {
-          "name": "Amber Malt",
-          "type": "malt",
-          "quantity": null
-      },
-      {
-        "name": "Belgian Pilsner",
-        "type": "malt",
-        "quantity": null
-      },
-      {
-          "name": "Aromatic",
-          "type": "malt",
-          "quantity": null
-      }, 
-      {
-          "name": "Belgian Special",
-          "type": "malt",
-          "quantity": null
-      },
-      {
-          "name": "Biscuit Malt",
-          "type": "malt",
-          "quantity": null
-      },
-      {
-        "name": "CaraVienne",
-        "type": "malt",
-        "quantity": null
-      },
-      {
-          "name": "CaraMunich",
-          "type": "malt",
-          "quantity": null
-      }, 
-      {
-          "name": "Rauchmalt",
-          "type": "malt",
-          "quantity": null
-      },
-      {
-          "name": "Honey Malt:",
-          "type": "malt",
-          "quantity": null
-      },
-      {
-        "name": "Peated Malt",
-        "type": "malt",
-        "quantity": null
-    },
-    {
-        "name": "Raw Wheat",
-        "type": "malt",
-        "quantity": null
-    }
-     
-  ]
+  {
+    "name": "Wheat Malt",
+    "type": "malt",
+    "quantity": null
+  },
+  {
+    "name": "Rye Malt",
+    "type": "malt",
+    "quantity": null
+  },
+  {
+    "name": "Vienna Malt",
+    "type": "malt",
+    "quantity": null
+  },
+  {
+    "name": "Munich Malts",
+    "type": "malt",
+    "quantity": null
+  },
+  {
+    "name": "Carapils Dextrin Malt",
+    "type": "malt",
+    "quantity": null
+  },
+  {
+    "name": "Victory Malt",
+    "type": "malt",
+    "quantity": null
+  },
+  {
+    "name": "Special Roast",
+    "type": "malt",
+    "quantity": null
+  },
+  {
+    "name": "Chocolate Malt",
+    "type": "malt",
+    "quantity": null
+  },
+  {
+    "name": "Roasted Barley",
+    "type": "malt",
+    "quantity": null
+  },
+  {
+    "name": "Black Barley",
+    "type": "malt",
+    "quantity": null
+  },
+  {
+    "name": "Black Patnetin",
+    "type": "malt",
+    "quantity": null
+  },
+  {
+    "name": "German Pale Malt",
+    "type": "malt",
+    "quantity": null
+  },
+  {
+    "name": "Weizen",
+    "type": "malt",
+    "quantity": null
+  },
+  {
+    "name": "Munchener",
+    "type": "malt",
+    "quantity": null
+  },
+  {
+    "name": "Crystal",
+    "type": "malt",
+    "quantity": null
+  },
+  {
+    "name": "Carafa Special",
+    "type": "malt",
+    "quantity": null
+  },
+  {
+    "name": "English Pale Malt",
+    "type": "malt",
+    "quantity": null
+  },
+  {
+    "name": "English Crystal",
+    "type": "malt",
+    "quantity": null
+  },
+  {
+    "name": "Brown Malt",
+    "type": "malt",
+    "quantity": null
+  },
+  {
+    "name": "Amber Malt",
+    "type": "malt",
+    "quantity": null
+  },
+  {
+    "name": "Belgian Pilsner",
+    "type": "malt",
+    "quantity": null
+  },
+  {
+    "name": "Aromatic",
+    "type": "malt",
+    "quantity": null
+  },
+  {
+    "name": "Belgian Special",
+    "type": "malt",
+    "quantity": null
+  },
+  {
+    "name": "Biscuit Malt",
+    "type": "malt",
+    "quantity": null
+  },
+  {
+    "name": "Cara Vienna",
+    "type": "malt",
+    "quantity": null
+  },
+  {
+    "name": "Cara Munich",
+    "type": "malt",
+    "quantity": null
+  },
+  {
+    "name": "Rauchmalz",
+    "type": "malt",
+    "quantity": null
+  },
+  {
+    "name": "Honey Malt",
+    "type": "malt",
+    "quantity": null
+  },
+  {
+    "name": "Peated Malt",
+    "type": "malt",
+    "quantity": null
+  },
+  {
+    "name": "Raw Wheat",
+    "type": "malt",
+    "quantity": null
+  }
+]

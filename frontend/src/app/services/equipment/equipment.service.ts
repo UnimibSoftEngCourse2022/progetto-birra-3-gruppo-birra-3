@@ -35,4 +35,8 @@ export class EquipmentService {
   findByTitle(title: any): Observable<Equipment[]> {
     return this.http.get<Equipment[]>(`${baseUrl}?title=${title}`);
   }
+  
+  getAllEquipments(): Observable<Equipment[]> {
+    return this.http.get<Equipment[]>('../../../assets/fakeDB/equipment.json');
+  }
 }

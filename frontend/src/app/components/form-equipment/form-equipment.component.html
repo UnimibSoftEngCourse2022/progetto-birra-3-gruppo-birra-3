@@ -10,23 +10,55 @@
                 <input aria-describedby="title-help"
                     [ngClass]="{ 'ng-invalid ng-dirty border-red-600 focus:border-red-500 focus:ring-red-500':submitted && f['title'].errors }"
                     class="block w-full mt-1 border focus:outline-none" type="text" formControlName="title" pInputText
-                    [(ngModel)]="model.title" placeholder="Lager, Pils, Pumpkin Ale, Marzen, Tropical Ipa...">
+                    [(ngModel)]="model.name" placeholder="Inserisci un nickname per il tuo equipaggiamento">
                 <small id="title-help" class="p-error block"
                     *ngIf="submitted && f['title'].errors && f['title'].errors['required']">Titolo è
-                    obbligatorio</small>
-            </div>
-
+                    obbligatorio
+                </small>
+            </div> 
         </div>
 
+        <div class="grid grid-cols-2 gap-6 mt-4 sm:grid-cols-2">
+            <div>
+                <label class="text-gray-700 dark:text-gray-200">Nome</label>
+                <app-drop-down-equipment (selectedEquipment)="getEquipment"></app-drop-down-equipment>
+            </div>
+            <!-- TODO ALLINEARE IL FORM E METTERE LA LABLE ON TOP-->
+            <div class="block w-full">
+                <div class="field col-12 md:col-2">
+                    <label class="text-gray-700 dark:text-gray-200">Quantità</label>
+                    <p-inputNumber mode="decimal" [showButtons]="false"  [min]="0"
+                        [max]="100">
+                    </p-inputNumber>
+                </div>
+            </div> 
+        </div>
         <div class="flex justify-end mt-6">
-            <button type="button"
-                class="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-gray-500 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600"
-                (click)="goBack()">Annulla</button>
-            <button type="button" *ngIf="editMode"
-                class="ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-red-500 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600"
-                (click)="deleteEquipment()">Elimina</button>
-            <button type="submit"
-                class="ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-green-700 rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600">Salva</button>
+            <button (click)="addEquipment()"
+            class="ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-green-700 rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600">
+            Aggiungi
+            </button>
         </div>
     </form>
+</section>
+<!-- TODO Centrare il titolo e sistemare il layout-->
+<section class="max-w-4xl p-2 mx-auto bg-white rounded-md border-2 dark:bg-gray-800 mt-10">
+    Salva il tuo equipaggiamento
+    <div class="flex justify-end mt-6">
+        <button type="button"
+                class="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-gray-500 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600"
+                (click)="goBack()">Annulla
+        </button>
+        <button (click)="addEquipmentList()"
+        class="ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-green-700 rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600">
+        Aggiungi
+        </button>
+        <button type="button" *ngIf="editMode"
+                class="ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-red-500 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600"
+                (click)="deleteEquipment()">Elimina
+        </button>
+    </div>
+</section>
+<section class="max-w-4xl p-6 mx-auto bg-white rounded-md border-2 dark:bg-gray-800 mt-10">
+    Lista degli equipaggiamenti
 </section>

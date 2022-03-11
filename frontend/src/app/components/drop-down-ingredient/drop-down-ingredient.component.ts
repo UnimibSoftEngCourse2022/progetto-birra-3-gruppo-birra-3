@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { DlistIngredientService } from 'src/app/services/dlist/dlist-ingredient.service';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Ingredient} from "../../models/ingredient/ingredient.model";
+import {IngredientService} from "../../services/ingredient/ingredient.service";
 
 @Component({
   selector: 'app-drop-down-ingredient',
@@ -7,35 +8,29 @@ import { DlistIngredientService } from 'src/app/services/dlist/dlist-ingredient.
   styleUrls: ['./drop-down-ingredient.component.css']
 })
 export class DropDownIngredientComponent implements OnInit {
-  malt : any;
-  hop : any;
-  yeast : any;
-  additive : any;
-  sugar : any;
-  
-  constructor(private dataService : DlistIngredientService) { }
+  @Input() type: string = "";
+  public data: Ingredient[] = [];
+  public selected: Ingredient;
+
+  @Output() selectedIngredient = new EventEmitter<Ingredient>();
+
+  constructor(private ingredientService: IngredientService) {
+    this.selected = new Ingredient();
+  }
 
   ngOnInit(): void {
-    this.showAllMalt();
-    this.showAllHop();
-    this.showAllAdditive();
-    this.showAllYeast();
-    this.showAllSugar();
+    this.loadData();
   }
 
-  showAllMalt(){
-    this.malt = this.dataService.getAllMatl();
+  loadData() {
+    if (this.type) {
+      this.ingredientService.getAllByType(this.type).subscribe((data: Ingredient[]) => {
+        this.data = data;
+      });
+    }
   }
-  showAllHop(){
-    this.hop= this.dataService.getAllHop();
-  }
-  showAllYeast(){
-    this.yeast = this.dataService.getAllYeast();
-  }
-  showAllAdditive(){
-    this.additive = this.dataService.getAllAdditive();
-  }
-  showAllSugar(){
-    this.sugar = this.dataService.getAllSugar();
+
+  public emitData() {
+    this.selectedIngredient.emit(this.selected);
   }
 }

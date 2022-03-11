@@ -3,13 +3,13 @@ import { MenuItem } from 'primeng/api';
 import { RecipeService } from 'src/app/services/recipe/recipe.service';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
-import { NgxSpinnerService } from "ngx-spinner";
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Recipe } from 'src/app/models/recipe/recipe.model';
 
 @Component({
   selector: 'app-recipes-list',
   templateUrl: './recipes-list.component.html',
-  styleUrls: ['./recipes-list.component.css']
+  styleUrls: ['./recipes-list.component.css'],
 })
 export class RecipesListComponent implements OnInit {
   faSearch = faSearch;
@@ -22,7 +22,8 @@ export class RecipesListComponent implements OnInit {
   constructor(
     private spinner: NgxSpinnerService,
     private recipeService: RecipeService,
-    private router: Router) { }
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.spinner.show();
@@ -33,14 +34,14 @@ export class RecipesListComponent implements OnInit {
         icon: 'pi pi-pencil',
         command: () => {
           this.router.navigate(['/recipes/add']);
-        }
+        },
       },
       {
         icon: 'pi pi-refresh',
         command: () => {
-          alert("Reload");
-        }
-      }
+          alert('Reload');
+        },
+      },
     ];
   }
 
@@ -55,19 +56,18 @@ export class RecipesListComponent implements OnInit {
   }
 
   retrieveRecipes(): void {
-    this.recipeService.getAll()
-      .subscribe({
-        next: (data) => {
-          setTimeout(() => {
-            this.recipes = data;
-            this.spinner.hide();
-          }, 700);
-        },
-        error: (e) => {
-          console.error(e);
-          this.stopLoading();
-        }
-      });
+    this.recipeService.getAll().subscribe({
+      next: (data) => {
+        setTimeout(() => {
+          this.recipes = data;
+          this.spinner.hide();
+        }, 700);
+      },
+      error: (e) => {
+        console.error(e);
+        this.stopLoading();
+      },
+    });
   }
 
   refreshList(): void {
@@ -82,34 +82,22 @@ export class RecipesListComponent implements OnInit {
   }
 
   removeAllRecipes(): void {
-    this.recipeService.deleteAll()
-      .subscribe({
-        next: (res) => {
-          this.refreshList();
-        },
-        error: (e) => console.error(e)
-      });
+    this.recipeService.deleteAll().subscribe({
+      next: (res) => {
+        this.refreshList();
+      },
+      error: (e) => console.error(e),
+    });
   }
 
   searchTitle(): void {
     this.currentRecipe = {};
     this.currentIndex = -1;
-    this.recipeService.findByTitle(this.title)
-      .subscribe({
-        next: (data) => {
-          this.recipes = data;
-        },
-        error: (e) => console.error(e)
-      });
-  }
-
-  deleteRecipe(id: string): void {
-    this.recipeService.delete(id)
-      .subscribe({
-        next: (res) => {
-          this.recipes = this.recipes?.filter(x => x._id != id);
-        },
-        error: (e) => console.error(e)
-      });
+    this.recipeService.findByTitle(this.title).subscribe({
+      next: (data) => {
+        this.recipes = data;
+      },
+      error: (e) => console.error(e),
+    });
   }
 }

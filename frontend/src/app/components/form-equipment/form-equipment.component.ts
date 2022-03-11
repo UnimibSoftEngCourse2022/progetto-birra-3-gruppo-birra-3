@@ -42,7 +42,7 @@ export class FormEquipmentComponent implements OnInit {
 
  
     this.submitted = false;
-    this.model.title = "";
+    this.model.name = "";
 
     this.form = this._formBuilder.group({
       title: [null, [Validators.required]]
@@ -61,26 +61,19 @@ export class FormEquipmentComponent implements OnInit {
     }, 700);
   }
 
-  getEquipment(id: string): void {
-    this.equipmentService.get(id)
-      .subscribe({
-        next: (data) => {
-          this.editMode = true;
-
-          setTimeout(() => {
-            this.model = data;
-            this.spinner.hide();
-          }, 700);
-        },
-        error: (e) => {
-          setTimeout(() => {
-            console.error(e)
-            this.editMode = false;
-            this.spinner.hide();
-          }, 700);
-        }
-      });
+  getEquipment(equipmentSelected: Equipment): void {
+   console.log(equipmentSelected);
   }
+
+  //aggiungere un singolo elemento creare un array non so come si salva backend
+  addEquipment(){
+    
+  }
+  //salvare la lista completa non so come si salva backend
+  addEquipmentList(){
+
+  }
+
 
   onSubmit() {
     this.submitted = true;
@@ -92,8 +85,8 @@ export class FormEquipmentComponent implements OnInit {
 
     this.loading = true;
 
-    let data = {
-      title: this.model.title,
+    let data = { 
+      title: this.model.name,
     };
 
     if (this.editMode) {
@@ -119,10 +112,6 @@ export class FormEquipmentComponent implements OnInit {
     }
   }
 
-  goBack() {
-    this.router.navigate(['/equipments']);
-  }
-
   deleteEquipment(): void {
     if (this.editMode) {
       this.equipmentService.delete(this.model._id)
@@ -133,6 +122,10 @@ export class FormEquipmentComponent implements OnInit {
           error: (e) => console.error(e)
         });
     }
+  }
+
+  goBack() {
+    this.router.navigate(['/equipments']);
   }
 
 }

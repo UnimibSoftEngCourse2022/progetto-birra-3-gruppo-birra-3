@@ -1,32 +1,15 @@
 [
     {
         "name" : "Boil kettle",
-        "quantity" : "8 gallon"
-    },
-    {
-        "name" : "Boil kettle",
-        "quantity" : "10 gallon"
-    },
-    {
-        "name" : "Boil kettle",
-        "quantity" : "15 gallon"
+        "quantity" : null
     },
     {
         "name" : "Mash tun",
-        "quantity" : "8 gallon"
-    },
-    {
-        "name" : "Mash tun",
-        "quantity" : "10 gallon"
-    },
-    {
-        "name" : "Mash tun",
-        "quantity" : "15 gallon"
+        "quantity" : null
     },
     {
         "name" : " Thermometer",
         "quantity" : null
-
     },
     {
         "name" : "pH Testing Equipment",
@@ -39,7 +22,7 @@
 
     },
     {
-        "name" : "Double Bubble Airlock", 
+        "name" : "Double Bubble Airlock",
         "quantity" : null
 
     },
