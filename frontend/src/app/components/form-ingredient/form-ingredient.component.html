@@ -8,41 +8,43 @@
       <label class="text-gray-700 dark:text-gray-200">Tipologia</label>
       <div class="block w-full mt-1 focus:outline-none">
         <p-dropdown styleClass="w-full" [options]="types" [(ngModel)]="selectedType" optionLabel="name"
-                    (onChange)="onChangeType()"></p-dropdown>
+          (onChange)="onChangeType()"></p-dropdown>
       </div>
     </div>
     <div>
       <label class="text-gray-700 dark:text-gray-200">Nome</label>
       <div class="block w-full mt-1 focus:outline-none" *ngIf="!loadData">
-        <app-drop-down-ingredient [type]="selectedType.name"
-                                  (selectedIngredient)="setSelected($event)"></app-drop-down-ingredient>
+        <app-drop-down-ingredient [type]="selectedType.name" (selectedIngredient)="setSelected($event)">
+        </app-drop-down-ingredient>
       </div>
     </div>
     <div class="block w-full">
       <div class="field col-12 md:col-3">
         <label class="text-gray-700 dark:text-gray-200">Quantità</label>
-        <p-inputNumber mode="decimal" [showButtons]="false"  [min]="0"
-                       [max]="100">
+        <p-inputNumber mode="decimal" [showButtons]="false" [min]="0" [max]="100">
         </p-inputNumber>
       </div>
     </div>
   </div>
   <div class="flex justify-end mt-6">
     <button type="button"
-            class="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-gray-500 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600"
-            (click)="goBack()">Annulla
+      class="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-gray-500 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600"
+      (click)="goBack()">Annulla
     </button>
     <button type="button" *ngIf="editMode"
-            class="ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-red-500 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600"
-            (click)="deleteIngredient()">Elimina
+      class="ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-red-500 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600"
+      (click)="deleteIngredient()">Elimina
     </button>
     <button (click)="addIngredient()"
-            class="ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-green-700 rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600">
+      class="ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-green-700 rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600">
       Aggiungi
     </button>
   </div>
 </section>
 
 <section class="max-w-4xl p-6 mx-auto bg-white rounded-md border-2 dark:bg-gray-800 mt-10">
-  lista ingredienti
+  <div *ngFor="let igredient of _ingredients let i = index">
+    <app-ingredient-card [ingredient]="igredient"></app-ingredient-card>
+  </div>
+
 </section>

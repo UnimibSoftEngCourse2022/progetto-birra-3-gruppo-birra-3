@@ -1,1 +1,22 @@
-<p>ingredient-card works!</p>
+<mat-card style=" width: 300px; ">
+    <p style="font-size:20px;">Nome</p>
+    <mat-card-subtitle>{{ingredient?.name}}</mat-card-subtitle>
+    <p style="font-size:20px;">Tipo</p>
+    <mat-card-subtitle>{{ingredient?.type}}</mat-card-subtitle>
+    <div *ngIf="!isUpdateQuantity">
+        <p style="font-size:20px;">Quantità</p>
+        <mat-card-subtitle>{{ingredient?.quantity}}</mat-card-subtitle>
+    </div>
+    <mat-slide-toggle [(ngModel)]="isUpdateQuantity">Aggiorna quantità</mat-slide-toggle>
+
+
+    <div *ngIf="isUpdateQuantity">
+        <form #updateQuantityForm="ngForm" (ngSubmit)="submitFN(updateQuantityForm.value.updateInput)">
+            <input type="tel" ngModel name="updateInput" placeholder="1" [value]="amount"
+                style="border: 1px solid; margin-top: 10px; margin-bottom: 10px;">
+            <button mat-raised-button style="width: 100%;">Salva</button>
+        </form>
+    </div>
+
+
+</mat-card>
