@@ -10,13 +10,13 @@
     <div>
       <div class="flex justify-end">
         <button (click)="onSubmit()"
-                class="ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-amber-500 rounded-md hover:bg-amber-600 focus:outline-none focus:bg-amber-700">
+          class="ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-amber-500 rounded-md hover:bg-amber-600 focus:outline-none focus:bg-amber-700">
           <span *ngIf="!editMode">Salva</span>
           <span *ngIf="editMode">Salva Modifiche</span>
         </button>
         <button type="button" *ngIf="editMode"
-                class="ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-red-500 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600"
-                (click)="deleteEquipment()">Elimina
+          class="ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-red-500 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600"
+          (click)="deleteEquipment()">Elimina
         </button>
       </div>
     </div>
@@ -29,12 +29,11 @@
       <div>
         <label for="title" class="text-gray-700 dark:text-gray-200">Nome Profilo</label>
         <input aria-describedby="title-help"
-               [ngClass]="{ 'ng-invalid ng-dirty border-red-600 focus:border-red-500 focus:ring-red-500':submitted && f['title'].errors }"
-               class="block w-full mt-1 border focus:outline-none" type="text" id="title" formControlName="title"
-               pInputText
-               [(ngModel)]="model.title" placeholder="Inserisci un nickname per il tuo equipaggiamento">
+          [ngClass]="{ 'ng-invalid ng-dirty border-red-600 focus:border-red-500 focus:ring-red-500':submitted && f['title'].errors }"
+          class="block w-full mt-1 border focus:outline-none" type="text" id="title" formControlName="title" pInputText
+          [(ngModel)]="model.title" placeholder="Inserisci un nickname per il tuo equipaggiamento">
         <small id="title-help" class="p-error block"
-               *ngIf="submitted && f['title'].errors && f['title'].errors['required']">Titolo è
+          *ngIf="submitted && f['title'].errors && f['title'].errors['required']">Titolo è
           obbligatorio
         </small>
       </div>
@@ -52,7 +51,7 @@
     <div>
       <div class="flex justify-end">
         <button (click)="showModalDialog()"
-                class="ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-amber-500 rounded-md hover:bg-amber-600 focus:outline-none focus:bg-amber-700">
+          class="ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-amber-500 rounded-md hover:bg-amber-600 focus:outline-none focus:bg-amber-700">
           <span>Aggiungi</span>
         </button>
       </div>
@@ -62,13 +61,13 @@
 <section class="max-w-4xl mx-auto bg-white rounded-md ring-1 ring-gray-300 dark:bg-gray-800">
   <ng-container *ngIf="model.equipments; else noElements">
     <p-table styleClass="rounded-md" [value]="model.equipments" dataKey="_id" editMode="row" responsiveLayout="scroll"
-             class="rounded-md" [scrollable]="true" scrollHeight="600px">
+      class="rounded-md" [scrollable]="true" scrollHeight="600px">
       <ng-template pTemplate="header">
         <tr>
-          <th>Nome</th>
-          <th>Quantity</th>
-          <th>Unità di misura</th>
-          <th></th>
+          <th id="th_equipment_name">Nome</th>
+          <th id="th_equipment_quantity">Quantity</th>
+          <th id="th_equipment_measure">Unità di misura</th>
+          <th id="th_equipment_opt"></th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-equipment let-editing="editing" let-ri="rowIndex">
@@ -77,7 +76,8 @@
           <td>
             <p-cellEditor>
               <ng-template pTemplate="input">
-                <p-inputNumber [(ngModel)]="equipment.quantity" mode="decimal" [showButtons]="false" [min]="0" [max]="100">
+                <p-inputNumber [(ngModel)]="equipment.quantity" mode="decimal" [showButtons]="false" [min]="0"
+                  [max]="100">
                 </p-inputNumber>
               </ng-template>
               <ng-template pTemplate="output">
@@ -88,13 +88,11 @@
           <td>{{ equipment.unit || "-" }}</td>
           <td style="text-align:center">
             <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
-                    (click)="onRowEditInit(equipment)" class="p-button-rounded p-button-text"></button>
+              (click)="onRowEditInit(equipment)" class="p-button-rounded p-button-text"></button>
             <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
-                    (click)="onRowEditSave(equipment)"
-                    class="p-button-rounded p-button-text p-button-success mr-2"></button>
+              (click)="onRowEditSave(equipment)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
             <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
-                    (click)="onRowEditCancel(equipment, ri)"
-                    class="p-button-rounded p-button-text p-button-danger"></button>
+              (click)="onRowEditCancel(equipment, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
           </td>
         </tr>
       </ng-template>
@@ -104,14 +102,14 @@
     <div class="container px-6 py-8 mx-auto">
       <div class="text-center">
         <a href="#"
-           class="text-2xl font-bold text-gray-800 dark:text-white hover:text-gray-700 dark:hover:text-gray-300">Nessun
+          class="text-2xl font-bold text-gray-800 dark:text-white hover:text-gray-700 dark:hover:text-gray-300">Nessun
           elemento</a>
 
         <p class="max-w-md mx-auto mt-2 text-gray-500 dark:text-gray-400">Aggiungi un elemento alla lista</p>
 
         <div class="flex flex-col mt-4 sm:flex-row sm:items-center sm:justify-center">
           <button (click)="showModalDialog()"
-                  class="flex items-center justify-center  ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-amber-500 rounded-md hover:bg-amber-600 focus:outline-none focus:bg-amber-700">
+            class="flex items-center justify-center  ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-amber-500 rounded-md hover:bg-amber-600 focus:outline-none focus:bg-amber-700">
             <span>Aggiungi</span>
           </button>
         </div>
@@ -121,8 +119,7 @@
 </section>
 
 <p-dialog [(visible)]="displayModal" [style]="{width: '550px', height: newEquipment.unit ? '508px' : '411px'}"
-          header="Aggiungio Equipment"
-          [modal]="true" [draggable]="false" [resizable]="false" styleClass="p-fluid">
+  header="Aggiungio Equipment" [modal]="true" [draggable]="false" [resizable]="false" styleClass="p-fluid">
   <ng-template pTemplate="content">
     <div class="field">
       <label class="text-gray-700 dark:text-gray-200">Nome</label>
@@ -138,8 +135,7 @@
             <label for="quantity" class="text-gray-700 dark:text-gray-200">Quantità</label>
             <div class="p-inputgroup">
               <p-inputNumber id="quantity" [(ngModel)]="newEquipment.quantity" mode="decimal" [showButtons]="false"
-                             [min]="0"
-                             [max]="100"></p-inputNumber>
+                [min]="0" [max]="100"></p-inputNumber>
               <span class="p-inputgroup-addon">{{newEquipment.unit}}</span>
             </div>
           </div>
@@ -150,11 +146,11 @@
 
   <ng-template pTemplate="footer">
     <button (click)="displayModal=false"
-            class="ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-gray-500 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-700">
+      class="ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-gray-500 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-700">
       <span>Annulla</span>
     </button>
     <button (click)="addEquipment()"
-            class="ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-amber-500 rounded-md hover:bg-amber-600 focus:outline-none focus:bg-amber-700">
+      class="ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-amber-500 rounded-md hover:bg-amber-600 focus:outline-none focus:bg-amber-700">
       <span>Aggiungi</span>
     </button>
   </ng-template>
