@@ -3,103 +3,162 @@ import { ErrorCode } from "../errors/errorCode";
 import { ErrorException } from "../errors/errorException";
 import { responseHandler } from "../handler/responseHandler";
 import RecipeModel from "../models/recipeModel";
-import {UserSession} from "../types/userSessionType";
+import { UserSession } from "../types/userSessionType";
 import BrewingHistoryClass from "../class/brewingHistoryClass";
 import BrewingHistoryModel from "../models/brewingHistoryModel";
+import UserClass from "../class/userClass";
+import UserModel from "../models/userModel";
+import IngredientModel from "../models/ingredientModel";
+import IngredientClass from "../class/ingredientClass";
 
 class BrewingHistoryController {
-    static brewRecipe = async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const id: string = req.params.id;
+  static brewRecipe = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const _idRicetta: string = req.params.id;
+      // @ts-ignore
+      const userSession: UserSession = req.userSession;
 
-            // @ts-ignore
-            const userSession: UserSession = req.userSession;
+      if (!_idRicetta) {
+        throw new ErrorException(ErrorCode.BadRequest);
+      }
 
-            if (!id) {
-                throw new ErrorException(ErrorCode.BadRequest);
-            }
+      //FETCHING USER and populate ingredients.
+      const user = await UserModel.findById(userSession._id).populate(
+        "ingredients"
+      )!;
+      if (!user) {
+        throw new ErrorException(ErrorCode.NotFound);
+      }
 
-            const _params = {
-                //@ts-ignore
-                userId: req.userSession._id,
-                _id: id
-            };
+      //Settings params to retrieve recipe to brew
+      const _params = {
+        //@ts-ignore
+        userId: userSession._id,
+        _id: _idRicetta,
+      };
 
-            const recipe = await RecipeModel.findOne(_params).populate("ingredients");
+      const recipeToBrew = await RecipeModel.findOne(_params).populate(
+        "ingredients"
+      );
+      if (!recipeToBrew) {
+        throw new ErrorException(ErrorCode.BadRequest);
+      }
 
-            if (!recipe) {
-                throw new ErrorException(ErrorCode.BadRequest);
-            }
+      const recipeToBrewIngr = recipeToBrew.ingredients!;
+      //CHECKING IF CAN BREW RECIPE
+      if (recipeToBrewIngr.length === 0) {
+        throw new ErrorException(ErrorCode.BadRequest);
+      }
 
-            /**
-             * TODO Controllo se posso produrre la birra, dagli ingredienti dell'utente
-             * Se può allora salvo in historyBrew il ref della ricetta
-             * */
+      const ingredientsToSubstractArray: IngredientClass[] = [];
 
-            let brewHistory: BrewingHistoryClass = new BrewingHistoryClass();
-            brewHistory.userId = userSession._id;
-            brewHistory.recipe = recipe._id;
+      const canBrew = recipeToBrewIngr.every((recipeIngredient) => {
+        const ingredientToUse = user.ingredients?.find((userIngredient) => {
+          return (
+            userIngredient.name === recipeIngredient.name &&
+            userIngredient.type === recipeIngredient.type &&
+            userIngredient.quantity! >= recipeIngredient.quantity!
+          );
+        });
 
-            const result = await BrewingHistoryModel.create(brewHistory);
+        if (ingredientToUse !== undefined) {
+          ingredientToUse.quantity = recipeIngredient.quantity!;
 
-            if (!result) {
-                throw new ErrorException(ErrorCode.BadRequest);
-            }
-
-            responseHandler(res, recipe);
-        } catch (error) {
-            next(error);
+          ingredientsToSubstractArray.push(ingredientToUse);
         }
-    };
 
-    static findAll = async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            //@ts-ignore
-            const userSession: UserSession = req.userSession;
+        return !!ingredientToUse;
+      });
 
-            let _params = {
-                userId: userSession._id
-            };
+      if (!canBrew) {
+        throw new ErrorException(ErrorCode.BadRequest);
+      }
 
-            const result = await BrewingHistoryModel.find(_params).populate("recipe").exec();
+      //REMOVING QUANTITY FROM USER INGRS
+      ingredientsToSubstractArray.forEach(async (ingredientToSubstract) => {
+        await IngredientModel.findOneAndUpdate(
+          // @ts-ignore
+          { _id: ingredientToSubstract._id },
+          {
+            $inc: {
+              quantity: -ingredientToSubstract.quantity!,
+            },
+          }
+        );
+      });
 
-            if (!result) {
-                throw new ErrorException(ErrorCode.BadRequest);
-            }
+      const brewHistory: BrewingHistoryClass = new BrewingHistoryClass();
+      brewHistory.userId = userSession._id;
+      brewHistory.recipe = recipeToBrew._id;
 
-            responseHandler(res, result);
-        } catch (error) {
-            next(error);
-        }
-    };
+      const result = await BrewingHistoryModel.create(brewHistory);
 
-    static delete = async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const id: string = req.params.id;
+      if (!result) {
+        throw new ErrorException(ErrorCode.BadRequest);
+      }
 
-            if (!id) {
-                throw new ErrorException(ErrorCode.BadRequest);
-            }
+      return responseHandler(res, recipeToBrew);
+    } catch (error) {
+      next(error);
+    }
+  };
 
-            const _params = {
-                //@ts-ignore
-                userId: req.userSession._id,
-                _id: id
-            };
+  //REF -> .populate avrò tutte le info di userclass.
 
-            const result = await BrewingHistoryModel.findOneAndDelete(_params, {
-                useFindAndModify: false,
-            });
+  static findAll = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      //@ts-ignore
+      const userSession: UserSession = req.userSession;
 
-            if (!result) {
-                throw new ErrorException(ErrorCode.BadRequest);
-            }
+      let _params = {
+        userId: userSession._id,
+      };
 
-            responseHandler(res, result);
-        } catch (error) {
-            next(error);
-        }
-    };
+      const result = await BrewingHistoryModel.find(_params)
+        .populate("recipe")
+        .exec();
+
+      if (!result) {
+        throw new ErrorException(ErrorCode.BadRequest);
+      }
+
+      responseHandler(res, result);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  static delete = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const id: string = req.params.id;
+
+      if (!id) {
+        throw new ErrorException(ErrorCode.BadRequest);
+      }
+
+      const _params = {
+        //@ts-ignore
+        userId: req.userSession._id,
+        _id: id,
+      };
+
+      const result = await BrewingHistoryModel.findOneAndDelete(_params, {
+        useFindAndModify: false,
+      });
+
+      if (!result) {
+        throw new ErrorException(ErrorCode.BadRequest);
+      }
+
+      responseHandler(res, result);
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export default BrewingHistoryController;
