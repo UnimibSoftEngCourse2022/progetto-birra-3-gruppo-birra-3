@@ -10,6 +10,7 @@ import ingredientsRoutes from "./app/routes/ingredientsRoutes";
 import brewingHistoryRoutes from "./app/routes/brewingHistoryRoutes";
 
 const app = express();
+app.disable("x-powered-by");
 
 config();
 
