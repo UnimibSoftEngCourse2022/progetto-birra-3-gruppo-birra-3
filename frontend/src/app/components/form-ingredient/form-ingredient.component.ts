@@ -201,7 +201,6 @@ export class FormIngredientComponent implements OnInit {
   onRowEditSave(ingredient: Ingredient) {
     if (ingredient && ingredient.quantity > 0) {
 
-      // TODO Upd Ingredient Backend
       this.ingredientService.update(ingredient._id, ingredient).subscribe({
         next: (res) => {
           delete this.clonedIngredients[ingredient._id];

@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { min, Observable } from 'rxjs';
 import { Ingredient } from 'src/app/models/ingredient/ingredient.model';
 import { Recipe } from 'src/app/models/recipe/recipe.model';
 import { environment } from 'src/environments/environment';
@@ -48,5 +47,3 @@ export class BrewTodayService {
     return bestCandidate;
   }
 }
-
-//WHAT SHOULD I BREW TODAY -> TIRA FUORI UNA RICETTA

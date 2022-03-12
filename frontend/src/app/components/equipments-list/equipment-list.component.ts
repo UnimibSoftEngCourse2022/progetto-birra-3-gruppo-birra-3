@@ -5,7 +5,6 @@ import {NgxSpinnerService} from 'ngx-spinner';
 import {MenuItem} from 'primeng/api';
 import {Equipment, EquipmentProfile} from 'src/app/models/equipment/equipment.model';
 import {EquipmentService} from 'src/app/services/equipment/equipment.service';
-import {KeyValue} from "@angular/common";
 
 @Component({
   selector: 'app-equipment-list',
