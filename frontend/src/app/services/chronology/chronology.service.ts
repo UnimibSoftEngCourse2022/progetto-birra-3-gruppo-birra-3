@@ -12,7 +12,6 @@ const baseUrl = environment.backendApi + 'chronology';
 export class ChronologyService {
   constructor(private http: HttpClient) {}
 
-  //TODO ZORAN CHECK
   brewBeer(recipeId: string): Observable<any> {
     return this.http.post(BREW_HISTORY_ENDPOINTS.BREW_BEER, recipeId);
   }

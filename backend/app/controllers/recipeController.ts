@@ -171,40 +171,6 @@ class RecipeController {
             next(error);
         }
     };
-
-    static brewRecipe = async (
-        req: Request,
-        res: Response,
-        next: NextFunction
-    ) => {
-        try {
-            // @ts-ignore
-            const userSession: UserSession = req.userSession;
-
-            const id: string = req.params.id;
-
-            const _params = {
-                //@ts-ignore
-                userId: req.userSession._id,
-                _id: id
-            };
-
-            let recipe = await RecipeModel.findOne(_params).populate("ingredients");
-
-            if (!recipe) {
-                throw new ErrorException(ErrorCode.BadRequest);
-            }
-
-            /**
-             * TODO Controllo se posso produrre la birra, dagli ingredienti dell'utente
-             * Se può allora salvo in historyBrew il ref della ricetta
-             * */
-
-            return responseHandler(res, {});
-        } catch (error) {
-            next(error);
-        }
-    };
 }
 
 export default RecipeController;

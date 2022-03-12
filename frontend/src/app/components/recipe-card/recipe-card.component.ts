@@ -20,7 +20,6 @@ export class RecipeCardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    //TODO ZORAN -> Come faccio a pescarmi l'user ingredient?
     const userIngredients = [];
     canBrewRecipe(this.recipe?.ingredients!, []);
   }

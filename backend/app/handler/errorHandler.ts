@@ -12,7 +12,6 @@ export const errorHandler = (
   if (err instanceof ErrorException) {
     res.status(err.status).json(err);
   } else {
-    // TODO Aggiungere logger Email all'admin per gestire le eccezzioni mancanti
     res
       .status(500)
       .send({ code: ErrorCode.UnknownError, status: 500 } as ErrorModel);

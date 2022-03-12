@@ -1,6 +1,5 @@
 <div class="flex w-screen max-w-md mx-auto overflow-hidden bg-white rounded-lg border-2 dark:bg-gray-800 ">
   <div class="w-2/3 p-4 md:p-4">
-    <!-- TODO Manca il titolo in equipment modficare il modello in base a come gestiamo il DB -->
 
     <h1 class="text-xl font-bold text-gray-800 dark:text-white">{{equipment?.title}}</h1>
 
@@ -9,7 +8,6 @@
 
     <div class="flex justify-end mt-3 item-center">
       <div class="mr-1">
-        <!-- TODO Gestire la modifica  -->
         <button routerLink="/equipment/{{ equipment?._id }}/edit"
                 class="px-2 py-1 text-xs font-bold text-white uppercase transition-colors duration-200 transform bg-blue-800 rounded dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:bg-blue-700 dark:focus:bg-blue-600">
           Modifica

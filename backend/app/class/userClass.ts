@@ -25,7 +25,6 @@ class UserClass {
   @prop({ required: false })
   token?: string;
 
-  // TODO Vedere caricamento inverso
   @prop({ ref: () => EquipmentProfileClass, default: [] })
   public equipmentProfiles?: EquipmentProfileClass[];
 

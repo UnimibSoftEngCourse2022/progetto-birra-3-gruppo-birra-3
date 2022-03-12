@@ -19,7 +19,6 @@ export class EquipmentCardComponent implements OnInit {
   deleteEquipment(id: string): void {
     this.equipmentService.delete(id).subscribe({
       next: (res) => {
-        // TODO Emit to reload list recipe
       },
       error: (e) => console.error(e),
     });

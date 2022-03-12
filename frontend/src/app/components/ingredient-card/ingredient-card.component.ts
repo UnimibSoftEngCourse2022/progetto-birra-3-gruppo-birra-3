@@ -23,7 +23,6 @@ export class IngredientCardComponent implements OnInit {
 
     this.isUpdateQuantity = false;
 
-    //TODO ZORAN -> Attach new service to update everyingredient
     this.ingredientService
       .update(this.ingredient?._id, convertedFormValue)
       .subscribe(() => {
