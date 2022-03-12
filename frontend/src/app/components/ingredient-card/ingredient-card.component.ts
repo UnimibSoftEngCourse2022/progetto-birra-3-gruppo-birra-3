@@ -5,7 +5,7 @@ import { IngredientService } from 'src/app/services/ingredient/ingredient.servic
 @Component({
   selector: 'app-ingredient-card',
   templateUrl: './ingredient-card.component.html',
-  styleUrls: ['./ingredient-card.component.css'],
+  styleUrls: [],
 })
 export class IngredientCardComponent implements OnInit {
   @Input() ingredient?: Ingredient;
