@@ -46,11 +46,10 @@ import { RecipeCardComponent } from './components/recipe-card/recipe-card.compon
 import { InputNumberModule } from 'primeng/inputnumber';
 import { EquipmentCardComponent } from './components/equipment-card/equipment-card.component';
 import { EquipmentListComponent } from './components/equipments-list/equipment-list.component';
-import { MatCardModule } from '@angular/material/card';
 import { IngredientCardComponent } from './components/ingredient-card/ingredient-card.component';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { TableModule } from 'primeng/table';
+import {BreadcrumbModule} from 'primeng/breadcrumb';
+import {ListboxModule} from 'primeng/listbox';
 
 @NgModule({
   declarations: [
@@ -71,9 +70,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     RecipeCardComponent,
     EquipmentCardComponent,
     EquipmentListComponent,
-    IngredientCardComponent,
+    IngredientCardComponent
   ],
   imports: [
+    ListboxModule,
+    BreadcrumbModule,
+    TableModule,
     InputNumberModule,
     AvatarModule,
     AvatarGroupModule,
@@ -99,11 +101,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     FontAwesomeModule,
     CascadeSelectModule,
     MessagesModule,
-    MessageModule,
-    MatCardModule,
-    MatButtonModule,
-    MatSlideToggleModule,
-    MatFormFieldModule,
+    MessageModule
   ],
   providers: [
     MessageService,

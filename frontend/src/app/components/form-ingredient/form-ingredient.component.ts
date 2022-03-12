@@ -1,11 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { MessageService } from 'primeng/api';
-import { Ingredient } from 'src/app/models/ingredient/ingredient.model';
-import { IngredientService } from 'src/app/services/ingredient/ingredient.service';
-import { INGREDIENTS_ENUM } from '../../enum/ingredients';
+import {Component, Input, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {NgxSpinnerService} from 'ngx-spinner';
+import {MessageService} from 'primeng/api';
+import {Ingredient} from 'src/app/models/ingredient/ingredient.model';
+import {IngredientService} from 'src/app/services/ingredient/ingredient.service';
+import {INGREDIENTS_ENUM} from '../../enum/ingredients';
+import {IngredientRef} from "../../enum/ingredientRef";
+import {Table} from "primeng/table";
 
 @Component({
   selector: 'app-form-ingredient',
@@ -14,56 +15,47 @@ import { INGREDIENTS_ENUM } from '../../enum/ingredients';
 })
 export class FormIngredientComponent implements OnInit {
   @Input() id: string | null = null;
+  @Input() showBreadcrumbs: boolean = true;
+
   public editMode: boolean = false;
-  public form!: FormGroup;
   public loading: boolean = true;
 
-  get f() {
-    return this.form.controls;
-  }
+  public model: Ingredient = new Ingredient();
 
-  public model: Ingredient;
   loadData: boolean = true;
 
   public _ingredients: Ingredient[];
 
-  public selectedType: any;
+  public clonedIngredients: { [s: string]: Ingredient; } = {};
 
   public types: any = [
-    {
-      name: INGREDIENTS_ENUM.MALT,
-    },
-    {
-      name: INGREDIENTS_ENUM.HOP,
-    },
-    {
-      name: INGREDIENTS_ENUM.SUGAR,
-    },
-    {
-      name: INGREDIENTS_ENUM.ADDITIVE,
-    },
-    {
-      name: INGREDIENTS_ENUM.YEAST,
-    },
+    INGREDIENTS_ENUM.MALT,
+    INGREDIENTS_ENUM.HOP,
+    INGREDIENTS_ENUM.SUGAR,
+    INGREDIENTS_ENUM.ADDITIVE,
+    INGREDIENTS_ENUM.ADDITIVE
   ];
 
   submitted = false;
 
+  public displayModal: boolean = false;
+
+  newIngrediet: any;
+
   constructor(
     private spinner: NgxSpinnerService,
     private route: ActivatedRoute,
-    private _formBuilder: FormBuilder,
     private ingredientService: IngredientService,
     private messageService: MessageService,
     private router: Router
   ) {
-    this.model = new Ingredient();
+    this.initVal();
     this._ingredients = [];
-    this.selectedType = '';
   }
 
-  //BEGIN INIT
   ngOnInit() {
+    this.loading = true;
+
     if (this.id || this.route.snapshot.params['id']) {
       this.editMode = true;
     } else {
@@ -74,12 +66,9 @@ export class FormIngredientComponent implements OnInit {
       this.spinner.show();
     }
 
-    this.submitted = false;
-    this.model.name = '';
+    this.initVal();
 
-    this.form = this._formBuilder.group({
-      name: [null, [Validators.required]],
-    });
+    this.loadIngredients();
 
     if (this.editMode) {
       this.getIngredient(this.route.snapshot.params['id'] || this.id);
@@ -87,10 +76,25 @@ export class FormIngredientComponent implements OnInit {
       this.stopLoading();
     }
   }
-  //END ON INIT
 
-  public addIngredients() {
-    // TODO Add New Form
+  initVal() {
+    this.model = new Ingredient();
+    this.model.type = "";
+
+    this.submitted = false;
+    this.loading = false;
+    this.loadData = false;
+
+    this.stopLoading();
+  }
+
+  public loadIngredients() {
+    this.ingredientService.getAll().subscribe({
+      next: (res) => {
+        this._ingredients = res;
+      },
+      error: (e) => console.error(e),
+    });
   }
 
   stopLoading() {
@@ -105,7 +109,7 @@ export class FormIngredientComponent implements OnInit {
         this.editMode = true;
 
         setTimeout(() => {
-          this.model = data;
+          this.model = data as Ingredient;
           this.spinner.hide();
         }, 700);
       },
@@ -122,22 +126,12 @@ export class FormIngredientComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
 
-    // stop here if form is invalid
-    if (this.form.invalid) {
-      return;
-    }
-
+    debugger;
     this.loading = true;
 
-    let data = {
-      name: this.model.name,
-    };
-
     if (this.editMode) {
-      this.ingredientService.update(this.model._id, data).subscribe({
+      this.ingredientService.update(this.model._id, this.model).subscribe({
         next: (res) => {
-          this.submitted = true;
-          this.goBack();
           this.messageService.add({
             severity: 'success',
             summary: 'Service Message',
@@ -147,10 +141,21 @@ export class FormIngredientComponent implements OnInit {
         error: (e) => console.error(e),
       });
     } else {
-      this.ingredientService.create(data).subscribe({
+
+      let data = {
+        name: this.model.name,
+        type: this.model.type,
+        quantity: this.model.quantity,
+      }
+
+      this.ingredientService.create(data, IngredientRef.TO_USER).subscribe({
         next: (res) => {
-          this.submitted = true;
-          this.goBack();
+          console.log(res);
+          this._ingredients.push(res);
+
+          this.spinner.show();
+          this.initVal();
+
           this.messageService.add({
             severity: 'success',
             summary: 'Service Message',
@@ -177,14 +182,8 @@ export class FormIngredientComponent implements OnInit {
     }
   }
 
-  //TODO
-  addIngredient(): void {}
-
-  //TODO
-  addIngredientList(): void {}
-
-  public setSelected(event: any) {
-    console.log(event);
+  public setNameSelected(event: Ingredient) {
+    this.model.name = event.name;
   }
 
   public onChangeType() {
@@ -193,5 +192,45 @@ export class FormIngredientComponent implements OnInit {
     setTimeout(() => {
       this.loadData = false;
     }, 250);
+  }
+
+  public onRowEditInit(ingredient: Ingredient) {
+    this.clonedIngredients[ingredient._id] = {...ingredient};
+  }
+
+  onRowEditSave(ingredient: Ingredient) {
+    if (ingredient && ingredient.quantity > 0) {
+
+      // TODO Upd Ingredient Backend
+      this.ingredientService.update(ingredient._id, ingredient).subscribe({
+        next: (res) => {
+          delete this.clonedIngredients[ingredient._id];
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Ok',
+            detail: 'Via MessageService',
+          });
+        },
+        error: (e) => {
+          this.messageService.add({severity: 'error', summary: 'Error', detail: 'Si sono verificati degli errori'});
+        },
+      });
+    } else {
+      this.messageService.add({severity: 'error', summary: 'Error', detail: 'Si sono verificati degli errori'});
+    }
+  }
+
+  onRowEditCancel(ingredient: Ingredient, index: number) {
+    this._ingredients[index] = this.clonedIngredients[ingredient._id];
+    delete this.clonedIngredients[ingredient._id];
+  }
+
+  clear(table: Table) {
+    table.clear();
+  }
+
+  showModalDialog() {
+    this.model = new Ingredient();
+    this.displayModal = true;
   }
 }

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Ingredient } from 'src/app/models/ingredient/ingredient.model';
+import {Ingredient, IngredientInterface} from 'src/app/models/ingredient/ingredient.model';
 import RECIPE_ENDPOINTS from 'src/app/utils/recipeEndpoints';
 import { environment } from '../../../environments/environment';
 import { Recipe } from '../../models/recipe/recipe.model';
@@ -47,15 +47,15 @@ export class RecipeService {
     return this.http.get<Recipe[]>(RECIPE_ENDPOINTS.FIND_BY_TITLE(title));
   }
 
-  getNextBatchList(recipeIngredients: Ingredient[]): Ingredient[] {
-    const userCurrentIgrendients: Ingredient[] = [];
+  getNextBatchList(recipeIngredients: IngredientInterface[]): IngredientInterface[] {
+    let userCurrentIgrendients: IngredientInterface[] = [];
 
-    const missingIngredients: Ingredient[] = [];
+    let missingIngredients: IngredientInterface[] = [];
 
     //Ciclo su tutti gli ingredienti della ricetta
     recipeIngredients.forEach((recipeIngredient) => {
       //Controllo se l'igrediente è presente
-      const presentIngredient = userCurrentIgrendients.find(
+      let presentIngredient = userCurrentIgrendients.find(
         (userIngredient) => {
           return (
             userIngredient.name === recipeIngredient.name &&
@@ -83,10 +83,10 @@ export class RecipeService {
   }
 
   getBeerColor(batchSize: number, malt: string, maltAmount: number) {
-    const maltLovibond = getMaltLovibond(malt);
-    const MCU = getMCU(maltLovibond, maltAmount, batchSize);
-    const SRM = calculateSRM(MCU);
-    const beerColor = calculateBeerColor(SRM);
+    let maltLovibond = getMaltLovibond(malt);
+    let MCU = getMCU(maltLovibond, maltAmount, batchSize);
+    let SRM = calculateSRM(MCU);
+    let beerColor = calculateBeerColor(SRM);
 
     return beerColor;
   }

@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Equipment } from 'src/app/models/equipment/equipment.model';
-import { EquipmentService } from 'src/app/services/equipment/equipment.service';
+import {Component, Input, OnInit} from '@angular/core';
+import {Equipment, EquipmentProfile} from 'src/app/models/equipment/equipment.model';
+import {EquipmentService} from 'src/app/services/equipment/equipment.service';
 
 @Component({
   selector: 'app-equipment-card',
@@ -8,11 +8,13 @@ import { EquipmentService } from 'src/app/services/equipment/equipment.service';
   styleUrls: ['./equipment-card.component.css'],
 })
 export class EquipmentCardComponent implements OnInit {
-  @Input() equipment?: Equipment;
+  @Input() equipment?: EquipmentProfile;
 
-  constructor(private equipmentService: EquipmentService) {}
+  constructor(private equipmentService: EquipmentService) {
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   deleteEquipment(id: string): void {
     this.equipmentService.delete(id).subscribe({
@@ -23,5 +25,13 @@ export class EquipmentCardComponent implements OnInit {
     });
   }
 
-  //TODO edit mode
+  getNameEquipments() {
+    return this.equipment?.equipments?.map(x => {
+      if(x.unit){
+        return x.name + " (" + (x.quantity) + " " + x.unit +")";
+      }else{
+        return x.name;
+      }
+    }) ?? [];
+  }
 }

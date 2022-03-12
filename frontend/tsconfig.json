@@ -18,8 +18,9 @@
     "target": "es2017",
     "module": "es2020",
     "lib": ["es2020", "dom"],
-    "resolveJsonModule": true, 
-    "esModuleInterop": true 
+    "resolveJsonModule": true,
+    "esModuleInterop": true ,
+    "strictPropertyInitialization": false
     },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

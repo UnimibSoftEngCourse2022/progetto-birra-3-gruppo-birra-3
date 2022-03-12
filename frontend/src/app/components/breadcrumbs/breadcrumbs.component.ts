@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import {MenuItem} from "primeng/api";
 
 @Component({
   selector: 'app-breadcrumbs',
@@ -6,10 +7,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./breadcrumbs.component.css']
 })
 export class BreadcrumbsComponent implements OnInit {
+  @Input() editMode: boolean = false;
+  items: any[] = [];
 
-  constructor() { }
+  ngOnInit() {
 
-  ngOnInit(): void {
+    this.items = [
+      { label: 'Lista Equipaggiamenti'},
+      { label: !this.editMode ? 'Aggiungi Nuovo Profilo' : "Modifica" , current: true}
+    ];
   }
-
 }

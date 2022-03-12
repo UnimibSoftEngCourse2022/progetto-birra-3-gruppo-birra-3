@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { MenuItem } from 'primeng/api';
-import { Equipment } from 'src/app/models/equipment/equipment.model';
-import { EquipmentService } from 'src/app/services/equipment/equipment.service';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {faSearch} from '@fortawesome/free-solid-svg-icons';
+import {NgxSpinnerService} from 'ngx-spinner';
+import {MenuItem} from 'primeng/api';
+import {Equipment, EquipmentProfile} from 'src/app/models/equipment/equipment.model';
+import {EquipmentService} from 'src/app/services/equipment/equipment.service';
+import {KeyValue} from "@angular/common";
 
 @Component({
   selector: 'app-equipment-list',
@@ -14,7 +15,7 @@ import { EquipmentService } from 'src/app/services/equipment/equipment.service';
 export class EquipmentListComponent implements OnInit {
   faSearch = faSearch;
   itemsFloatingButton: MenuItem[] = [];
-  equipments?: Equipment[];
+  equipments?: EquipmentProfile[];
   currentEquipment: Equipment = {};
   currentIndex = -1;
   title = '';
@@ -23,7 +24,8 @@ export class EquipmentListComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private equipmentService: EquipmentService,
     private router: Router
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.spinner.show();
@@ -44,6 +46,7 @@ export class EquipmentListComponent implements OnInit {
       },
     ];
   }
+
   addEquipments() {
     this.router.navigate(['/equipments/add']);
   }
@@ -53,6 +56,8 @@ export class EquipmentListComponent implements OnInit {
       next: (data) => {
         setTimeout(() => {
           this.equipments = data;
+
+          this.sortAscList();
 
           this.spinner.hide();
         }, 700);
@@ -69,6 +74,7 @@ export class EquipmentListComponent implements OnInit {
       this.spinner.hide();
     }, 700);
   }
+
   searchTitleEquipment(): void {
     this.currentEquipment = {};
     this.currentIndex = -1;
@@ -78,5 +84,30 @@ export class EquipmentListComponent implements OnInit {
       },
       error: (e) => console.error(e),
     });
+  }
+
+  sortAscList() {
+    this.equipments?.sort(function (a, b) {
+      let nameA = a?.title?.toUpperCase() ?? 0;
+      let nameB = b?.title?.toUpperCase() ?? 0;
+
+      if (nameA < nameB) {
+        return -1;
+      }
+
+      if (nameA > nameB) {
+        return 1;
+      }
+
+      return 0;
+    });
+  }
+
+  sort(event: any) {
+    this.sortAscList();
+
+    if (event.target.value === 1) {
+      this.equipments?.reverse();
+    }
   }
 }

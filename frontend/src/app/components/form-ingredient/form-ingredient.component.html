@@ -1,50 +1,132 @@
-<section class="max-w-4xl p-6 mx-auto bg-white rounded-md border-2 dark:bg-gray-800">
-  <h2 class="text-lg font-semibold text-gray-700 capitalize dark:text-white" *ngIf="editMode">Modifica ingredienti</h2>
-  <h2 class="text-lg font-semibold text-gray-700 capitalize dark:text-white" *ngIf="!editMode">Aggiungi ingredienti
-  </h2>
+<ng-container *ngIf="showBreadcrumbs">
+  <app-breadcrumbs [editMode]="editMode"></app-breadcrumbs>
+</ng-container>
 
-  <div class="grid grid-cols-3 gap-6 mt-4 sm:grid-cols-3">
+<section class="max-w-4xl pt-5 pb-5 mx-auto">
+  <div class="grid grid-cols-2 gap-6 sm:grid-cols-2">
     <div>
-      <label class="text-gray-700 dark:text-gray-200">Tipologia</label>
-      <div class="block w-full mt-1 focus:outline-none">
-        <p-dropdown styleClass="w-full" [options]="types" [(ngModel)]="selectedType" optionLabel="name"
-          (onChange)="onChangeType()"></p-dropdown>
-      </div>
+      <h1 class="text-2xl font-semibold text-gray-700 capitalize dark:text-white" *ngIf="!editMode">
+        Ingredient
+      </h1>
     </div>
     <div>
-      <label class="text-gray-700 dark:text-gray-200">Nome</label>
-      <div class="block w-full mt-1 focus:outline-none" *ngIf="!loadData">
-        <app-drop-down-ingredient [type]="selectedType.name" (selectedIngredient)="setSelected($event)">
-        </app-drop-down-ingredient>
+      <div class="flex justify-end">
+        <button (click)="showModalDialog()"
+                class="ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-amber-500 rounded-md hover:bg-amber-600 focus:outline-none focus:bg-amber-700">
+          <span>Aggiungi</span>
+        </button>
       </div>
     </div>
-    <div class="block w-full">
-      <div class="field col-12 md:col-3">
+  </div>
+</section>
+<section class="max-w-4xl mx-auto bg-white rounded-md ring-1 ring-gray-300 dark:bg-gray-800">
+  <ng-container *ngIf="_ingredients; else noElements">
+    <p-table styleClass="rounded-md" [value]="_ingredients" dataKey="_id" editMode="row" responsiveLayout="scroll"
+             class="rounded-md" [scrollable]="false">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Type</th>
+          <th>Name</th>
+          <th>Quantity</th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-ingredient let-editing="editing" let-ri="rowIndex">
+        <tr [pEditableRow]="ingredient">
+          <td>{{ingredient.type}}</td>
+          <td>{{ingredient.name}}</td>
+          <td>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <p-inputNumber [(ngModel)]="ingredient.quantity" mode="decimal" [showButtons]="false" [min]="0"
+                               [max]="100">
+                </p-inputNumber>
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{ingredient.quantity}}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td style="text-align:center">
+            <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
+                    (click)="onRowEditInit(ingredient)" class="p-button-rounded p-button-text"></button>
+            <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
+                    (click)="onRowEditSave(ingredient)"
+                    class="p-button-rounded p-button-text p-button-success mr-2"></button>
+            <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
+                    (click)="onRowEditCancel(ingredient, ri)"
+                    class="p-button-rounded p-button-text p-button-danger"></button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </ng-container>
+  <ng-template #noElements>
+    <div class="container px-6 py-8 mx-auto">
+      <div class="text-center">
+        <a href="#"
+           class="text-2xl font-bold text-gray-800 dark:text-white hover:text-gray-700 dark:hover:text-gray-300">Nessun
+          elemento</a>
+
+        <p class="max-w-md mx-auto mt-2 text-gray-500 dark:text-gray-400">Aggiungi un elemento alla lista</p>
+
+        <div class="flex flex-col mt-4 sm:flex-row sm:items-center sm:justify-center">
+          <button (click)="showModalDialog()"
+                  class="flex items-center justify-center  ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-amber-500 rounded-md hover:bg-amber-600 focus:outline-none focus:bg-amber-700">
+            <span>Aggiungi</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</section>
+
+<p-dialog [(visible)]="displayModal" [style]="{width: '550px', height: '508px'}"
+          header="Aggiungi Ingrediente"
+          [modal]="true" [draggable]="false" [resizable]="false" styleClass="p-fluid">
+  <ng-template pTemplate="content">
+    <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-1">
+      <div>
+        <label class="text-gray-700 dark:text-gray-200">Tipologia</label>
+        <div class="block w-full mt-1 focus:outline-none">
+          <p-dropdown styleClass="w-full" [options]="types" [(ngModel)]="model.type"
+                      (onChange)="onChangeType()">
+            <ng-template pTemplate="selectedItem">
+              <div *ngIf="model.type">
+                <div>{{ model.type  | titlecase }}</div>
+              </div>
+            </ng-template>
+            <ng-template let-types pTemplate="item">
+              <div>{{ types | titlecase }}</div>
+            </ng-template>
+          </p-dropdown>
+        </div>
+      </div>
+      <div *ngIf="model.type">
+        <label class="text-gray-700 dark:text-gray-200">Nome</label>
+        <div class="block w-full mt-1 focus:outline-none" *ngIf="!loadData">
+          <app-drop-down-ingredient [type]="model.type" (selectedIngredient)="setNameSelected($event)">
+          </app-drop-down-ingredient>
+        </div>
+      </div>
+      <div>
         <label class="text-gray-700 dark:text-gray-200">Quantità</label>
-        <p-inputNumber mode="decimal" [showButtons]="false" [min]="0" [max]="100">
-        </p-inputNumber>
+        <div class="block w-full mt-1 focus:outline-none">
+          <p-inputNumber [(ngModel)]="model.quantity" mode="decimal" [showButtons]="false" [min]="0" [max]="100">
+          </p-inputNumber>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="flex justify-end mt-6">
-    <button type="button"
-      class="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-gray-500 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600"
-      (click)="goBack()">Annulla
-    </button>
-    <button type="button" *ngIf="editMode"
-      class="ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-red-500 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600"
-      (click)="deleteIngredient()">Elimina
-    </button>
-    <button (click)="addIngredient()"
-      class="ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-green-700 rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600">
-      Aggiungi
-    </button>
-  </div>
-</section>
+  </ng-template>
 
-<section class="max-w-4xl p-6 mx-auto bg-white rounded-md border-2 dark:bg-gray-800 mt-10">
-  <div *ngFor="let igredient of _ingredients let i = index">
-    <app-ingredient-card [ingredient]="igredient"></app-ingredient-card>
-  </div>
-
-</section>
+  <ng-template pTemplate="footer">
+    <button (click)="displayModal=false"
+            class="ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-gray-500 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-700">
+      <span>Annulla</span>
+    </button>
+    <button (click)="onSubmit()"
+            class="ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-amber-500 rounded-md hover:bg-amber-600 focus:outline-none focus:bg-amber-700">
+      <span>Aggiungi</span>
+    </button>
+  </ng-template>
+</p-dialog>

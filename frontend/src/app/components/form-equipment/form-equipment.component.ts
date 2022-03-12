@@ -1,10 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { MessageService } from 'primeng/api';
-import { Equipment } from 'src/app/models/equipment/equipment.model';
-import { EquipmentService } from 'src/app/services/equipment/equipment.service';
+import {Component, Input, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {NgxSpinnerService} from 'ngx-spinner';
+import {MessageService} from 'primeng/api';
+import {Equipment, EquipmentInterface, EquipmentProfile} from 'src/app/models/equipment/equipment.model';
+import {EquipmentService} from 'src/app/services/equipment/equipment.service';
+import {INGREDIENTS_ENUM} from "../../enum/ingredients";
+import {Ingredient} from "../../models/ingredient/ingredient.model";
 
 @Component({
   selector: 'app-form-equipment',
@@ -16,17 +18,21 @@ export class FormEquipmentComponent implements OnInit {
   public editMode: boolean = false;
   public form!: FormGroup;
   public loading: boolean = true;
+  public displayModal: boolean = false;
+  public clonedEquipments: { [s: string]: Equipment; } = {};
 
   get f() {
     return this.form.controls;
   }
 
-  public model: Equipment;
+  public model: EquipmentProfile;
+  public newEquipment: Equipment;
 
   submitted = false;
 
   constructor(private spinner: NgxSpinnerService, private route: ActivatedRoute, private _formBuilder: FormBuilder, private equipmentService: EquipmentService, private messageService: MessageService, private router: Router) {
-    this.model = new Equipment();
+    this.model = new EquipmentProfile();
+    this.newEquipment = new Equipment();
   }
 
   ngOnInit() {
@@ -40,9 +46,9 @@ export class FormEquipmentComponent implements OnInit {
       this.spinner.show();
     }
 
- 
+
     this.submitted = false;
-    this.model.name = "";
+    this.model.title = "";
 
     this.form = this._formBuilder.group({
       title: [null, [Validators.required]]
@@ -62,16 +68,19 @@ export class FormEquipmentComponent implements OnInit {
   }
 
   getEquipment(equipmentSelected: Equipment): void {
-   console.log(equipmentSelected);
+    console.log(equipmentSelected);
   }
 
-  //aggiungere un singolo elemento creare un array non so come si salva backend
-  addEquipment(){
-    
-  }
-  //salvare la lista completa non so come si salva backend
-  addEquipmentList(){
+  addEquipment() {
+    this.displayModal = false;
 
+    if (!this.model.equipments) {
+      this.model.equipments = [];
+    }
+
+    this.model.equipments.push(this.newEquipment);
+
+    this.newEquipment = new Equipment();
   }
 
 
@@ -79,14 +88,19 @@ export class FormEquipmentComponent implements OnInit {
     this.submitted = true;
 
     // stop here if form is invalid
-    if (this.form.invalid) {
+    if (this.form.invalid && !this.model.equipments) {
       return;
     }
 
     this.loading = true;
 
-    let data = { 
-      title: this.model.name,
+    let data = {
+      title: this.model.title,
+      equipments: this.model.equipments ? this.model.equipments.map(x => {
+        return {
+          name: x.name
+        }
+      }) : []
     };
 
     if (this.editMode) {
@@ -95,7 +109,7 @@ export class FormEquipmentComponent implements OnInit {
           next: (res) => {
             this.submitted = true;
             this.goBack();
-            this.messageService.add({ severity: 'success', summary: 'Service Message', detail: 'Via MessageService' });
+            this.messageService.add({severity: 'success', summary: 'Service Message', detail: 'Via MessageService'});
           },
           error: (e) => console.error(e)
         });
@@ -105,7 +119,7 @@ export class FormEquipmentComponent implements OnInit {
           next: (res) => {
             this.submitted = true;
             this.goBack();
-            this.messageService.add({ severity: 'success', summary: 'Service Message', detail: 'Via MessageService' });
+            this.messageService.add({severity: 'success', summary: 'Service Message', detail: 'Via MessageService'});
           },
           error: (e) => console.error(e)
         });
@@ -126,6 +140,39 @@ export class FormEquipmentComponent implements OnInit {
 
   goBack() {
     this.router.navigate(['/equipments']);
+  }
+
+
+  showModalDialog() {
+    this.displayModal = true;
+  }
+
+  public setSelectedTypeEquipment(event: Equipment) {
+    this.newEquipment.name = event.name;
+    this.newEquipment.unit = event.unit;
+  }
+
+  public onRowEditInit(equipment: EquipmentInterface) {
+    this.clonedEquipments[equipment.name] = {...equipment};
+  }
+
+  onRowEditSave(equipment: EquipmentInterface) {
+    if (equipment && equipment?.quantity > 0) {
+      if (this.editMode) {
+        // TODO Upd Ingredient Backend
+      } else {
+        // TODO Modifico la lista sessione
+      }
+    } else {
+      this.messageService.add({severity: 'error', summary: 'Error', detail: 'Si sono verificati degli errori'});
+    }
+  }
+
+  onRowEditCancel(equipment: EquipmentInterface, index: number) {
+    if (this.model.equipments) {
+      this.model.equipments[index] = this.clonedEquipments[equipment.name];
+      delete this.clonedEquipments[equipment.name];
+    }
   }
 
 }

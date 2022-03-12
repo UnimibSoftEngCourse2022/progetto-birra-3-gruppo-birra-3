@@ -5,13 +5,13 @@ export const baseEndpoint = () => {
 };
 
 export const ingredientBaseEndpoint = () => {
-  return `${baseEndpoint()}/ingredient`;
+  return `${baseEndpoint()}ingredient`;
 };
 
 export const brewHistoryBaseEndpoint = () => {
-  return `${baseEndpoint()}/brew-history`;
+  return `${baseEndpoint()}brew-history`;
 };
 
 export const recipeBaseEndpoint = () => {
-  return `${baseEndpoint()}/recipes`;
+  return `${baseEndpoint()}recipes`;
 };

@@ -7,4 +7,5 @@ export class Recipe {
   description?: string;
   published?: boolean;
   ingredients?: Ingredient[];
+  equipmentProfileId?: string;
 }

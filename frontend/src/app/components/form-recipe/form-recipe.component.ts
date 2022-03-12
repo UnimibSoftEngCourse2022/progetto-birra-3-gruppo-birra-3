@@ -1,15 +1,18 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { RecipeService } from 'src/app/services/recipe/recipe.service';
-import { MessageService } from 'primeng/api';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgxSpinnerService } from "ngx-spinner";
-import { Recipe } from 'src/app/models/recipe/recipe.model';
+import {Component, Input, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {RecipeService} from 'src/app/services/recipe/recipe.service';
+import {MessageService} from 'primeng/api';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {NgxSpinnerService} from "ngx-spinner";
+import {Recipe} from 'src/app/models/recipe/recipe.model';
+import {EquipmentService} from "../../services/equipment/equipment.service";
+import {EquipmentProfile} from "../../models/equipment/equipment.model";
 
 export interface Colors {
   name: string,
   code: string
 }
+
 @Component({
   selector: 'app-form-recipe',
   templateUrl: './form-recipe.component.html',
@@ -18,6 +21,8 @@ export interface Colors {
 export class FormRecipeComponent implements OnInit {
   @Input() id: string | null = null;
   public editMode: boolean = false;
+  public equipmentProfiles: EquipmentProfile[] = [];
+  public equipmentProfileSelected: EquipmentProfile | null = null;
   public form!: FormGroup;
   public loading: boolean = true;
 
@@ -33,7 +38,7 @@ export class FormRecipeComponent implements OnInit {
 
   selectedColor: Colors | null = null;
 
-  constructor(private spinner: NgxSpinnerService, private route: ActivatedRoute, private _formBuilder: FormBuilder, private recipeService: RecipeService, private messageService: MessageService, private router: Router) {
+  constructor(private spinner: NgxSpinnerService, private route: ActivatedRoute, private _formBuilder: FormBuilder, private recipeService: RecipeService, private equipmentService: EquipmentService, private messageService: MessageService, private router: Router) {
     this.model = new Recipe();
   }
 
@@ -110,7 +115,7 @@ export class FormRecipeComponent implements OnInit {
     this.form = this._formBuilder.group({
       title: [null, [Validators.required]],
       description: [null, [Validators.required]],
-      color: [null, [Validators.required]]
+      color: [null]
     });
 
     if (this.editMode) {
@@ -118,6 +123,8 @@ export class FormRecipeComponent implements OnInit {
     } else {
       this.stopLoading();
     }
+
+    this.loadEquipmentsProfile();
   }
 
   stopLoading() {
@@ -148,6 +155,18 @@ export class FormRecipeComponent implements OnInit {
       });
   }
 
+  loadEquipmentsProfile(): void {
+    this.equipmentService.getAll()
+      .subscribe({
+        next: (data) => {
+          this.equipmentProfiles = data;
+        },
+        error: (e) => {
+          console.error(e);
+        }
+      });
+  }
+
   onSubmit() {
     this.submitted = true;
 
@@ -170,7 +189,7 @@ export class FormRecipeComponent implements OnInit {
           next: (res) => {
             this.submitted = true;
             this.goBack();
-            this.messageService.add({ severity: 'success', summary: 'Service Message', detail: 'Via MessageService' });
+            this.messageService.add({severity: 'success', summary: 'Service Message', detail: 'Via MessageService'});
           },
           error: (e) => console.error(e)
         });
@@ -180,7 +199,7 @@ export class FormRecipeComponent implements OnInit {
           next: (res) => {
             this.submitted = true;
             this.goBack();
-            this.messageService.add({ severity: 'success', summary: 'Service Message', detail: 'Via MessageService' });
+            this.messageService.add({severity: 'success', summary: 'Service Message', detail: 'Via MessageService'});
           },
           error: (e) => console.error(e)
         });
@@ -201,5 +220,21 @@ export class FormRecipeComponent implements OnInit {
           error: (e) => console.error(e)
         });
     }
+  }
+
+  onChangeEquipmentProfileType() {
+    if (this.model) {
+      this.model.equipmentProfileId = this.equipmentProfileSelected?._id;
+    }
+  }
+
+  getNameEquipments() {
+    return this.equipmentProfileSelected?.equipments?.map(x => {
+      if(x.unit){
+        return x.name + " (" + (x.quantity) + " " + x.unit +")";
+      }else{
+        return x.name;
+      }
+    }) ?? [];
   }
 }

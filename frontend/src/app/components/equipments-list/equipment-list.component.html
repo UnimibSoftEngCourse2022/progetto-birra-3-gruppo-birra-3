@@ -13,16 +13,17 @@
         </div>
     </div>
 </div>
+
 <section class="bg-white dark:bg-gray-900 z-10 mt-2">
     <div class="container px-6 py-8 mx-auto">
-        <div class="mt-6 lg:mt-0 lg:px-2 lg:w-4/5 ">
+        <div class="mt-6 lg:mt-0 lg:px-2 lg:w-4/5">
             <div class="flex items-center justify-between text-sm tracking-widest uppercase ">
                 <p class="text-gray-500 dark:text-gray-300">{{equipments?.length || 0}} Elementi</p>
                 <div class="flex items-center">
                     <p class="text-gray-500 dark:text-gray-300">Sort</p>
                     <select class="font-medium text-gray-700 bg-transparent dark:text-gray-500 focus:outline-none"
-                        [disabled]="!equipments || equipments?.length == 0">
-                        <option value="#" *ngFor="let item of ['A-Z','Z-A']">{{item}}</option>
+                        [disabled]="!equipments || equipments?.length == 0" (change)="sort($event)">
+                        <option *ngFor="let item of ['A-Z','Z-A']; let i = index" value="{{i}}">{{item}}</option>
                     </select>
                 </div>
             </div>
@@ -34,7 +35,7 @@
         </div>
     </div>
 </section>
-<!-- Non so come metterlo nella stessa posizione del bottone di recipes -->
-<div class="absolute bottom-9 right-9 h-8 w-8">
-    <p-speedDial (onClick)="addEquipments()"></p-speedDial>
+
+<div class="position-floating-button">
+  <p-speedDial (onClick)="addEquipments()"></p-speedDial>
 </div>
