@@ -12,17 +12,17 @@ import equipmentProfileModel from "../models/equipmentProfileModel";
 class EquipmentController {
     static create = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const body: { title: string, equipment: EquipmentClass[] } = req.body;
+            const body: { title: string, equipments: EquipmentClass[] } = req.body;
 
             // @ts-ignore
             const userSession: UserSession = req.userSession;
 
-            if (!body || !body.title || !body.equipment) {
+            if (!body || !body.title || !body.equipments) {
                 throw new ErrorException(ErrorCode.BadRequest);
             }
 
             // Creo prima gli Equipment Info
-            const equipments = await EquipmentModel.insertMany(body.equipment);
+            const equipments = await EquipmentModel.insertMany(body.equipments);
 
             if (!equipments) {
                 throw new ErrorException(ErrorCode.BadRequest);

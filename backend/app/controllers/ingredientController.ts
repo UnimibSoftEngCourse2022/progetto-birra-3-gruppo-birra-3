@@ -7,6 +7,7 @@ import {ErrorException} from "../errors/errorException";
 import {ErrorCode} from "../errors/errorCode";
 import IngredientModel from "../models/ingredientModel";
 import RecipeModel from "../models/recipeModel";
+import {getParamsForLike} from "../utils/mongoDBUtils";
 
 class IngredientController {
     static update = async (req: Request, res: Response, next: NextFunction) => {
@@ -61,6 +62,31 @@ class IngredientController {
             const result = await IngredientModel.findOneAndDelete(_params, {
                 useFindAndModify: false,
             });
+
+            if (!result) {
+                throw new ErrorException(ErrorCode.BadRequest);
+            }
+
+            responseHandler(res, result);
+        } catch (error) {
+            next(error);
+        }
+    };
+
+    static findAll = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const query: any = req.query as any;
+            //@ts-ignore
+            const userSession: UserSession = req.userSession;
+
+            let _params = {
+                ...{
+                    userId: userSession._id
+                },
+                ...getParamsForLike(query)
+            };
+
+            const result = await IngredientModel.find(_params).exec();
 
             if (!result) {
                 throw new ErrorException(ErrorCode.BadRequest);

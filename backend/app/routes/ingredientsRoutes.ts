@@ -16,6 +16,8 @@ router.post(
   IngredientController.addIngredientToRecipe
 );
 
+router.get("/", [authMiddleware], IngredientController.findAll);
+
 router.put("/:id", [authMiddleware], IngredientController.update);
 
 router.delete("/:id", [authMiddleware], IngredientController.delete);

@@ -8,6 +8,6 @@ router.get("/", [authMiddleware], BrewingHistoryController.findAll);
 
 router.delete("/:id", [authMiddleware], BrewingHistoryController.delete);
 
-router.post("/brew-recipe", [authMiddleware], BrewingHistoryController.brewRecipe);
+router.get("/brew-recipe/:id", [authMiddleware], BrewingHistoryController.brewRecipe);
 
 export default router;

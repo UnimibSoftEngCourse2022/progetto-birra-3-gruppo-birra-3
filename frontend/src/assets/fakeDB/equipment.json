@@ -1,39 +1,42 @@
 [
-    {
-        "name" : "Boil kettle",
-        "quantity" : null
-    },
-    {
-        "name" : "Mash tun",
-        "quantity" : null
-    },
-    {
-        "name" : " Thermometer",
-        "quantity" : null
-    },
-    {
-        "name" : "pH Testing Equipment",
-        "quantity" : null
-
-    },
-    {
-        "name" : "Wort chiller",
-        "quantity" : null
-
-    },
-    {
-        "name" : "Double Bubble Airlock",
-        "quantity" : null
-
-    },
-    {
-        "name" : "Grain Mill",
-        "quantity" : null
-
-    },
-    {
-        "name" : "Triple Scale Beer & Wine Hydrometer",
-        "quantity" : null
-
-    }
+  {
+    "name": "Boil kettle",
+    "quantity": null,
+    "unit": "gal"
+  },
+  {
+    "name": "Mash tun",
+    "quantity": null,
+    "unit": null
+  },
+  {
+    "name": " Thermometer",
+    "quantity": null,
+    "unit" : null
+  },
+  {
+    "name": "pH Testing Equipment",
+    "quantity": null,
+    "unit" : null
+  },
+  {
+    "name": "Wort chiller",
+    "quantity": null,
+    "unit" : null
+  },
+  {
+    "name": "Double Bubble Airlock",
+    "quantity": null,
+    "unit" : null
+  },
+  {
+    "name": "Grain Mill",
+    "quantity": null,
+    "unit" : null
+  },
+  {
+    "name": "Triple Scale Beer & Wine Hydrometer",
+    "quantity": null,
+    "unit" : null
+  }
 ]
