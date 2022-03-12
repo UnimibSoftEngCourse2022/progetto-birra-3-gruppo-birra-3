@@ -1,7 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import {Ingredient, IngredientInterface} from 'src/app/models/ingredient/ingredient.model';
+import {
+  Ingredient,
+  IngredientInterface,
+} from 'src/app/models/ingredient/ingredient.model';
 import RECIPE_ENDPOINTS from 'src/app/utils/recipeEndpoints';
 import { environment } from '../../../environments/environment';
 import { Recipe } from '../../models/recipe/recipe.model';
@@ -47,22 +50,21 @@ export class RecipeService {
     return this.http.get<Recipe[]>(RECIPE_ENDPOINTS.FIND_BY_TITLE(title));
   }
 
-  getNextBatchList(recipeIngredients: IngredientInterface[]): IngredientInterface[] {
-    let userCurrentIgrendients: IngredientInterface[] = [];
-
+  getNextBatchList(
+    recipeIngredients: IngredientInterface[],
+    userCurrentIgrendients: IngredientInterface[]
+  ): IngredientInterface[] {
     let missingIngredients: IngredientInterface[] = [];
 
     //Ciclo su tutti gli ingredienti della ricetta
     recipeIngredients.forEach((recipeIngredient) => {
       //Controllo se l'igrediente è presente
-      let presentIngredient = userCurrentIgrendients.find(
-        (userIngredient) => {
-          return (
-            userIngredient.name === recipeIngredient.name &&
-            userIngredient.quantity === recipeIngredient.quantity
-          );
-        }
-      );
+      let presentIngredient = userCurrentIgrendients.find((userIngredient) => {
+        return (
+          userIngredient.name === recipeIngredient.name &&
+          userIngredient.quantity === recipeIngredient.quantity
+        );
+      });
 
       //Se non è presente, allora lo aggiungo alla lista degli ingredienti mancanti
       if (!presentIngredient) {
