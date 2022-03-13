@@ -98,7 +98,8 @@ export class FormEquipmentComponent implements OnInit {
       title: this.model.title,
       equipments: this.model.equipments ? this.model.equipments.map(x => {
         return {
-          name: x.name
+          name: x.name,
+          quantity: x.quantity
         }
       }) : []
     };

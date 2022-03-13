@@ -1,6 +1,11 @@
 [
   {
-    "name": "Boil kettle",
+    "name": "Boil Kettle",
+    "quantity": null,
+    "unit": "gal"
+  },
+  {
+    "name": "Boil Fermenter",
     "quantity": null,
     "unit": "gal"
   },

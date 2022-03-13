@@ -7,11 +7,9 @@ import {NgxSpinnerService} from "ngx-spinner";
 import {Recipe} from 'src/app/models/recipe/recipe.model';
 import {EquipmentService} from "../../services/equipment/equipment.service";
 import {EquipmentProfile} from "../../models/equipment/equipment.model";
-
-export interface Colors {
-  name: string,
-  code: string
-}
+import {Ingredient} from "../../models/ingredient/ingredient.model";
+import {TYPE_UNIQUE_NAME_ENUM, UNIT_OF_MEASUREMENT_ENUM} from "../../enum/equipmentUnits";
+import {INGREDIENTS_ENUM} from "../../enum/ingredients";
 
 @Component({
   selector: 'app-form-recipe',
@@ -34,10 +32,6 @@ export class FormRecipeComponent implements OnInit {
 
   submitted = false;
 
-  colors: any[] = [];
-
-  selectedColor: Colors | null = null;
-
   constructor(private spinner: NgxSpinnerService, private route: ActivatedRoute, private _formBuilder: FormBuilder, private recipeService: RecipeService, private equipmentService: EquipmentService, private messageService: MessageService, private router: Router) {
     this.model = new Recipe();
   }
@@ -53,60 +47,6 @@ export class FormRecipeComponent implements OnInit {
       this.spinner.show();
     }
 
-    this.colors = [
-      {
-        name: "#F8F753",
-        code: "#F8F753"
-      },
-      {
-        name: "#F6F513",
-        code: "#F6F513"
-      },
-      {
-        name: "#ECE61A",
-        code: "#ECE61A"
-      },
-      {
-        name: "#D5BC26",
-        code: "#D5BC26"
-      },
-      {
-        name: "#BF923B",
-        code: "#BF923B"
-      },
-      {
-        name: "#BF813A",
-        code: "#BF813A"
-      },
-      {
-        name: "#BC6733",
-        code: "#BC6733"
-      },
-      {
-        name: "#8D4C32",
-        code: "#8D4C32"
-      },
-      {
-        name: "#5D341A",
-        code: "#5D341A"
-      },
-      {
-        name: "#261716",
-        code: "#261716"
-      },
-      {
-        name: "#0F0B0A",
-        code: "#0F0B0A"
-      },
-      {
-        name: "#080707",
-        code: "#080707"
-      },
-      {
-        name: "#030403",
-        code: "#030403"
-      }];
-
     this.submitted = false;
     this.model.title = "";
     this.model.description = "";
@@ -115,6 +55,7 @@ export class FormRecipeComponent implements OnInit {
     this.form = this._formBuilder.group({
       title: [null, [Validators.required]],
       description: [null, [Validators.required]],
+      equipmentProfileId: [null, [Validators.required]],
       color: [null]
     });
 
@@ -141,7 +82,7 @@ export class FormRecipeComponent implements OnInit {
 
           setTimeout(() => {
             this.model = data;
-            this.selectedColor = this.colors.find(x => x.code == this.model.color);
+            this.equipmentProfileSelected = this.equipmentProfiles.find(x => x._id == this.model.equipmentProfileId) ?? new EquipmentProfile();
             this.spinner.hide();
           }, 700);
         },
@@ -170,39 +111,66 @@ export class FormRecipeComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
 
-    // stop here if form is invalid
     if (this.form.invalid) {
       return;
     }
 
     this.loading = true;
 
-    let data = {
-      title: this.model.title,
-      color: this.selectedColor!.code,
-      description: this.model.description
-    };
+    // Recupero da equipmentProfileSelected il Boil kettle e Boil Fermenter size e type malto quantità
+    let batchSize: number = 0;
+    let maltType: any;
 
-    if (this.editMode) {
-      this.recipeService.update(this.model._id, data)
-        .subscribe({
-          next: (res) => {
-            this.submitted = true;
-            this.goBack();
-            this.messageService.add({severity: 'success', summary: 'Service Message', detail: 'Via MessageService'});
-          },
-          error: (e) => console.error(e)
-        });
-    } else {
-      this.recipeService.create(data)
-        .subscribe({
-          next: (res) => {
-            this.submitted = true;
-            this.goBack();
-            this.messageService.add({severity: 'success', summary: 'Service Message', detail: 'Via MessageService'});
-          },
-          error: (e) => console.error(e)
-        });
+    this.equipmentProfileSelected?.equipments?.forEach((equipment) => {
+      if (equipment.name === TYPE_UNIQUE_NAME_ENUM.BOIL_KETTLE || equipment.name === TYPE_UNIQUE_NAME_ENUM.BOIL_FERMENTER) {
+        batchSize = equipment?.quantity ?? 0;
+      }
+    });
+
+    this.model?.ingredients?.forEach((ingredient) => {
+      if (ingredient.type === INGREDIENTS_ENUM.MALT) {
+        maltType = ingredient;
+      }
+    });
+
+    if (batchSize && maltType) {
+      let color = this.recipeService.getBeerColor(batchSize, maltType?.name, maltType?.quantity);
+
+      let data = {
+        title: this.model.title,
+        color: color,
+        description: this.model.description,
+        equipmentProfileId: this.equipmentProfileSelected?._id,
+        ingredients: this.model.ingredients?.map((x) => {
+          return {
+            name: x.name,
+            quantity: x.quantity,
+            type: x.type
+          };
+        })
+      };
+
+      if (this.editMode) {
+        this.recipeService.update(this.model._id, data)
+          .subscribe({
+            next: (res) => {
+              this.submitted = true;
+              this.goBack();
+              this.messageService.add({severity: 'success', summary: 'Service Message', detail: 'Via MessageService'});
+            },
+            error: (e) => console.error(e)
+          });
+      } else {
+        this.recipeService.create(data)
+          .subscribe({
+            next: (res) => {
+              this.submitted = true;
+              this.goBack();
+              this.messageService.add({severity: 'success', summary: 'Service Message', detail: 'Via MessageService'});
+            },
+            error: (e) => console.error(e)
+          });
+      }
     }
   }
 
@@ -230,11 +198,55 @@ export class FormRecipeComponent implements OnInit {
 
   getNameEquipments() {
     return this.equipmentProfileSelected?.equipments?.map(x => {
-      if(x.unit){
-        return x.name + " (" + (x.quantity) + " " + x.unit +")";
-      }else{
+      if (x.quantity) {
+        return x.name + " (" + (x.quantity) + " " + UNIT_OF_MEASUREMENT_ENUM.GALLONS + ")";
+      } else {
         return x.name;
       }
     }) ?? [];
   }
+
+  addIngredient(event: Ingredient) {
+    console.log(event);
+
+    if (!this.model.ingredients) {
+      this.model.ingredients = [];
+    }
+
+    this.model.ingredients.push(event);
+  }
+
+  getColorRecipe() {
+    let batchSize: number = 0;
+    let maltType: any;
+
+    this.equipmentProfileSelected?.equipments?.forEach((equipment) => {
+      if (equipment.name === TYPE_UNIQUE_NAME_ENUM.BOIL_KETTLE || equipment.name === TYPE_UNIQUE_NAME_ENUM.BOIL_FERMENTER) {
+        batchSize = equipment?.quantity ?? 0;
+      }
+    });
+
+    this.model?.ingredients?.forEach((ingredient) => {
+      if (ingredient.type === INGREDIENTS_ENUM.MALT) {
+        maltType = ingredient;
+      }
+    });
+
+    let color = "#f7a900";
+
+    if (batchSize && maltType) {
+      color = this.recipeService.getBeerColor(batchSize, maltType?.name, maltType?.quantity);
+    }
+
+    return color;
+  }
+
+  disabledSaveBtn() {
+    if (!this.form.invalid && this.model.ingredients && this.model.ingredients.length > 0) {
+      return false;
+    }
+
+    return true;
+  }
 }
+

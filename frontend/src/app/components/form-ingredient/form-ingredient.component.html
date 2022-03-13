@@ -20,7 +20,7 @@
   </div>
 </section>
 <section class="max-w-4xl mx-auto bg-white rounded-md ring-1 ring-gray-300 dark:bg-gray-800">
-  <ng-container *ngIf="_ingredients; else noElements">
+  <ng-container *ngIf="_ingredients && _ingredients.length > 0; else noElements">
     <p-table styleClass="rounded-md" [value]="_ingredients" dataKey="_id" editMode="row" responsiveLayout="scroll"
              class="rounded-md" [scrollable]="false">
       <ng-template pTemplate="header">
@@ -33,8 +33,8 @@
       </ng-template>
       <ng-template pTemplate="body" let-ingredient let-editing="editing" let-ri="rowIndex">
         <tr [pEditableRow]="ingredient">
-          <td>{{ingredient.type}}</td>
-          <td>{{ingredient.name}}</td>
+          <td>{{ ingredient.type | titlecase }}</td>
+          <td>{{ingredient.name | titlecase}}</td>
           <td>
             <p-cellEditor>
               <ng-template pTemplate="input">
@@ -81,52 +81,59 @@
   </ng-template>
 </section>
 
-<p-dialog [(visible)]="displayModal" [style]="{width: '550px', height: '508px'}"
-          header="Aggiungi Ingrediente"
-          [modal]="true" [draggable]="false" [resizable]="false" styleClass="p-fluid">
-  <ng-template pTemplate="content">
-    <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-1">
-      <div>
-        <label class="text-gray-700 dark:text-gray-200">Tipologia</label>
-        <div class="block w-full mt-1 focus:outline-none">
-          <p-dropdown styleClass="w-full" [options]="types" [(ngModel)]="model.type"
-                      (onChange)="onChangeType()">
-            <ng-template pTemplate="selectedItem">
-              <div *ngIf="model.type">
-                <div>{{ model.type  | titlecase }}</div>
-              </div>
-            </ng-template>
-            <ng-template let-types pTemplate="item">
-              <div>{{ types | titlecase }}</div>
-            </ng-template>
-          </p-dropdown>
+<ng-container *ngIf="model">
+  <p-dialog [(visible)]="displayModal" [style]="{width: '550px', height: model.type ? '634px' : '450px'}"
+            header="Aggiungi Ingrediente"
+            [modal]="true" [draggable]="false" [resizable]="false" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+      <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-1">
+        <div>
+          <label class="text-gray-700 dark:text-gray-200">Tipologia</label>
+          <div class="block w-full mt-1 focus:outline-none">
+            <p-dropdown [autoDisplayFirst]="false" placeholder="Seleziona il tipo" styleClass="w-full" [options]="types"
+                        [(ngModel)]="model.type"
+                        (onChange)="onChangeType()">
+              <ng-template pTemplate="selectedItem">
+                <div *ngIf="model.type">
+                  <div>{{ model.type  | titlecase }}</div>
+                </div>
+              </ng-template>
+              <ng-template let-types pTemplate="item">
+                <div>{{ types | titlecase }}</div>
+              </ng-template>
+            </p-dropdown>
+          </div>
         </div>
-      </div>
-      <div *ngIf="model.type">
-        <label class="text-gray-700 dark:text-gray-200">Nome</label>
-        <div class="block w-full mt-1 focus:outline-none" *ngIf="!loadData">
-          <app-drop-down-ingredient [type]="model.type" (selectedIngredient)="setNameSelected($event)">
-          </app-drop-down-ingredient>
-        </div>
-      </div>
-      <div>
-        <label class="text-gray-700 dark:text-gray-200">Quantità</label>
-        <div class="block w-full mt-1 focus:outline-none">
-          <p-inputNumber [(ngModel)]="model.quantity" mode="decimal" [showButtons]="false" [min]="0" [max]="100">
-          </p-inputNumber>
-        </div>
-      </div>
-    </div>
-  </ng-template>
 
-  <ng-template pTemplate="footer">
-    <button (click)="displayModal=false"
-            class="ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-gray-500 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-700">
-      <span>Annulla</span>
-    </button>
-    <button (click)="onSubmit()"
-            class="ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-amber-500 rounded-md hover:bg-amber-600 focus:outline-none focus:bg-amber-700">
-      <span>Aggiungi</span>
-    </button>
-  </ng-template>
-</p-dialog>
+        <ng-container *ngIf="model.type && model.type">
+          <div>
+            <label class="text-gray-700 dark:text-gray-200">Nome</label>
+            <div class="block w-full mt-1 focus:outline-none" *ngIf="!loadData">
+              <app-drop-down-ingredient [type]="model.type" (selectedIngredient)="setNameSelected($event)">
+              </app-drop-down-ingredient>
+            </div>
+          </div>
+          <div>
+            <label class="text-gray-700 dark:text-gray-200">Quantità</label>
+            <div class="block w-full mt-1 focus:outline-none">
+              <p-inputNumber [(ngModel)]="model.quantity" mode="decimal" [showButtons]="false" [min]="0">
+              </p-inputNumber>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+      <button (click)="displayModal=false"
+              class="ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-gray-500 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-700">
+        <span>Annulla</span>
+      </button>
+      <button (click)="onSubmit()"
+              class="ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-amber-500 rounded-md hover:bg-amber-600 focus:outline-none focus:bg-amber-700 disabled:bg-amber-200"
+              [disabled]="isDisabled()">
+        <span>Aggiungi</span>
+      </button>
+    </ng-template>
+  </p-dialog>
+</ng-container>

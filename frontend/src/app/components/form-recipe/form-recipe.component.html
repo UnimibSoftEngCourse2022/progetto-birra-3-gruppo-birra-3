@@ -3,14 +3,14 @@
 <section class="max-w-4xl pt-5 pb-5 mx-auto">
   <div class="grid grid-cols-2 gap-6 sm:grid-cols-2">
     <div>
-      <h1 class="text-2xl font-semibold text-gray-700 capitalize dark:text-white" *ngIf="!editMode">
+      <h1 class="text-2xl font-semibold text-gray-700 capitalize dark:text-white">
         Info Ricetta
       </h1>
     </div>
     <div>
       <div class="flex justify-end">
         <button (click)="onSubmit()"
-                class="ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-amber-500 rounded-md hover:bg-amber-600 focus:outline-none focus:bg-amber-700">
+                class="ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-amber-500 rounded-md hover:bg-amber-600 focus:outline-none focus:bg-amber-700 disabled:bg-amber-200" [disabled]="disabledSaveBtn()">
           <span *ngIf="!editMode">Salva</span>
           <span *ngIf="editMode">Salva Modifiche</span>
         </button>
@@ -24,51 +24,86 @@
 </section>
 
 <section class="max-w-4xl p-6 mx-auto bg-white rounded-md ring-1 ring-gray-300 dark:bg-gray-800">
+  <div class="flex flex-wrap">
 
-  <div class="grid grid-cols-1 gap-6 sm:grid-cols-1">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <div>
-        <label for="title" class="text-gray-700 dark:text-gray-200">Titolo Ricetta</label>
-        <input aria-describedby="title-help"
-               [ngClass]="{ 'ng-invalid ng-dirty border-red-600 focus:border-red-500 focus:ring-red-500':submitted && f['title'].errors }"
-               class="block w-full mt-1 border focus:outline-none" type="text" id="title" formControlName="title"
-               pInputText
-               [(ngModel)]="model.title" placeholder="Inserisci un nickname per il tuo equipaggiamento">
-        <small id="title-help" class="p-error block"
-               *ngIf="submitted && f['title'].errors && f['title'].errors['required']">Titolo è
-          obbligatorio
-        </small>
-      </div>
+    <div class="w-9/12">
 
-      <div class="mt-5">
-        <label for="description" class="text-gray-700 dark:text-gray-200">Note</label>
-        <input aria-describedby="description-help"
-               [ngClass]="{ 'ng-invalid ng-dirty border-red-600 focus:border-red-500 focus:ring-red-500':submitted && f['description'].errors }"
-               class="block w-full mt-1  focus:outline-none" type="text" id="description" formControlName="description"
-               pInputText
-               [(ngModel)]="model.description" placeholder="Puoi aggiungere qui le">
-        <small id="description-help" class="p-error block"
-               *ngIf="submitted && f['description'].errors && f['description'].errors['required']">Descrizione è
-          obbligatorio</small>
-      </div>
-    </form>
-
-    <div>
-      <label class="text-gray-700 dark:text-gray-200">Equipment Profile</label>
-      <p-dropdown styleClass="w-full" [options]="equipmentProfiles" [(ngModel)]="equipmentProfileSelected"
-                  (onChange)="onChangeEquipmentProfileType()">
-        <ng-template pTemplate="selectedItem">
-          <div *ngIf="equipmentProfileSelected">
-            <div>{{ equipmentProfileSelected.title  | titlecase }}</div>
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-1">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <div>
+            <label for="title" class="text-gray-700 dark:text-gray-200">Titolo Ricetta</label>
+            <input aria-describedby="title-help"
+                   [ngClass]="{ 'ng-invalid ng-dirty border-red-600 focus:border-red-500 focus:ring-red-500':submitted && f['title'].errors }"
+                   class="block w-full mt-1 border focus:outline-none" type="text" id="title" formControlName="title"
+                   pInputText
+                   [(ngModel)]="model.title" placeholder="Inserisci un nickname per il tuo equipaggiamento">
+            <small id="title-help" class="p-error block"
+                   *ngIf="submitted && f['title'].errors && f['title'].errors['required']">Titolo è
+              obbligatorio
+            </small>
           </div>
-        </ng-template>
-        <ng-template let-equiprofile pTemplate="item">
-          <div>{{ equiprofile.title | titlecase }}</div>
-        </ng-template>
-      </p-dropdown>
-      <small  *ngIf="equipmentProfileSelected" class="p-info block">{{ getNameEquipments().join(", ") }}</small>
+
+          <div class="mt-5">
+            <label for="description" class="text-gray-700 dark:text-gray-200">Note</label>
+            <input aria-describedby="description-help"
+                   [ngClass]="{ 'ng-invalid ng-dirty border-red-600 focus:border-red-500 focus:ring-red-500':submitted && f['description'].errors }"
+                   class="block w-full mt-1  focus:outline-none" type="text" id="description"
+                   formControlName="description"
+                   pInputText
+                   [(ngModel)]="model.description" placeholder="Puoi aggiungere qui le">
+            <small id="description-help" class="p-error block"
+                   *ngIf="submitted && f['description'].errors && f['description'].errors['required']">Descrizione è
+              obbligatorio</small>
+          </div>
+
+          <input type="hidden" id="equipmentProfileId" formControlName="equipmentProfileId" [(ngModel)]="model.equipmentProfileId">
+        </form>
+
+        <div>
+          <label class="text-gray-700 dark:text-gray-200">Profilo Attrezzatura</label>
+          <p-dropdown [autoDisplayFirst]="false" placeholder="Seleziona un profilo attrezzatura" styleClass="w-full" [options]="equipmentProfiles" [(ngModel)]="equipmentProfileSelected"
+                      (onChange)="onChangeEquipmentProfileType()">
+            <ng-template pTemplate="selectedItem">
+              <div *ngIf="equipmentProfileSelected">
+                <div>{{ equipmentProfileSelected.title  | titlecase }}</div>
+              </div>
+            </ng-template>
+            <ng-template let-equiprofile pTemplate="item">
+              <div>{{ equiprofile.title | titlecase }}</div>
+            </ng-template>
+          </p-dropdown>
+          <small *ngIf="equipmentProfileSelected" class="p-info block">{{ getNameEquipments().join(", ") }}</small>
+        </div>
+      </div>
     </div>
+
+    <div class="w-3/12">
+      <div class="container-beer">
+        <div class="borderbox">
+          <div class="glass" [ngStyle]="{'background-color': getColorRecipe() || '#c68543' }">
+            <div class="inner"
+                 style="transform: scale(0.6); width: 400px;height: 100%;background-image: url('./../../../assets/schiuma.png')"
+                 [ngStyle]="{'background-color': getColorRecipe() || '#c68543' }">
+              <div class="bubble"></div>
+              <div class="bubble"></div>
+              <div class="bubble"></div>
+              <div class="bubble"></div>
+              <div class="bubble"></div>
+              <div class="bubble"></div>
+              <div class="bubble"></div>
+              <div class="bubble"></div>
+              <div class="bubble"></div>
+              <div class="bubble"></div>
+              <div class="bubble"></div>
+              <div class="bubble"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
-<app-form-ingredient [showBreadcrumbs]="false"></app-form-ingredient>
+<app-form-ingredient [ingredients]="model?.ingredients" [showBreadcrumbs]="false" [fromRecipe]="true"
+                     [editMode]="editMode" (addedIngredient)="addIngredient($event)"></app-form-ingredient>

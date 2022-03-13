@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { MenuItem } from 'primeng/api';
-import { RecipeService } from 'src/app/services/recipe/recipe.service';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { Recipe } from 'src/app/models/recipe/recipe.model';
+import {Component, OnInit} from '@angular/core';
+import {MenuItem} from 'primeng/api';
+import {RecipeService} from 'src/app/services/recipe/recipe.service';
+import {faSearch} from '@fortawesome/free-solid-svg-icons';
+import {Router} from '@angular/router';
+import {NgxSpinnerService} from 'ngx-spinner';
+import {Recipe} from 'src/app/models/recipe/recipe.model';
 
 @Component({
   selector: 'app-recipes-list',
@@ -19,11 +19,13 @@ export class RecipesListComponent implements OnInit {
   currentRecipe: Recipe = {};
   currentIndex = -1;
   title = '';
+
   constructor(
     private spinner: NgxSpinnerService,
     private recipeService: RecipeService,
     private router: Router
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.spinner.show();
@@ -60,7 +62,7 @@ export class RecipesListComponent implements OnInit {
       next: (data) => {
         setTimeout(() => {
           this.recipes = data;
-          // this.recipes.push(mockedRecipe);
+
           this.spinner.hide();
         }, 700);
       },
@@ -101,34 +103,10 @@ export class RecipesListComponent implements OnInit {
       error: (e) => console.error(e),
     });
   }
-}
 
-// const mockedRecipe: Recipe = {
-//   _id: 11,
-//   color: 'red',
-//   description: 'pipo pipo',
-//   published: false,
-//   title: 'skarapappa',
-//   ingredients: [
-//     {
-//       name: 'pippo',
-//       quantity: 10,
-//       type: 'malt',
-//     },
-//     {
-//       name: 'pippo2da daòdalò djalòdja òdl jadlòajdlòajdlòa',
-//       quantity: 10,
-//       type: 'malt',
-//     },
-//     {
-//       name: 'pippo2da daòdalò djalòdja òdl jadlòajdlòajdlòa',
-//       quantity: 10,
-//       type: 'malt',
-//     },
-//     {
-//       name: 'pippo2da daòdalò djalòdja òdl jadlòajdlòajdlòa',
-//       quantity: 10,
-//       type: 'malt',
-//     },
-//   ],
-// };
+  realodList(event: boolean) {
+    if (event) {
+      this.refreshList();
+    }
+  }
+}

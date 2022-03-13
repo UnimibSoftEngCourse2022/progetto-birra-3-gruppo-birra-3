@@ -12,23 +12,13 @@ import {getParamsForLike} from "../utils/mongoDBUtils";
 class RecipeController {
     static create = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            let body: { title: string, description: string, color: string, equipmentId: string, ingredients: IngredientType[] } = req.body;
+            let body: { title: string, description: string, color: string, equipmentProfileId: string, ingredients: IngredientType[] } = req.body;
 
             // @ts-ignore
             const userSession: UserSession = req.userSession;
 
             if (!body) {
                 throw new ErrorException(ErrorCode.BadRequest);
-            }
-
-            // TODO Fixare la validazione dei dati in body
-
-            if (!body.ingredients) {
-                body.ingredients = [];
-            }
-
-            if (!body.equipmentId) {
-                body.equipmentId = "1";
             }
 
             const ingredients = await IngredientModel.insertMany(body.ingredients);
@@ -40,6 +30,7 @@ class RecipeController {
             let recipe: RecipeClass = new RecipeClass();
             recipe.title = body.title;
             recipe.color = body.color;
+            recipe.equipmentProfileId = body.equipmentProfileId;
             recipe.description = body.description;
             recipe.userId = userSession._id;
 

@@ -1,8 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Recipe } from 'src/app/models/recipe/recipe.model';
-import { ChronologyService } from 'src/app/services/chronology/chronology.service';
-import { canBrewRecipe } from 'src/app/services/recipe/helper/recipeHelper';
-import { RecipeService } from 'src/app/services/recipe/recipe.service';
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import {Recipe} from 'src/app/models/recipe/recipe.model';
+import {ChronologyService} from 'src/app/services/chronology/chronology.service';
+import {canBrewRecipe} from 'src/app/services/recipe/helper/recipeHelper';
+import {RecipeService} from 'src/app/services/recipe/recipe.service';
+import {Equipment} from "../../models/equipment/equipment.model";
 
 @Component({
   selector: 'app-recipe-card',
@@ -11,13 +12,15 @@ import { RecipeService } from 'src/app/services/recipe/recipe.service';
 })
 export class RecipeCardComponent implements OnInit {
   @Input() recipe?: Recipe;
+  @Output() onReload = new EventEmitter<boolean>();
 
   canBrewRecipe?: boolean;
 
   constructor(
     private recipeService: RecipeService,
     private chronologyService: ChronologyService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     const userIngredients = [];
@@ -27,7 +30,7 @@ export class RecipeCardComponent implements OnInit {
   deleteRecipe(id: string): void {
     this.recipeService.delete(id).subscribe({
       next: (res) => {
-        // TODO Emit to reload list recipe
+        this.onReload.emit(true);
       },
       error: (e) => console.error(e),
     });
@@ -37,10 +40,17 @@ export class RecipeCardComponent implements OnInit {
     console.log(recipeId);
     this.chronologyService.brewBeer(recipeId).subscribe({
       next: (res) => {
-        // TODO Emit to reload list recipe
-        console.log(res);
+        this.onReload.emit(true);
       },
       error: (e) => console.error(e),
     });
+  }
+
+  getNameIngredients() {
+    if (this.recipe) {
+      return this.recipe.ingredients?.map(x => x.name)
+    }
+
+    return [];
   }
 }

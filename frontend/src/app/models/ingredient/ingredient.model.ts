@@ -1,8 +1,8 @@
 export class Ingredient {
   _id: string = "";
-  name: string = "";
-  type: string = "";
-  quantity: number = 0;
+  name: string | null = null;
+  type: string | null = null;
+  quantity: number = 1;
 }
 
 export interface IngredientInterface {
