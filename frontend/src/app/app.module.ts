@@ -50,6 +50,7 @@ import { IngredientCardComponent } from './components/ingredient-card/ingredient
 import { TableModule } from 'primeng/table';
 import {BreadcrumbModule} from 'primeng/breadcrumb';
 import {ListboxModule} from 'primeng/listbox';
+import {TooltipModule} from 'primeng/tooltip';
 
 @NgModule({
   declarations: [
@@ -73,6 +74,7 @@ import {ListboxModule} from 'primeng/listbox';
     IngredientCardComponent
   ],
   imports: [
+    TooltipModule,
     ListboxModule,
     BreadcrumbModule,
     TableModule,

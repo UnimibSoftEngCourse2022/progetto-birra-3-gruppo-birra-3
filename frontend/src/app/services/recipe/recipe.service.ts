@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {Ingredient, IngredientInterface} from 'src/app/models/ingredient/ingredient.model';
 import RECIPE_ENDPOINTS from 'src/app/utils/recipeEndpoints';
-import { environment } from '../../../environments/environment';
 import { Recipe } from '../../models/recipe/recipe.model';
 import {
   calculateBeerColor,
@@ -90,4 +89,23 @@ export class RecipeService {
 
     return beerColor;
   }
+
+  canBrewRecipe (
+    recipeIngredients: Ingredient[],
+    userIngredients: Ingredient[]
+  ): boolean {
+    let hasEveryIngredient = recipeIngredients.every((recipeIngr) => {
+      let findIngredient = userIngredients.find((userIngr) => {
+        return (
+          userIngr.name === recipeIngr.name &&
+          userIngr.type === recipeIngr.type &&
+          userIngr.quantity! >= recipeIngr.quantity!
+        );
+      });
+
+      return !!findIngredient;
+    });
+
+    return hasEveryIngredient;
+  };
 }

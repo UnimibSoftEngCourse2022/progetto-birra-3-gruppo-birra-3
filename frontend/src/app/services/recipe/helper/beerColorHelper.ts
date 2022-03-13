@@ -19,7 +19,7 @@ export const calculateBeerColor = (srm: number): string => {
   }
 
   const roundedSRM = Math.round(srm);
-  return BEER_COLOR_MAP[roundedSRM];
+  return BEER_COLOR_MAP[roundedSRM] ?? '#FFE699';
 };
 
 export const getMaltLovibond = (maltName: string): number => {

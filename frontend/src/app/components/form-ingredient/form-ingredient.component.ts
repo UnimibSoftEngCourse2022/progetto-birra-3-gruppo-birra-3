@@ -18,7 +18,7 @@ export class FormIngredientComponent implements OnInit {
   @Input() showBreadcrumbs: boolean = true;
   @Input() fromRecipe: boolean = false;
   @Input() editMode: boolean = false;
-  @Input() ingredients: Ingredient[] | undefined;
+  @Input() ingredients: Ingredient[];
   @Output() addedIngredient = new EventEmitter<Ingredient>();
 
   public loading: boolean = true;
@@ -77,7 +77,9 @@ export class FormIngredientComponent implements OnInit {
       this._ingredients = this.ingredients || [];
     }
 
-    if (this.editMode) {
+    console.log(this.ingredients);
+
+    if (this.editMode && !this.fromRecipe) {
       this.getIngredient(this.route.snapshot.params['id'] || this.id);
     } else {
       this.stopLoading();
@@ -130,49 +132,52 @@ export class FormIngredientComponent implements OnInit {
   }
 
   onSubmit() {
-
     this.submitted = true;
     this.loading = true;
 
     if (this.model) {
-      if (this.editMode) {
-        this.ingredientService.update(this.model._id, this.model).subscribe({
-          next: (res) => {
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Service Message',
-              detail: 'Via MessageService',
-            });
-          },
-          error: (e) => console.error(e),
-        });
-      } else if (!this.fromRecipe) {
-        let data = {
-          name: this.model.name,
-          type: this.model.type,
-          quantity: this.model.quantity,
-        }
+      if (this.fromRecipe) {
+        if (!this.editMode)
+          this._ingredients.push(this.model);
 
-        this.ingredientService.create(data, IngredientRef.TO_USER).subscribe({
-          next: (res) => {
-            console.log(res);
-            this._ingredients.push(res);
-
-            this.spinner.show();
-            this.initVal();
-            this.displayModal = false;
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Service Message',
-              detail: 'Via MessageService',
-            });
-          },
-          error: (e) => console.error(e),
-        });
-      } else {
-        this._ingredients.push(this.model);
         this.addedIngredient.emit(this.model);
         this.displayModal = false;
+      } else {
+        if (this.editMode) {
+          this.ingredientService.update(this.model._id, this.model).subscribe({
+            next: (res) => {
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Service Message',
+                detail: 'Via MessageService',
+              });
+            },
+            error: (e) => console.error(e),
+          });
+        } else {
+          let data = {
+            name: this.model.name,
+            type: this.model.type,
+            quantity: this.model.quantity,
+          }
+
+          this.ingredientService.create(data, IngredientRef.TO_USER).subscribe({
+            next: (res) => {
+              console.log(res);
+              this._ingredients.push(res);
+
+              this.spinner.show();
+              this.initVal();
+              this.displayModal = false;
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Service Message',
+                detail: 'Via MessageService',
+              });
+            },
+            error: (e) => console.error(e),
+          });
+        }
       }
     }
   }
@@ -193,8 +198,8 @@ export class FormIngredientComponent implements OnInit {
   }
 
   public setNameSelected(event: Ingredient | null) {
-    if (this.model){
-      this.model.name =  event ? event.name : null;
+    if (this.model) {
+      this.model.name = event ? event.name : null;
     }
   }
 
@@ -211,24 +216,24 @@ export class FormIngredientComponent implements OnInit {
   }
 
   onRowEditSave(ingredient: Ingredient) {
-    if (ingredient && ingredient.quantity > 0) {
-
-      // TODO Upd Ingredient Backend
-      this.ingredientService.update(ingredient._id, ingredient).subscribe({
-        next: (res) => {
-          delete this.clonedIngredients[ingredient._id];
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Ok',
-            detail: 'Via MessageService',
-          });
-        },
-        error: (e) => {
-          this.messageService.add({severity: 'error', summary: 'Error', detail: 'Si sono verificati degli errori'});
-        },
-      });
-    } else {
-      this.messageService.add({severity: 'error', summary: 'Error', detail: 'Si sono verificati degli errori'});
+    if (!this.fromRecipe) {
+      if (ingredient && ingredient.quantity > 0) {
+        this.ingredientService.update(ingredient._id, ingredient).subscribe({
+          next: (res) => {
+            delete this.clonedIngredients[ingredient._id];
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Ok',
+              detail: 'Via MessageService',
+            });
+          },
+          error: (e) => {
+            this.messageService.add({severity: 'error', summary: 'Error', detail: 'Si sono verificati degli errori'});
+          },
+        });
+      } else {
+        this.messageService.add({severity: 'error', summary: 'Error', detail: 'Si sono verificati degli errori'});
+      }
     }
   }
 

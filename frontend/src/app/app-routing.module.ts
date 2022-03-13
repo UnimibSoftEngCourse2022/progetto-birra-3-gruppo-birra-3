@@ -54,14 +54,18 @@ const routes: Routes = [
         ]
       }
     ]
-    
+
   },
   {
     path: 'brewtoday', children: [
-      { path: '', canActivate: [AuthGuard], component: BrewPageComponent }, 
-    ] 
+      { path: '', canActivate: [AuthGuard], component: BrewPageComponent },
+    ]
   },
-  { path: 'chronology', component: ChronologyComponent},
+  {
+    path: 'chronology', children: [
+      { path: '', canActivate: [AuthGuard], component: ChronologyComponent }
+    ]
+  },
   { path: '**', component: Error404Component },
 ];
 @NgModule({

@@ -23,6 +23,7 @@ export class FormRecipeComponent implements OnInit {
   public equipmentProfileSelected: EquipmentProfile | null = null;
   public form!: FormGroup;
   public loading: boolean = true;
+  public loadingModel: boolean = true;
 
   get f() {
     return this.form.controls;
@@ -55,13 +56,13 @@ export class FormRecipeComponent implements OnInit {
     this.form = this._formBuilder.group({
       title: [null, [Validators.required]],
       description: [null, [Validators.required]],
-      equipmentProfileId: [null, [Validators.required]],
-      color: [null]
+      equipmentProfileId: [null, [Validators.required]]
     });
 
     if (this.editMode) {
       this.getRecipe(this.route.snapshot.params["id"] || this.id);
     } else {
+      this.loadingModel = false;
       this.stopLoading();
     }
 
@@ -79,11 +80,11 @@ export class FormRecipeComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.editMode = true;
-
           setTimeout(() => {
             this.model = data;
             this.equipmentProfileSelected = this.equipmentProfiles.find(x => x._id == this.model.equipmentProfileId) ?? new EquipmentProfile();
             this.spinner.hide();
+            this.loadingModel = false;
           }, 700);
         },
         error: (e) => {
@@ -91,6 +92,7 @@ export class FormRecipeComponent implements OnInit {
             console.error(e)
             this.editMode = false;
             this.spinner.hide();
+            this.loadingModel = false;
           }, 700);
         }
       });

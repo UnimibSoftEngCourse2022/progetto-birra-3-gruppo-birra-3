@@ -30,6 +30,7 @@ class BrewingHistoryController {
       const user = await UserModel.findById(userSession._id).populate(
         "ingredients"
       )!;
+
       if (!user) {
         throw new ErrorException(ErrorCode.NotFound);
       }
@@ -107,8 +108,6 @@ class BrewingHistoryController {
     }
   };
 
-  //REF -> .populate avrò tutte le info di userclass.
-
   static findAll = async (req: Request, res: Response, next: NextFunction) => {
     try {
       //@ts-ignore
@@ -126,7 +125,9 @@ class BrewingHistoryController {
         throw new ErrorException(ErrorCode.BadRequest);
       }
 
-      responseHandler(res, result);
+      const arrRes = result.map(x => x.recipe);
+
+      responseHandler(res, arrRes);
     } catch (error) {
       next(error);
     }

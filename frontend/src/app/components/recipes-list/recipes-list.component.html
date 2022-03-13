@@ -29,7 +29,7 @@
 
     <div class="grid grid-cols-1 gap-4 mt-8 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2">
       <div *ngFor="let recipe of recipes; let i = index">
-        <app-recipe-card [recipe]="recipe" (onReload)="realodList($event)"></app-recipe-card>
+        <app-recipe-card [recipe]="recipe" (onReload)="realodList($event)" [isChronology]="isChronology"></app-recipe-card>
       </div>
     </div>
   </div>
@@ -41,10 +41,11 @@
          class="text-2xl font-bold text-gray-800 dark:text-white hover:text-gray-700 dark:hover:text-gray-300">Nessun
         elemento trovato</a>
 
-      <p class="max-w-md mx-auto mt-2 text-gray-500 dark:text-gray-400" *ngIf="!title">Aggiungi un elemento alla lista</p>
+      <p class="max-w-md mx-auto mt-2 text-gray-500 dark:text-gray-400" *ngIf="!title && !isChronology" >Aggiungi un elemento alla lista</p>
       <p class="max-w-md mx-auto mt-2 text-gray-500 dark:text-gray-400" *ngIf="title">Non esiste nulla con '{{title}}'</p>
+      <p class="max-w-md mx-auto mt-2 text-gray-500 dark:text-gray-400" *ngIf="!title && isChronology">Qui visualizzerai le ricette che hai creato</p>
 
-      <div class="flex flex-col mt-4 sm:flex-row sm:items-center sm:justify-center">
+      <div class="flex flex-col mt-4 sm:flex-row sm:items-center sm:justify-center" *ngIf="!isChronology">
         <button (click)="addRecipe()"
                 class="flex items-center justify-center  ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-amber-500 rounded-md hover:bg-amber-600 focus:outline-none focus:bg-amber-700">
           <span>Aggiungi</span>
@@ -54,6 +55,6 @@
   </div>
 </section>
 
-<div class="position-floating-button">
+<div class="position-floating-button" *ngIf="!isChronology">
     <p-speedDial (onClick)="addRecipe()"></p-speedDial>
 </div>

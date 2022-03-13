@@ -1,10 +1,13 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Input} from '@angular/core';
 import {MenuItem} from 'primeng/api';
 import {RecipeService} from 'src/app/services/recipe/recipe.service';
 import {faSearch} from '@fortawesome/free-solid-svg-icons';
 import {Router} from '@angular/router';
 import {NgxSpinnerService} from 'ngx-spinner';
 import {Recipe} from 'src/app/models/recipe/recipe.model';
+import {ChronologyService} from "../../services/chronology/chronology.service";
+import {Ingredient} from "../../models/ingredient/ingredient.model";
+import {IngredientService} from "../../services/ingredient/ingredient.service";
 
 @Component({
   selector: 'app-recipes-list',
@@ -12,9 +15,12 @@ import {Recipe} from 'src/app/models/recipe/recipe.model';
   styleUrls: ['./recipes-list.component.css'],
 })
 export class RecipesListComponent implements OnInit {
+  @Input() isChronology: boolean = false;
+
   faSearch = faSearch;
   itemsFloatingButton: MenuItem[] = [];
 
+  userIngredients?: Ingredient[] = [];
   recipes?: Recipe[];
   currentRecipe: Recipe = {};
   currentIndex = -1;
@@ -22,6 +28,8 @@ export class RecipesListComponent implements OnInit {
 
   constructor(
     private spinner: NgxSpinnerService,
+    private chronologyService: ChronologyService,
+    private ingredientService: IngredientService,
     private recipeService: RecipeService,
     private router: Router
   ) {
@@ -58,19 +66,54 @@ export class RecipesListComponent implements OnInit {
   }
 
   retrieveRecipes(): void {
-    this.recipeService.getAll().subscribe({
-      next: (data) => {
-        setTimeout(() => {
-          this.recipes = data;
+    this.spinner.show();
 
-          this.spinner.hide();
-        }, 700);
-      },
-      error: (e) => {
-        console.error(e);
-        this.stopLoading();
-      },
-    });
+    if (!this.isChronology) {
+      this.recipeService.getAll().subscribe({
+        next: (data) => {
+          this.retrieveUserIngredients();
+          this.recipes = data;
+        },
+        error: (e) => {
+          console.error(e);
+          this.stopLoading();
+        },
+      });
+    } else {
+      this.chronologyService.getAll().subscribe({
+        next: (data) => {
+          setTimeout(() => {
+            this.recipes = data;
+
+            this.spinner.hide();
+          }, 700);
+        },
+        error: (e) => {
+          console.error(e);
+          this.stopLoading();
+        },
+      });
+    }
+  }
+
+  retrieveUserIngredients(): void {
+    this.spinner.show();
+
+    if (!this.isChronology) {
+      this.ingredientService.getAll().subscribe({
+        next: (data) => {
+          setTimeout(() => {
+            this.userIngredients = data;
+
+            this.spinner.hide();
+          }, 700);
+        },
+        error: (e) => {
+          console.error(e);
+          this.stopLoading();
+        },
+      });
+    }
   }
 
   refreshList(): void {

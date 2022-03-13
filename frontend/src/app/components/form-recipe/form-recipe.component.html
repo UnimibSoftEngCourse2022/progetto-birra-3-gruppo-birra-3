@@ -9,14 +9,14 @@
     </div>
     <div>
       <div class="flex justify-end">
-        <button (click)="onSubmit()"
-                class="ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-amber-500 rounded-md hover:bg-amber-600 focus:outline-none focus:bg-amber-700 disabled:bg-amber-200" [disabled]="disabledSaveBtn()">
-          <span *ngIf="!editMode">Salva</span>
-          <span *ngIf="editMode">Salva Modifiche</span>
-        </button>
         <button type="button" *ngIf="editMode"
                 class="ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-red-500 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600"
                 (click)="deleteRecipe()">Elimina
+        </button>
+        <button (click)="onSubmit()"
+                class="ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-amber-500 rounded-md hover:bg-amber-600 focus:outline-none focus:bg-amber-700 disabled:bg-amber-200" [disabled]="disabledSaveBtn() || false">
+          <span *ngIf="!editMode">Salva</span>
+          <span *ngIf="editMode">Salva Modifiche</span>
         </button>
       </div>
     </div>
@@ -105,5 +105,8 @@
   </div>
 </section>
 
-<app-form-ingredient [ingredients]="model?.ingredients" [showBreadcrumbs]="false" [fromRecipe]="true"
-                     [editMode]="editMode" (addedIngredient)="addIngredient($event)"></app-form-ingredient>
+<ng-container *ngIf="!loadingModel">
+  <app-form-ingredient [ingredients]="model?.ingredients || []" [showBreadcrumbs]="false" [fromRecipe]="true"
+                       [editMode]="editMode" (addedIngredient)="addIngredient($event)"></app-form-ingredient>
+</ng-container>
+

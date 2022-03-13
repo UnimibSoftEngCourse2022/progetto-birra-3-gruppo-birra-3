@@ -76,8 +76,7 @@
           <td>
             <p-cellEditor>
               <ng-template pTemplate="input">
-                <p-inputNumber [(ngModel)]="equipment.quantity" mode="decimal" [showButtons]="false" [min]="0"
-                  [max]="100">
+                <p-inputNumber [(ngModel)]="equipment.quantity" mode="decimal" [showButtons]="false" [min]="1">
                 </p-inputNumber>
               </ng-template>
               <ng-template pTemplate="output">
@@ -135,7 +134,7 @@
             <label for="quantity" class="text-gray-700 dark:text-gray-200">Quantità</label>
             <div class="p-inputgroup">
               <p-inputNumber id="quantity" [(ngModel)]="newEquipment.quantity" mode="decimal" [showButtons]="false"
-                [min]="1" [max]="100"></p-inputNumber>
+                [min]="1"></p-inputNumber>
               <span class="p-inputgroup-addon">{{newEquipment.unit}}</span>
             </div>
           </div>
