@@ -142,7 +142,7 @@ class RecipeController {
             // @ts-ignore
             const userSession: UserSession = req.userSession;
 
-            if (!body || !body.title || !body.color || !body.description) {
+            if (!body || !body.title || !body.color) {
                 throw new ErrorException(ErrorCode.BadRequest);
             }
 
@@ -197,8 +197,6 @@ class RecipeController {
             } else {
                 throw new ErrorException(ErrorCode.BadRequest);
             }
-
-
         } catch (error) {
             next(error);
         }

@@ -1,9 +1,7 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {Recipe} from 'src/app/models/recipe/recipe.model';
 import {ChronologyService} from 'src/app/services/chronology/chronology.service';
-import {canBrewRecipe} from 'src/app/services/recipe/helper/recipeHelper';
 import {RecipeService} from 'src/app/services/recipe/recipe.service';
-import {Equipment} from "../../models/equipment/equipment.model";
 import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({
@@ -13,10 +11,10 @@ import {NgxSpinnerService} from "ngx-spinner";
 })
 export class RecipeCardComponent implements OnInit {
   @Input() recipe?: Recipe;
+  @Input() bestCandidateId?: string | null = null;
   @Input() isChronology: boolean = false;
+  @Input() canBrew: boolean = false;
   @Output() onReload = new EventEmitter<boolean>();
-
-  canBrewRecipe?: boolean = true;
 
   constructor(
     private spinner: NgxSpinnerService,
@@ -26,8 +24,7 @@ export class RecipeCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const userIngredients = [];
-    this.canBrewRecipe = canBrewRecipe(this.recipe?.ingredients!, []);
+
   }
 
   deleteRecipe(id: string): void {
@@ -46,9 +43,10 @@ export class RecipeCardComponent implements OnInit {
   }
 
   brewRecipe(recipeId: string): void {
-    console.log(recipeId);
+
     this.chronologyService.brewBeer(recipeId).subscribe({
       next: (res) => {
+        console.log(res);
         this.onReload.emit(true);
       },
       error: (e) => console.error(e),

@@ -8,7 +8,7 @@ router.get("/", [authMiddleware], BrewingHistoryController.findAll);
 
 router.delete("/:id", [authMiddleware], BrewingHistoryController.delete);
 
-router.post(
+router.get(
   "/brew-recipe/:id",
   [authMiddleware],
   BrewingHistoryController.brewRecipe

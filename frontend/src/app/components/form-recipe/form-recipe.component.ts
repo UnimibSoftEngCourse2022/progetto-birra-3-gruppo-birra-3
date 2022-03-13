@@ -55,7 +55,7 @@ export class FormRecipeComponent implements OnInit {
 
     this.form = this._formBuilder.group({
       title: [null, [Validators.required]],
-      description: [null, [Validators.required]],
+      description: [null],
       equipmentProfileId: [null, [Validators.required]]
     });
 
@@ -158,7 +158,12 @@ export class FormRecipeComponent implements OnInit {
             next: (res) => {
               this.submitted = true;
               this.goBack();
-              this.messageService.add({severity: 'success', summary: 'Service Message', detail: 'Via MessageService'});
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Ok! ',
+                detail: 'Operazione avvenuta con successo'
+              });
+
             },
             error: (e) => console.error(e)
           });
@@ -168,7 +173,11 @@ export class FormRecipeComponent implements OnInit {
             next: (res) => {
               this.submitted = true;
               this.goBack();
-              this.messageService.add({severity: 'success', summary: 'Service Message', detail: 'Via MessageService'});
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Ok! ',
+                detail: 'Operazione avvenuta con successo'
+              });
             },
             error: (e) => console.error(e)
           });

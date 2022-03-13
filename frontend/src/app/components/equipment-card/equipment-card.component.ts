@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { EquipmentProfile } from 'src/app/models/equipment/equipment.model';
 import { EquipmentService } from 'src/app/services/equipment/equipment.service';
 
@@ -9,6 +9,7 @@ import { EquipmentService } from 'src/app/services/equipment/equipment.service';
 })
 export class EquipmentCardComponent implements OnInit {
   @Input() equipment?: EquipmentProfile;
+  @Output() onReloadEquipment = new EventEmitter<boolean>();
 
   constructor(private equipmentService: EquipmentService) {}
 
@@ -19,7 +20,7 @@ export class EquipmentCardComponent implements OnInit {
   deleteEquipment(id: string): void {
     this.equipmentService.delete(id).subscribe({
       next: (res) => {
-        // This is intentional
+        this.onReloadEquipment.emit(true)
       },
       error: (e) => console.error(e),
     });

@@ -67,8 +67,8 @@ export class SignUpComponent implements OnInit {
         (error) => {
           this.messageService.add({
             severity: 'error',
-            summary: 'Service Message',
-            detail: 'Via MessageService',
+            summary: 'Errore!',
+            detail: 'Email già presente!',
           });
           this.error = error;
           this.loading = false;

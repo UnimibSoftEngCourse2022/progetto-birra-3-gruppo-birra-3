@@ -1,4 +1,25 @@
-<app-breadcrumbs [editMode]="editMode"></app-breadcrumbs>
+<app-breadcrumbs  (goBack)="goBack()" [editMode]="editMode" currentPosition="Ricette"></app-breadcrumbs>
+
+<div class="max-w-4xl pt-5 pb-5 mx-auto" *ngIf="!editMode && !this.equipmentProfiles || (this.equipmentProfiles && this.equipmentProfiles.length <= 0)">
+  <div class="flex w-full overflow-hidden bg-red-500 rounded-lg shadow-md dark:bg-gray-800">
+    <div class="flex items-center justify-center pl-2  w-12 bg-red-500">
+      <i class="pi pi-exclamation-circle text-white" style="font-size: 1.6rem"></i>
+    </div>
+
+    <div class="px-1 py-2 -mx-3 w-9/12">
+      <div class="mx-3">
+        <span class="font-semibold text-white dark:text-red-400">Errore!</span>
+        <p class="text-sm text-gray-100 dark:text-gray-100">Prima di creare una ricetta devi creare il tuo primo profilo di Attrezzatura</p>
+      </div>
+    </div>
+    <div class="mx-auto px-1 py-2 -mx-3 w-3/12" style="margin: auto 0;">
+      <a routerLink="/equipments/add"
+         class="px-2 py-1 mx-2 mt-2 text-sm font-medium text-white bg-red-700 transition-colors duration-200 transform rounded-md md:mt-0 hover:bg-red-900">
+        Aggiungi Attrezzatura
+      </a>
+    </div>
+  </div>
+</div>
 
 <section class="max-w-4xl pt-5 pb-5 mx-auto">
   <div class="grid grid-cols-2 gap-6 sm:grid-cols-2">

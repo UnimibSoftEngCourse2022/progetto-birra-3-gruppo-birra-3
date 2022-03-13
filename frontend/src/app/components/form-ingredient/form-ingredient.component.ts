@@ -35,7 +35,6 @@ export class FormIngredientComponent implements OnInit {
     INGREDIENTS_ENUM.MALT,
     INGREDIENTS_ENUM.HOP,
     INGREDIENTS_ENUM.SUGAR,
-    INGREDIENTS_ENUM.ADDITIVE,
     INGREDIENTS_ENUM.ADDITIVE
   ];
 
@@ -148,8 +147,8 @@ export class FormIngredientComponent implements OnInit {
             next: (res) => {
               this.messageService.add({
                 severity: 'success',
-                summary: 'Service Message',
-                detail: 'Via MessageService',
+                summary: 'Ok! ',
+                detail: 'Operazione avvenuta con successo',
               });
             },
             error: (e) => console.error(e),
@@ -171,8 +170,8 @@ export class FormIngredientComponent implements OnInit {
               this.displayModal = false;
               this.messageService.add({
                 severity: 'success',
-                summary: 'Service Message',
-                detail: 'Via MessageService',
+                summary: 'Ok! ',
+                detail: 'Operazione avvenuta con successo',
               });
             },
             error: (e) => console.error(e),

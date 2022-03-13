@@ -7,7 +7,7 @@ import EquipmentModel from "../models/equipmentModel";
 import EquipmentProfileClass from "../class/equipmentProfileClass";
 import {getParamsForLike} from "../utils/mongoDBUtils";
 import {UserSession} from "../types/userSessionType";
-import equipmentProfileModel from "../models/equipmentProfileModel";
+import EquipmentProfileModel from "../models/equipmentProfileModel";
 
 class EquipmentController {
     static create = async (req: Request, res: Response, next: NextFunction) => {
@@ -35,7 +35,7 @@ class EquipmentController {
             // Recupero gli id della Equipments appena creati
             equipmentProfile.equipments = equipments.map(x => x._id);
 
-            const equipmentProfileCreated = await equipmentProfileModel.create(equipmentProfile);
+            const equipmentProfileCreated = await EquipmentProfileModel.create(equipmentProfile);
 
             if (!equipmentProfileCreated) {
                 throw new ErrorException(ErrorCode.BadRequest);
@@ -60,7 +60,7 @@ class EquipmentController {
                 ...getParamsForLike(query)
             };
 
-            const equipmentsProfiles = await equipmentProfileModel.find(_params).populate("equipments").populate("userId").exec();
+            const equipmentsProfiles = await EquipmentProfileModel.find(_params).populate("equipments").populate("userId").exec();
 
             if (!equipmentsProfiles) {
                 throw new ErrorException(ErrorCode.BadRequest);
@@ -86,7 +86,7 @@ class EquipmentController {
                 _id: id
             };
 
-            const equipmentProfile = await equipmentProfileModel.findOne(_params);
+            const equipmentProfile = await EquipmentProfileModel.findOne(_params).populate("equipments").exec();
 
             if (!equipmentProfile) {
                 throw new ErrorException(ErrorCode.BadRequest);
@@ -112,7 +112,7 @@ class EquipmentController {
                 _id: id
             };
 
-            const equipmentProfile = await equipmentProfileModel.findOneAndDelete(_params, {
+            const equipmentProfile = await EquipmentProfileModel.findOneAndDelete(_params, {
                 useFindAndModify: false,
             });
 
@@ -137,25 +137,61 @@ class EquipmentController {
             const body: any = req.body;
 
             // Campi obbligatori tutti
-            if (!body || !body.title || !body.color || !body.description) {
+            if (!body || !body.title || !body.equipments) {
                 throw new ErrorException(ErrorCode.BadRequest);
             }
 
-            const _params = {
+            // @ts-ignore
+            const userSession: UserSession = req.userSession;
+
+            let _params = {
                 //@ts-ignore
                 userId: req.userSession._id,
                 _id: id
             };
 
-            let equipmentProfile = await equipmentProfileModel.findOneAndUpdate(_params, body, {
-                useFindAndModify: false,
-            });
+            const checkEquipmentProfile = await EquipmentProfileModel.findOne(_params).populate("equipments").exec();
 
-            if (!equipmentProfile) {
+            if (checkEquipmentProfile) {
+                let equipmentsMap = checkEquipmentProfile?.equipments?.map((x: any) => x._id);
+
+                // Elimino
+                const deletedEquipments = await EquipmentModel.deleteMany({
+                    _id: {
+                        $in: equipmentsMap
+                    }
+                });
+
+                if (!deletedEquipments) {
+                    throw new ErrorException(ErrorCode.BadRequest);
+                }
+
+                // Ricreo equipments
+                const newEquipments = await EquipmentModel.insertMany(body.equipments);
+
+                if (!newEquipments) {
+                    throw new ErrorException(ErrorCode.BadRequest);
+                }
+
+                let equipmentProfile: EquipmentProfileClass = new EquipmentProfileClass();
+                equipmentProfile.title = body.title;
+                equipmentProfile.userId = userSession._id;
+
+                // Recupero gli id della Equipments appena creati
+                equipmentProfile.equipments = newEquipments.map(x => x._id);
+
+                let updEquip = await EquipmentProfileModel.findOneAndUpdate(_params, equipmentProfile, {
+                    useFindAndModify: false,
+                });
+
+                if (!updEquip) {
+                    throw new ErrorException(ErrorCode.BadRequest);
+                }
+
+                responseHandler(res, equipmentProfile);
+            } else {
                 throw new ErrorException(ErrorCode.BadRequest);
             }
-
-            responseHandler(res, equipmentProfile);
         } catch (error) {
             next(error);
         }

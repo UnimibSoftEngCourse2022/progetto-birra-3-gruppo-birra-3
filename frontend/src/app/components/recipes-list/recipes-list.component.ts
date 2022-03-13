@@ -8,6 +8,7 @@ import {Recipe} from 'src/app/models/recipe/recipe.model';
 import {ChronologyService} from "../../services/chronology/chronology.service";
 import {Ingredient} from "../../models/ingredient/ingredient.model";
 import {IngredientService} from "../../services/ingredient/ingredient.service";
+import {BrewTodayService} from "../../services/brewToday/brew-today.service";
 
 @Component({
   selector: 'app-recipes-list',
@@ -16,18 +17,22 @@ import {IngredientService} from "../../services/ingredient/ingredient.service";
 })
 export class RecipesListComponent implements OnInit {
   @Input() isChronology: boolean = false;
+  @Input() isBrewPage: boolean = false;
+  public bestCandidateRecipeId: string | null = null;
 
   faSearch = faSearch;
   itemsFloatingButton: MenuItem[] = [];
-
   userIngredients?: Ingredient[] = [];
+
   recipes?: Recipe[];
+  _recipes?: Recipe[];
   currentRecipe: Recipe = {};
   currentIndex = -1;
   title = '';
 
   constructor(
     private spinner: NgxSpinnerService,
+    private brewTodayService: BrewTodayService,
     private chronologyService: ChronologyService,
     private ingredientService: IngredientService,
     private recipeService: RecipeService,
@@ -68,11 +73,16 @@ export class RecipesListComponent implements OnInit {
   retrieveRecipes(): void {
     this.spinner.show();
 
-    if (!this.isChronology) {
-      this.recipeService.getAll().subscribe({
+    if (this.isChronology) {
+      this.chronologyService.getAll().subscribe({
         next: (data) => {
-          this.retrieveUserIngredients();
-          this.recipes = data;
+          console.log(data);
+          setTimeout(() => {
+            this._recipes = data;
+            this.recipes = this._recipes;
+
+            this.spinner.hide();
+          }, 700);
         },
         error: (e) => {
           console.error(e);
@@ -80,13 +90,10 @@ export class RecipesListComponent implements OnInit {
         },
       });
     } else {
-      this.chronologyService.getAll().subscribe({
+      this.recipeService.getAll().subscribe({
         next: (data) => {
-          setTimeout(() => {
-            this.recipes = data;
-
-            this.spinner.hide();
-          }, 700);
+          this._recipes = data;
+          this.retrieveUserIngredients();
         },
         error: (e) => {
           console.error(e);
@@ -106,12 +113,30 @@ export class RecipesListComponent implements OnInit {
             this.userIngredients = data;
 
             this.spinner.hide();
+
+            if (this.isBrewPage) {
+              this.loadOnlyBrewRecipe();
+              this.getBestCandidateRecipe();
+            }else{
+              this.recipes = this._recipes;
+            }
           }, 700);
         },
         error: (e) => {
           console.error(e);
           this.stopLoading();
         },
+      });
+    }
+  }
+
+  loadOnlyBrewRecipe() {
+    if (this.userIngredients && this.userIngredients.length > 0 && this._recipes && this._recipes.length > 0) {
+      this.recipes = this._recipes.filter((x): any => {
+        let canBrew = this.recipeService.canBrewRecipe(x.ingredients || [], this.userIngredients || []);
+        if (canBrew) {
+          return x;
+        }
       });
     }
   }
@@ -152,4 +177,22 @@ export class RecipesListComponent implements OnInit {
       this.refreshList();
     }
   }
+
+  getCanBrew(recipe: Recipe) {
+    if (this.userIngredients && this.userIngredients.length > 0 && recipe.ingredients && recipe.ingredients.length > 0) {
+      return this.recipeService.canBrewRecipe(recipe.ingredients || [], this.userIngredients);
+    }
+
+    return false;
+  }
+
+  getBestCandidateRecipe() {
+    this.bestCandidateRecipeId = null;
+
+    if (this.userIngredients && this.userIngredients.length > 0 && this.recipes && this.recipes.length > 0) {
+      let recipe: Recipe | null = this.brewTodayService.whatShouldIBrewToday(this.recipes || [], this.userIngredients);
+      this.bestCandidateRecipeId = recipe?._id || null;
+    }
+  }
 }
+

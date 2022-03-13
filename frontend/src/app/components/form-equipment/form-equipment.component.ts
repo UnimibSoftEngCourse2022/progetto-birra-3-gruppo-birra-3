@@ -5,6 +5,7 @@ import {NgxSpinnerService} from 'ngx-spinner';
 import {MessageService} from 'primeng/api';
 import {Equipment, EquipmentInterface, EquipmentProfile} from 'src/app/models/equipment/equipment.model';
 import {EquipmentService} from 'src/app/services/equipment/equipment.service';
+import {TYPE_UNIQUE_NAME_ENUM} from "../../enum/equipmentUnits";
 
 @Component({
   selector: 'app-form-equipment',
@@ -44,7 +45,6 @@ export class FormEquipmentComponent implements OnInit {
       this.spinner.show();
     }
 
-
     this.submitted = false;
     this.model.title = "";
 
@@ -65,8 +65,26 @@ export class FormEquipmentComponent implements OnInit {
     }, 700);
   }
 
-  getEquipment(equipmentSelected: Equipment): void {
-    console.log(equipmentSelected);
+  getEquipment(id: string): void {
+    this.equipmentService.get(id)
+      .subscribe({
+        next: (data) => {
+          this.editMode = true;
+
+          setTimeout(() => {
+            this.model = data;
+
+            this.spinner.hide();
+          }, 700);
+        },
+        error: (e) => {
+          setTimeout(() => {
+            console.error(e)
+            this.editMode = false;
+            this.spinner.hide();
+          }, 700);
+        }
+      });
   }
 
   addEquipment() {
@@ -108,7 +126,11 @@ export class FormEquipmentComponent implements OnInit {
           next: (res) => {
             this.submitted = true;
             this.goBack();
-            this.messageService.add({severity: 'success', summary: 'Service Message', detail: 'Via MessageService'});
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Ok! ',
+              detail: 'Operazione avvenuta con successo'
+            });
           },
           error: (e) => console.error(e)
         });
@@ -118,7 +140,12 @@ export class FormEquipmentComponent implements OnInit {
           next: (res) => {
             this.submitted = true;
             this.goBack();
-            this.messageService.add({severity: 'success', summary: 'Service Message', detail: 'Via MessageService'});
+
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Ok! ',
+              detail: 'Operazione avvenuta con successo'
+            });
           },
           error: (e) => console.error(e)
         });
@@ -140,7 +167,6 @@ export class FormEquipmentComponent implements OnInit {
   goBack() {
     this.router.navigate(['/equipments']);
   }
-
 
   showModalDialog() {
     this.displayModal = true;
@@ -174,4 +200,29 @@ export class FormEquipmentComponent implements OnInit {
     }
   }
 
+  removeEquipment(equipment: any, index: number) {
+    if (this.model.equipments) {
+      this.model.equipments = this.model.equipments.filter(function (value, _index, arr) {
+        return _index !== index;
+      });
+
+      delete this.clonedEquipments[equipment.name];
+    }
+
+    if (this.model.equipments && this.model.equipments.length === 0) {
+      this.model.equipments = []
+    }
+  }
+
+  getDisabledEquipment() {
+    if (this.newEquipment && this.newEquipment.name) {
+      return !!(this.newEquipment.unit && !this.newEquipment.quantity || (this.newEquipment.quantity && this.newEquipment?.quantity <= 0));
+    } else {
+      return true;
+    }
+  }
+
+  getDisabled() {
+    return this.form.invalid || !this.model.equipments || this.model.equipments?.findIndex((x) => x.name === TYPE_UNIQUE_NAME_ENUM.BOIL_KETTLE || x.name === TYPE_UNIQUE_NAME_ENUM.BOIL_FERMENTER) === -1;
+  }
 }

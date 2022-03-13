@@ -1,35 +1,30 @@
 <div class="bg-white shadow dark:bg-gray-800 bg-white dark:bg-gray-800 z-20" style="margin-top: -12px;">
-    <div class="container flex items-center px-6 py-4 mx-auto overflow-y-auto whitespace-nowrap">
-        <div
-            class="flex p-1 overflow-hidden border rounded-lg dark:border-gray-600 dark:focus-within:border-blue-300 focus-within:ring focus-within:ring-opacity-40 focus-within:border-blue-400 focus-within:ring-blue-300">
-            <input placeholder="Cerca..." [(ngModel)]="title"
-                class="w-screen px-6 py-2 text-gray-700 placeholder-gray-500 bg-white outline-none dark:bg-gray-800 dark:placeholder-gray-400 focus:placeholder-transparent dark:focus:placeholder-transparent"
-                type="text" name="title" aria-label="Cerca..." (keyup.enter)="searchTitle()" (change)="searchTitle()">
+  <div class="container flex items-center px-6 py-4 mx-auto overflow-y-auto whitespace-nowrap">
+    <div
+      class="flex p-1 overflow-hidden border rounded-lg dark:border-gray-600 dark:focus-within:border-blue-300 focus-within:ring focus-within:ring-opacity-40 focus-within:border-blue-400 focus-within:ring-blue-300">
+      <input placeholder="Cerca..." [(ngModel)]="title"
+             class="w-screen px-6 py-2 text-gray-700 placeholder-gray-500 bg-white outline-none dark:bg-gray-800 dark:placeholder-gray-400 focus:placeholder-transparent dark:focus:placeholder-transparent"
+             type="text" name="title" aria-label="Cerca..." (keyup.enter)="searchTitle()" (change)="searchTitle()">
 
-            <button (click)="searchTitle()"
-                class="w-96 flex-auto px-4 py-3 text-sm font-medium tracking-wider text-gray-100 uppercase transition-colors duration-200 transform bg-gray-700 rounded-lg hover:bg-gray-600 focus:bg-gray-600 focus:outline-none">
-                <fa-icon [icon]="faSearch" class="mr-2"></fa-icon><span class="md:inline hidden">Cerca</span>
-            </button>
-        </div>
+      <button (click)="searchTitle()"
+              class="w-96 flex-auto px-4 py-3 text-sm font-medium tracking-wider text-gray-100 uppercase transition-colors duration-200 transform bg-gray-700 rounded-lg hover:bg-gray-600 focus:bg-gray-600 focus:outline-none">
+        <fa-icon [icon]="faSearch" class="mr-2"></fa-icon>
+        <span class="md:inline hidden">Cerca</span>
+      </button>
     </div>
+  </div>
 </div>
 
 <section class="max-w-4xl pt-5 pb-5 mx-auto">
   <div class="">
     <div class="flex items-center justify-between text-sm tracking-widest uppercase ">
       <p class="text-gray-500 dark:text-gray-300">{{recipes?.length || 0}} Elementi</p>
-      <div class="flex items-center">
-        <p class="text-gray-500 dark:text-gray-300">Sort</p>
-        <select class="font-medium text-gray-700 bg-transparent dark:text-gray-500 focus:outline-none"
-                [disabled]="!recipes || recipes?.length == 0">
-          <option value="#" *ngFor="let item of ['A-Z','Z-A']">{{item}}</option>
-        </select>
-      </div>
     </div>
 
     <div class="grid grid-cols-1 gap-4 mt-8 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2">
       <div *ngFor="let recipe of recipes; let i = index">
-        <app-recipe-card [recipe]="recipe" (onReload)="realodList($event)" [isChronology]="isChronology"></app-recipe-card>
+        <app-recipe-card [recipe]="recipe" (onReload)="realodList($event)" [isChronology]="isChronology"
+                         [canBrew]="getCanBrew(recipe)" [bestCandidateId]="bestCandidateRecipeId"></app-recipe-card>
       </div>
     </div>
   </div>
@@ -41,11 +36,15 @@
          class="text-2xl font-bold text-gray-800 dark:text-white hover:text-gray-700 dark:hover:text-gray-300">Nessun
         elemento trovato</a>
 
-      <p class="max-w-md mx-auto mt-2 text-gray-500 dark:text-gray-400" *ngIf="!title && !isChronology" >Aggiungi un elemento alla lista</p>
+      <p class="max-w-md mx-auto mt-2 text-gray-500 dark:text-gray-400" *ngIf="!title && !isChronology && !isBrewPage">
+        Aggiungi un elemento alla lista</p>
       <p class="max-w-md mx-auto mt-2 text-gray-500 dark:text-gray-400" *ngIf="title">Non esiste nulla con '{{title}}'</p>
-      <p class="max-w-md mx-auto mt-2 text-gray-500 dark:text-gray-400" *ngIf="!title && isChronology">Qui visualizzerai le ricette che hai creato</p>
+      <p class="max-w-md mx-auto mt-2 text-gray-500 dark:text-gray-400" *ngIf="!title && isChronology">Qui visualizzerai
+        le ricette che hai creato</p>
+      <p class="max-w-md mx-auto mt-2 text-gray-500 dark:text-gray-400" *ngIf="!title && isBrewPage">Qui visualizzerai le ricette che puoi produrre oggi</p>
 
-      <div class="flex flex-col mt-4 sm:flex-row sm:items-center sm:justify-center" *ngIf="!isChronology">
+      <div class="flex flex-col mt-4 sm:flex-row sm:items-center sm:justify-center"
+           *ngIf="!isChronology && !isBrewPage">
         <button (click)="addRecipe()"
                 class="flex items-center justify-center  ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-amber-500 rounded-md hover:bg-amber-600 focus:outline-none focus:bg-amber-700">
           <span>Aggiungi</span>
@@ -55,6 +54,6 @@
   </div>
 </section>
 
-<div class="position-floating-button" *ngIf="!isChronology">
-    <p-speedDial (onClick)="addRecipe()"></p-speedDial>
+<div class="position-floating-button" *ngIf="!isChronology && !isBrewPage">
+  <p-speedDial (onClick)="addRecipe()"></p-speedDial>
 </div>
