@@ -116,8 +116,9 @@ export class FormEquipmentComponent implements OnInit {
     if (this.editMode) {
       this.equipmentService.update(this.model._id, data).subscribe({
         next: (res) => {
+          this.submitted = true;
+
           equipementModificationSuccessFN(
-            this.submitted,
             () => this.goBack(),
             this.messageService
           );
@@ -128,7 +129,6 @@ export class FormEquipmentComponent implements OnInit {
       this.equipmentService.create(data).subscribe({
         next: (res) => {
           equipementModificationSuccessFN(
-            this.submitted,
             () => this.goBack(),
             this.messageService
           );
@@ -191,11 +191,9 @@ export class FormEquipmentComponent implements OnInit {
 }
 
 const equipementModificationSuccessFN = (
-  submitted: boolean,
   goBackFN: () => void,
   messageService: MessageService
 ) => {
-  submitted = true;
   goBackFN();
   messageService.add({
     severity: 'success',
