@@ -4,4 +4,5 @@ export enum INGREDIENTS_ENUM {
   YEAST = "yeast",
   SUGAR = "sugar",
   ADDITIVE = "additive",
+  WATER = "water",
 }

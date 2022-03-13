@@ -68,6 +68,11 @@ export class EquipmentListComponent implements OnInit {
     });
   }
 
+  onReloadEquipment(){
+    this.spinner.show();
+    this.retrieveEquipments();
+  }
+
   stopLoading() {
     setTimeout(() => {
       this.spinner.hide();

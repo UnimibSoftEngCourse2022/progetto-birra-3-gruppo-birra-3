@@ -1,6 +1,6 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { Equipment } from 'src/app/models/equipment/equipment.model';
-import { EquipmentService } from 'src/app/services/equipment/equipment.service';
+import {Component, EventEmitter, OnInit, Output, Input} from '@angular/core';
+import {Equipment} from 'src/app/models/equipment/equipment.model';
+import {EquipmentService} from 'src/app/services/equipment/equipment.service';
 
 @Component({
   selector: 'app-drop-down-equipment',
@@ -8,6 +8,7 @@ import { EquipmentService } from 'src/app/services/equipment/equipment.service';
   styleUrls: ['./drop-down-equipment.component.css']
 })
 export class DropDownEquipmentComponent implements OnInit {
+  @Input() excludeData: Equipment[] = [];
   public data: Equipment[] = [];
   public selected: Equipment;
 
@@ -22,9 +23,17 @@ export class DropDownEquipmentComponent implements OnInit {
   }
 
   loadData() {
-      this.equipmentService.getAllEquipments().subscribe((data: Equipment[]) => {
+    this.equipmentService.getAllEquipments().subscribe((data: Equipment[]) => {
+      if (this.excludeData && this.excludeData.length > 0) {
+        this.data = data.filter((x: any) => {
+          if (this.excludeData.findIndex(f => f.name === x.name) === -1) {
+            return x;
+          }
+        })
+      } else {
         this.data = data;
-      });
+      }
+    });
   }
 
   public emitData() {

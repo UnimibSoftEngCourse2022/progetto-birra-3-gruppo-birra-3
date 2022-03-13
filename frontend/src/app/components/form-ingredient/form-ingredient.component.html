@@ -1,12 +1,12 @@
-<ng-container *ngIf="showBreadcrumbs">
-  <app-breadcrumbs [editMode]="editMode"></app-breadcrumbs>
-</ng-container>
+<!--<ng-container *ngIf="showBreadcrumbs">-->
+<!--  <app-breadcrumbs [editMode]="editMode" (goBack)="goBack()" currentPosition="Ingredienti" [showCurrent]="false"></app-breadcrumbs>-->
+<!--</ng-container>-->
 
 <section class="max-w-4xl pt-5 pb-5 mx-auto">
   <div class="grid grid-cols-2 gap-6 sm:grid-cols-2">
     <div>
-      <h1 class="text-2xl font-semibold text-gray-700 capitalize dark:text-white" *ngIf="!editMode">
-        Ingredient
+      <h1 class="text-2xl font-semibold text-gray-700 capitalize dark:text-white">
+        Ingredienti
       </h1>
     </div>
     <div>
@@ -38,11 +38,11 @@
           <td>
             <p-cellEditor>
               <ng-template pTemplate="input">
-                <p-inputNumber [(ngModel)]="ingredient.quantity" mode="decimal" [showButtons]="false" [min]="0">
+                <p-inputNumber [(ngModel)]="ingredient.quantity" mode="decimal" [minFractionDigits]="2"  [maxFractionDigits]="2" [showButtons]="false" [min]="0">
                 </p-inputNumber>
               </ng-template>
               <ng-template pTemplate="output">
-                {{ingredient.quantity}}
+                {{ingredient.quantity }}
               </ng-template>
             </p-cellEditor>
           </td>
@@ -110,13 +110,17 @@
               </app-drop-down-ingredient>
             </div>
           </div>
-          <div>
-            <label class="text-gray-700 dark:text-gray-200">Quantità</label>
-            <div class="block w-full mt-1 focus:outline-none">
-              <p-inputNumber [(ngModel)]="model.quantity" mode="decimal" [showButtons]="false" [min]="0">
-              </p-inputNumber>
+
+          <div class="grid">
+            <div class="col-12">
+              <label for="quantity" class="text-gray-700 dark:text-gray-200">Quantità</label>
+              <div class="p-inputgroup">
+                <p-inputNumber id="quantity" [(ngModel)]="model.quantity" mode="decimal" [minFractionDigits]="2"  [maxFractionDigits]="2" [showButtons]="false" [min]="0"></p-inputNumber>
+                <span class="p-inputgroup-addon">oz</span>
+              </div>
             </div>
           </div>
+
         </ng-container>
       </div>
     </ng-template>

@@ -14,7 +14,7 @@ export class ChronologyService {
   constructor(private http: HttpClient) {}
 
   brewBeer(recipeId: string): Observable<any> {
-    return this.http.post(BREW_HISTORY_ENDPOINTS.BREW_BEER, recipeId);
+    return this.http.get(BREW_HISTORY_ENDPOINTS.BREW_BEER(recipeId));
   }
 
   getAll(): Observable<Recipe[]> {

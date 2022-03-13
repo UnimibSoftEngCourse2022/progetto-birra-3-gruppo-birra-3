@@ -8,4 +8,5 @@ export class Recipe {
   published?: boolean;
   ingredients?: Ingredient[];
   equipmentProfileId?: string;
+  createdAt?: string;
 }

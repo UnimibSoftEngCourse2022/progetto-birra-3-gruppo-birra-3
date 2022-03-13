@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 
 @Component({
   selector: 'app-breadcrumbs',
@@ -7,13 +7,16 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class BreadcrumbsComponent implements OnInit {
   @Input() editMode: boolean = false;
+  @Input() showCurrent: boolean = true;
+  @Input() basePosition: string = "Lista";
+  @Input() currentPosition: string = "";
+  @Output() goBack = new EventEmitter<boolean>();
   items: any[] = [];
 
   ngOnInit() {
-
     this.items = [
-      { label: 'Lista Equipaggiamenti'},
-      { label: !this.editMode ? 'Aggiungi Nuovo Profilo' : "Modifica" , current: true}
+      { label: this.basePosition + " " + this.currentPosition},
+      { label: !this.editMode ? 'Aggiungi ' + this.currentPosition : "Modifica " + this.currentPosition, current: true}
     ];
   }
 }

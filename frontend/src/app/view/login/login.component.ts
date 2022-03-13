@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { first } from 'rxjs';
 import { AuthenticationService } from 'src/app/auth/service/authentication.service';
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-login',
@@ -21,6 +22,7 @@ export class LoginComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private _route: ActivatedRoute,
     private _router: Router,
+    private messageService: MessageService,
     private _authenticationService: AuthenticationService
   ) {
     // redirect to home if already logged in
@@ -58,6 +60,12 @@ export class LoginComponent implements OnInit {
           this._router.navigate([this.returnUrl]);
         },
         (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Errore!',
+            detail: 'Credenziali errate!',
+          });
+
           this.error = error;
           this.loading = false;
         }
@@ -66,8 +74,8 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginForm = this._formBuilder.group({
-      email: ['admin@demo.com', [Validators.required, Validators.email]],
-      password: ['admin', Validators.required],
+      email: [null, [Validators.required, Validators.email]],
+      password: [null, Validators.required],
     });
 
     // get return url from route parameters or default to '/'
