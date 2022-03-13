@@ -37,4 +37,4 @@ jobs:
 
       - name: Build Angular
         working-directory: ./frontend
-        run: ng serve -o
+        run: npm run build
