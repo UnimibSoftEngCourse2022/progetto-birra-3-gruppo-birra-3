@@ -8,14 +8,14 @@ import {IngredientService} from "../../services/ingredient/ingredient.service";
   styleUrls: ['./drop-down-ingredient.component.css']
 })
 export class DropDownIngredientComponent implements OnInit {
-  @Input() type: string = "";
+  @Input() type: string | null = null;
   public data: Ingredient[] = [];
-  public selected: Ingredient;
+  public selected: Ingredient | null = null;
 
-  @Output() selectedIngredient = new EventEmitter<Ingredient>();
+  @Output() selectedIngredient = new EventEmitter<Ingredient | null>();
 
   constructor(private ingredientService: IngredientService) {
-    this.selected = new Ingredient();
+
   }
 
   ngOnInit(): void {
@@ -24,6 +24,7 @@ export class DropDownIngredientComponent implements OnInit {
 
   loadData() {
     if (this.type) {
+      this.selectedIngredient.emit(null);
       this.ingredientService.getAllByType(this.type).subscribe((data: Ingredient[]) => {
         this.data = data;
       });
@@ -31,6 +32,7 @@ export class DropDownIngredientComponent implements OnInit {
   }
 
   public emitData() {
-    this.selectedIngredient.emit(this.selected);
+    if (this.selected)
+      this.selectedIngredient.emit(this.selected);
   }
 }
