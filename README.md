@@ -1,77 +1,70 @@
 # Progetto Birra 3
 
-## Init System
+<a href="https://angular.io/">
+    <img src="https://img.shields.io/badge/-Angular-informational?style=flat&logo=angular&logoColor=white&labelColor=d6012f&color=5d5d5d" height="25">
+</a>
 
-Requisiti per la prof:
+<a href="https://nodejs.org/">
+    <img src="https://img.shields.io/badge/-Node.js-informational?style=flat&logo=Node.js&logoColor=white&labelColor=339933&color=5d5d5d" height="25">
+</a>
 
-- Docker
+<a href="https://expressjs.com/it/">
+    <img src="https://img.shields.io/badge/-Express.js-informational?style=flat&logo=Express&logoColor=white&labelColor=259dff&color=5d5d5d" height="25">
+</a>
 
-Requisiti per gli sviluppatori:
+<a href="https://www.mongodb.com/">
+    <img src="https://img.shields.io/badge/-MongoDB-informational?style=flat&logo=mongodb&logoColor=white&labelColor=47A248&color=5d5d5d" height="25">
+</a>
 
-- Docker
-- nodejs
-- npm
-- Angular CLI
-- Ide consigliato: Vs Code
+<a href="https://www.mongodb.com/">
+    <img src="https://img.shields.io/badge/-Docker-informational?style=flat&logo=docker&logoColor=white&labelColor=2391e6&color=5d5d5d" height="25">
+</a>
 
-Per far partire il progetto:
+## Prerequisiti
+
+Per avviare il progetto l'unico prerequisito è avere Docker. 
+Se non presente sul proprio computer clicca link per scaricare Docker Desktop.
+
+<a href="https://www.docker.com/products/docker-desktop">
+    <img src="https://img.shields.io/badge/-Scarica Docker Desktop-informational?style=flat&logo=docker&logoColor=white&labelColor=5d5d5d&color=5d5d5d" height="25">
+</a>
+
+# Init Progetto
+
+Una volta installato e avviato Docker Desktop è ora di far partire il progetto.
+
+Dentro la `root` del progetto avviare da terminale il seguente comando:
 
 ```bash
 docker-compose up --build
 ```
 
-Per avviare Docker in backgroud:
+Invece in alternativa se si vuole avviare in backgroud esequire il seguente comando:
 
 ```bash
 docker-compose up --build -d
 ```
 
-## Stop System
+## Stop Esecuzione 
 
-Per stoppare i container del il progetto:
+Per fermare l'esecuzione di tutti i container del progetto:
 
 ```bash
 docker-compose down
 ```
 
-Se avete bisogno di fermare e rimuovere tutti i contenitori, le reti e tutte le immagini utilizzate da qualsiasi servizio nel file <em>docker-compose.yml</em>, utilizzate il comando
+Se si ha bisogno di fermare e rimuovere tutti i contenitori, le reti e tutte le immagini utilizzate da qualsiasi
+servizio nel file <em>docker-compose.yml</em>, utilizzate il seguente comando:
 
 ```bash
 docker-compose down --rmi all
 ```
 
-## Per sviluppo locale
-
-Una volta pronto l'ambiente, per sviluppare in locale e provare le modifiche usare i seguenti comandi:
-
-```bash
-cd frontend
-npm install
-```
-
-e poi finita l'installazione dei pacchetti
-
-```bash
-ng serve -o
-```
-
-Poi per vedere il progetto in locale (http://localhost:4200/)
-
-## Per la build locale con Docker
-
-```bash
-docker-compose up --build -d
-```
-
-## Per la build locale senza Docker
-
-```bash
-ng build
-```
-
 ## Link
 
-- Istanza Locale Develop: (http://localhost:4200/)
-- Istanza Build: (http://localhost:8000/)
-- Backend Api: (http://localhost:6868/api/)
+- Frontend Url: (http://localhost:8000/)
+- Backend Api Url: (http://localhost:6868/api/)
 - Visualizzare i vari env di configurazione (./.env)
+
+
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=UnimibSoftEngCourse2022_progetto-birra-3-gruppo-birra-3)
