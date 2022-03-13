@@ -89,9 +89,8 @@ export class RecipeService {
     let maltLovibond = getMaltLovibond(malt);
     let MCU = getMCU(maltLovibond, maltAmount, batchSize);
     let SRM = calculateSRM(MCU);
-    let beerColor = calculateBeerColor(SRM);
-
-    return beerColor;
+    
+    return calculateBeerColor(SRM);
   }
 
   canBrewRecipe(
@@ -107,6 +106,5 @@ export class RecipeService {
         );
       });
     });
-    ;
   }
 }
