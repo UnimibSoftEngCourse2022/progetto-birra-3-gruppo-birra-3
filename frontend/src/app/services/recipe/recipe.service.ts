@@ -92,7 +92,7 @@ export class RecipeService {
     return beerColor;
   }
 
-  canBrewRecipe (
+  canBrewRecipe(
     recipeIngredients: Ingredient[],
     userIngredients: Ingredient[]
   ): boolean {
@@ -101,7 +101,7 @@ export class RecipeService {
         return (
           userIngr.name === recipeIngr.name &&
           userIngr.type === recipeIngr.type &&
-          userIngr.quantity! >= recipeIngr.quantity!
+          userIngr.quantity >= recipeIngr.quantity
         );
       });
 
@@ -109,5 +109,5 @@ export class RecipeService {
     });
 
     return hasEveryIngredient;
-  };
+  }
 }

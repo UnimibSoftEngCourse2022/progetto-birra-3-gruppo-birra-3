@@ -1,10 +1,9 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import {Recipe} from 'src/app/models/recipe/recipe.model';
-import {ChronologyService} from 'src/app/services/chronology/chronology.service';
-import {canBrewRecipe} from 'src/app/services/recipe/helper/recipeHelper';
-import {RecipeService} from 'src/app/services/recipe/recipe.service';
-import {Equipment} from "../../models/equipment/equipment.model";
-import {NgxSpinnerService} from "ngx-spinner";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { Recipe } from 'src/app/models/recipe/recipe.model';
+import { ChronologyService } from 'src/app/services/chronology/chronology.service';
+import { canBrewRecipe } from 'src/app/services/recipe/helper/recipeHelper';
+import { RecipeService } from 'src/app/services/recipe/recipe.service';
 
 @Component({
   selector: 'app-recipe-card',
@@ -22,8 +21,7 @@ export class RecipeCardComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private recipeService: RecipeService,
     private chronologyService: ChronologyService
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     const userIngredients = [];
@@ -57,7 +55,7 @@ export class RecipeCardComponent implements OnInit {
 
   getNameIngredients() {
     if (this.recipe) {
-      return this.recipe.ingredients?.map(x => x.name)
+      return this.recipe.ingredients?.map((x) => x.name);
     }
 
     return [];

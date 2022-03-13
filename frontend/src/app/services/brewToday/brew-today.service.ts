@@ -26,11 +26,11 @@ export class BrewTodayService {
       (previousRecipe, currentRecipe) => {
         const previousRecipeIngrQuantityVal =
           previousRecipe.ingredients?.reduce((prevVal, nextIngr) => {
-            return prevVal + nextIngr.quantity!;
+            return prevVal + nextIngr.quantity;
           }, 0);
         const currentRecipeIngrQuantityVal = currentRecipe.ingredients?.reduce(
           (prevVal, nextIngr) => {
-            return prevVal + nextIngr.quantity!;
+            return prevVal + nextIngr.quantity;
           },
           0
         );

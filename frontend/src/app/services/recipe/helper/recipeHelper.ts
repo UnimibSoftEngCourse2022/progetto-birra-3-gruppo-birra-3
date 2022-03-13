@@ -9,7 +9,7 @@ export const canBrewRecipe = (
       return (
         userIngr.name === recipeIngr.name &&
         userIngr.type === recipeIngr.type &&
-        userIngr.quantity! >= recipeIngr.quantity!
+        userIngr.quantity >= recipeIngr.quantity
       );
     });
     return !!findIngredient;
