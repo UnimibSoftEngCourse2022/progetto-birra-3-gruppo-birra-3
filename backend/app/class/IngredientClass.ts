@@ -1,15 +1,15 @@
-import {prop} from "@typegoose/typegoose";
-import {INGREDIENTS_ENUM} from "../enums/ingredientEnums";
+import { prop } from "@typegoose/typegoose";
+import { INGREDIENTS_ENUM } from "../enums/ingredientEnums";
 
 class IngredientClass {
-    @prop({required: true})
-    name!: string;
+  @prop({ required: true })
+  name!: string;
 
-    @prop({enum: INGREDIENTS_ENUM})
-    type?: INGREDIENTS_ENUM;
+  @prop({ enum: INGREDIENTS_ENUM })
+  type?: INGREDIENTS_ENUM;
 
-    @prop({default: 0})
-    quantity?: number;
+  @prop({ default: 0 })
+  quantity?: number;
 }
 
 export default IngredientClass;
