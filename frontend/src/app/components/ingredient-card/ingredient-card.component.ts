@@ -16,7 +16,9 @@ export class IngredientCardComponent implements OnInit {
 
   constructor(private ingredientService: IngredientService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    //this is intentional
+  }
 
   submitFN(formValue: string) {
     const convertedFormValue = parseInt(formValue);

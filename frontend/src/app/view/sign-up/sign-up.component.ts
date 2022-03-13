@@ -8,13 +8,13 @@ import { AuthenticationService } from 'src/app/auth/service/authentication.servi
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
-  styleUrls: ['./sign-up.component.css']
+  styleUrls: ['./sign-up.component.css'],
 })
 export class SignUpComponent implements OnInit {
   public form!: FormGroup;
   public loading = false;
   public submitted = false;
-  public returnUrl: string = "";
+  public returnUrl: string = '';
   public error = '';
   public passwordTextType: boolean = false;
 
@@ -53,14 +53,23 @@ export class SignUpComponent implements OnInit {
     // Login
     this.loading = true;
     this._authenticationService
-      .signUp(this.f['email'].value, this.f['firstname'].value, this.f['surname'].value, this.f['password'].value)
+      .signUp(
+        this.f['email'].value,
+        this.f['firstname'].value,
+        this.f['surname'].value,
+        this.f['password'].value
+      )
       .pipe(first())
       .subscribe(
-        data => {
+        (data) => {
           this._router.navigate([this.returnUrl]);
         },
-        error => {
-          this.messageService.add({ severity: 'error', summary: 'Service Message', detail: 'Via MessageService' });
+        (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Service Message',
+            detail: 'Via MessageService',
+          });
           this.error = error;
           this.loading = false;
         }
@@ -72,14 +81,10 @@ export class SignUpComponent implements OnInit {
       email: [null, [Validators.required, Validators.email]],
       firstname: [null, Validators.required],
       surname: [null, Validators.required],
-      password: [null, Validators.required]
+      password: [null, Validators.required],
     });
 
     // get return url from route parameters or default to '/'
     this.returnUrl = this._route.snapshot.queryParams['returnUrl'] || '/';
-  }
-
-  ngOnDestroy(): void {
-
   }
 }
