@@ -6,7 +6,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Recipe } from 'src/app/models/recipe/recipe.model';
 import { EquipmentService } from '../../services/equipment/equipment.service';
-import { EquipmentProfile } from '../../models/equipment/equipment.model';
+import {
+  Equipment,
+  EquipmentProfile,
+} from '../../models/equipment/equipment.model';
 import { Ingredient } from '../../models/ingredient/ingredient.model';
 import {
   TYPE_UNIQUE_NAME_ENUM,
@@ -136,12 +139,7 @@ export class FormRecipeComponent implements OnInit {
     let maltType: any;
 
     this.equipmentProfileSelected?.equipments?.forEach((equipment) => {
-      if (
-        equipment.name === TYPE_UNIQUE_NAME_ENUM.BOIL_KETTLE ||
-        equipment.name === TYPE_UNIQUE_NAME_ENUM.BOIL_FERMENTER
-      ) {
-        batchSize = equipment?.quantity ?? 0;
-      }
+      retrievingBatchSize(equipment, batchSize);
     });
 
     this.model?.ingredients?.forEach((ingredient) => {
@@ -252,12 +250,7 @@ export class FormRecipeComponent implements OnInit {
     let maltType: any;
 
     this.equipmentProfileSelected?.equipments?.forEach((equipment) => {
-      if (
-        equipment.name === TYPE_UNIQUE_NAME_ENUM.BOIL_KETTLE ||
-        equipment.name === TYPE_UNIQUE_NAME_ENUM.BOIL_FERMENTER
-      ) {
-        batchSize = equipment?.quantity ?? 0;
-      }
+      retrievingBatchSize(equipment, batchSize);
     });
 
     this.model?.ingredients?.forEach((ingredient) => {
@@ -304,4 +297,16 @@ const ingredientModificationSuccessFN = (
     summary: 'Service Message',
     detail: 'Via MessageService',
   });
+};
+
+const retrievingBatchSize = (
+  equipment: Equipment,
+  batchSizeToUpdate: number
+) => {
+  if (
+    equipment.name === TYPE_UNIQUE_NAME_ENUM.BOIL_KETTLE ||
+    equipment.name === TYPE_UNIQUE_NAME_ENUM.BOIL_FERMENTER
+  ) {
+    batchSizeToUpdate = equipment?.quantity ?? 0;
+  }
 };
