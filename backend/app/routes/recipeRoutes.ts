@@ -2,16 +2,16 @@ import recipeController from "../controllers/recipeController";
 import { Router } from "express";
 import { authMiddleware } from "../middleware/authMiddleware";
 
-const router = Router();
+const recipeRoutes = Router();
 
-router.post("/", [authMiddleware], recipeController.create);
+recipeRoutes.post("/", [authMiddleware], recipeController.create);
 
-router.get("/", [authMiddleware], recipeController.findAll);
+recipeRoutes.get("/", [authMiddleware], recipeController.findAll);
 
-router.get("/:id", [authMiddleware], recipeController.findOne);
+recipeRoutes.get("/:id", [authMiddleware], recipeController.findOne);
 
-router.put("/:id", [authMiddleware], recipeController.update);
+recipeRoutes.put("/:id", [authMiddleware], recipeController.update);
 
-router.delete("/:id", [authMiddleware], recipeController.delete);
+recipeRoutes.delete("/:id", [authMiddleware], recipeController.delete);
 
-export default router;
+export default recipeRoutes;

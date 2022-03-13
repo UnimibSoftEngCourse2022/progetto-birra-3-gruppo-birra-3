@@ -20,7 +20,7 @@ type MongoDb = {
 
 mongoose.Promise = global.Promise;
 
-const db: MongoDb = {
+const dbModel: MongoDb = {
   url: url,
   mongoose: mongoose,
   equipments: EquipmentModel,
@@ -31,4 +31,4 @@ const db: MongoDb = {
   users: UserModel
 };
 
-export default db;
+export default dbModel;

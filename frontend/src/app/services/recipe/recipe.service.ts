@@ -89,7 +89,7 @@ export class RecipeService {
     let maltLovibond = getMaltLovibond(malt);
     let MCU = getMCU(maltLovibond, maltAmount, batchSize);
     let SRM = calculateSRM(MCU);
-    
+
     return calculateBeerColor(SRM);
   }
 

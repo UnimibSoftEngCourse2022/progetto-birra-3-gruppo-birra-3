@@ -2,24 +2,24 @@ import { Router } from "express";
 import { authMiddleware } from "../middleware/authMiddleware";
 import IngredientController from "../controllers/ingredientController";
 
-const router = Router();
+const ingredientsRoutes = Router();
 
-router.post(
+ingredientsRoutes.post(
   "/add-to-user",
   [authMiddleware],
   IngredientController.addIngredientToUser
 );
 
-router.post(
+ingredientsRoutes.post(
   "/add-to-recipe",
   [authMiddleware],
   IngredientController.addIngredientToRecipe
 );
 
-router.get("/", [authMiddleware], IngredientController.findAll);
+ingredientsRoutes.get("/", [authMiddleware], IngredientController.findAll);
 
-router.put("/:id", [authMiddleware], IngredientController.update);
+ingredientsRoutes.put("/:id", [authMiddleware], IngredientController.update);
 
-router.delete("/:id", [authMiddleware], IngredientController.delete);
+ingredientsRoutes.delete("/:id", [authMiddleware], IngredientController.delete);
 
-export default router;
+export default ingredientsRoutes;

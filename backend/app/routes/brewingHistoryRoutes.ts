@@ -2,16 +2,16 @@ import { Router } from "express";
 import { authMiddleware } from "../middleware/authMiddleware";
 import BrewingHistoryController from "../controllers/brewingHistoryController";
 
-const router = Router();
+const brewingHistoryRoutes = Router();
 
-router.get("/", [authMiddleware], BrewingHistoryController.findAll);
+brewingHistoryRoutes.get("/", [authMiddleware], BrewingHistoryController.findAll);
 
-router.delete("/:id", [authMiddleware], BrewingHistoryController.delete);
+brewingHistoryRoutes.delete("/:id", [authMiddleware], BrewingHistoryController.delete);
 
-router.get(
+brewingHistoryRoutes.get(
   "/brew-recipe/:id",
   [authMiddleware],
   BrewingHistoryController.brewRecipe
 );
 
-export default router;
+export default brewingHistoryRoutes;
