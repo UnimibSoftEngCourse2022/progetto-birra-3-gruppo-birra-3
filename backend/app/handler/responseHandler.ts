@@ -1,8 +1,7 @@
 import { Response } from "express";
 
 export const responseHandler: any = (res: Response, data: any) => {
-    // TODO Gestire tipologie di status di response
-    // 200 OK 
+    // 200 OK
     // 201 Created: La richiesta è stata soddisfatta, restituendo la creazione di una nuova risorsa.
     // 202 Accepted: La richiesta di elaborazione è stata accettata ma non è ancora terminata.
     // 203 Non - Authoritative Information. Il server è un transforming proxy(ad es.un Web Accelerator) che ha ricevuto un 200 OK dalla sua origine, ma sta restituendo una versione modificata della risposta dell'origine.

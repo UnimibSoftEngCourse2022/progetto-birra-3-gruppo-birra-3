@@ -119,69 +119,51 @@ export class FormRecipeComponent implements OnInit {
 
     this.loading = true;
 
-    // Recupero da equipmentProfileSelected il Boil kettle e Boil Fermenter size e type malto quantità
-    let batchSize: number = 0;
-    let maltType: any;
+    let color = this.getColorRecipe();
 
-    this.equipmentProfileSelected?.equipments?.forEach((equipment) => {
-      if (equipment.name === TYPE_UNIQUE_NAME_ENUM.BOIL_KETTLE || equipment.name === TYPE_UNIQUE_NAME_ENUM.BOIL_FERMENTER) {
-        batchSize = equipment?.quantity ?? 0;
-      }
-    });
+    let data = {
+      title: this.model.title,
+      color: color,
+      description: this.model.description,
+      equipmentProfileId: this.equipmentProfileSelected?._id,
+      ingredients: this.model.ingredients?.map((x) => {
+        return {
+          name: x.name,
+          quantity: x.quantity,
+          type: x.type
+        };
+      })
+    };
 
-    this.model?.ingredients?.forEach((ingredient) => {
-      if (ingredient.type === INGREDIENTS_ENUM.MALT) {
-        maltType = ingredient;
-      }
-    });
+    if (this.editMode) {
+      this.recipeService.update(this.model._id, data)
+        .subscribe({
+          next: (res) => {
+            this.submitted = true;
+            this.goBack();
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Ok! ',
+              detail: 'Operazione avvenuta con successo'
+            });
 
-    if (batchSize && maltType) {
-      let color = this.recipeService.getBeerColor(batchSize, maltType?.name, maltType?.quantity);
-
-      let data = {
-        title: this.model.title,
-        color: color,
-        description: this.model.description,
-        equipmentProfileId: this.equipmentProfileSelected?._id,
-        ingredients: this.model.ingredients?.map((x) => {
-          return {
-            name: x.name,
-            quantity: x.quantity,
-            type: x.type
-          };
-        })
-      };
-
-      if (this.editMode) {
-        this.recipeService.update(this.model._id, data)
-          .subscribe({
-            next: (res) => {
-              this.submitted = true;
-              this.goBack();
-              this.messageService.add({
-                severity: 'success',
-                summary: 'Ok! ',
-                detail: 'Operazione avvenuta con successo'
-              });
-
-            },
-            error: (e) => console.error(e)
-          });
-      } else {
-        this.recipeService.create(data)
-          .subscribe({
-            next: (res) => {
-              this.submitted = true;
-              this.goBack();
-              this.messageService.add({
-                severity: 'success',
-                summary: 'Ok! ',
-                detail: 'Operazione avvenuta con successo'
-              });
-            },
-            error: (e) => console.error(e)
-          });
-      }
+          },
+          error: (e) => console.error(e)
+        });
+    } else {
+      this.recipeService.create(data)
+        .subscribe({
+          next: (res) => {
+            this.submitted = true;
+            this.goBack();
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Ok! ',
+              detail: 'Operazione avvenuta con successo'
+            });
+          },
+          error: (e) => console.error(e)
+        });
     }
   }
 

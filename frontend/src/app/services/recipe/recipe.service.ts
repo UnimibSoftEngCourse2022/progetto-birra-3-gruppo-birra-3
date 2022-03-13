@@ -1,12 +1,12 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
 import {
   Ingredient,
   IngredientInterface,
 } from 'src/app/models/ingredient/ingredient.model';
 import RECIPE_ENDPOINTS from 'src/app/utils/recipeEndpoints';
-import { Recipe } from '../../models/recipe/recipe.model';
+import {Recipe} from '../../models/recipe/recipe.model';
 import {
   calculateBeerColor,
   calculateSRM,
@@ -20,7 +20,8 @@ const baseUrl = RECIPE_ENDPOINTS.BASE_URL;
   providedIn: 'root',
 })
 export class RecipeService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   getAll(): Observable<Recipe[]> {
     return this.http.get<Recipe[]>(baseUrl);
@@ -97,18 +98,15 @@ export class RecipeService {
     recipeIngredients: Ingredient[],
     userIngredients: Ingredient[]
   ): boolean {
-    let hasEveryIngredient = recipeIngredients.every((recipeIngr) => {
-      let findIngredient = userIngredients.find((userIngr) => {
+    return recipeIngredients.every((recipeIngr) => {
+      return !!userIngredients.find((userIngr) => {
         return (
           userIngr.name === recipeIngr.name &&
           userIngr.type === recipeIngr.type &&
           userIngr.quantity >= recipeIngr.quantity
         );
       });
-
-      return !!findIngredient;
     });
-
-    return hasEveryIngredient;
+    ;
   }
 }

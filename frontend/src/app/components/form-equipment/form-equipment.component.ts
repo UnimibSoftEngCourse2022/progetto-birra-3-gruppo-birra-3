@@ -137,15 +137,15 @@ export class FormEquipmentComponent implements OnInit {
     } else {
       this.equipmentService.create(data)
         .subscribe({
-          next: (res) => {
-            this.submitted = true;
-            this.goBack();
-
+          next: (res: any) => {
             this.messageService.add({
               severity: 'success',
               summary: 'Ok! ',
               detail: 'Operazione avvenuta con successo'
             });
+
+            this.submitted = true;
+            this.goBack();
           },
           error: (e) => console.error(e)
         });
@@ -182,13 +182,7 @@ export class FormEquipmentComponent implements OnInit {
   }
 
   onRowEditSave(equipment: EquipmentInterface) {
-    if (equipment && equipment?.quantity > 0) {
-      if (this.editMode) {
-        // TODO Upd Ingredient Backend
-      } else {
-        // TODO Modifico la lista sessione
-      }
-    } else {
+    if (!equipment || equipment?.quantity <= 0) {
       this.messageService.add({severity: 'error', summary: 'Error', detail: 'Si sono verificati degli errori'});
     }
   }

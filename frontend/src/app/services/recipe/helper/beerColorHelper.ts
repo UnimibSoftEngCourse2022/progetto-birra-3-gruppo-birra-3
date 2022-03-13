@@ -1,4 +1,4 @@
-import BEER_COLOR_MAP from 'src/constants/beerColor';
+import BEER_COLOR_MAP from 'src/constants/BEER_COLOR_MAP';
 import LOVIBOND_CHART from 'src/constants/lovibondChart';
 
 export const getMCU = (
