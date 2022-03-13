@@ -7,13 +7,13 @@ import { AuthenticationService } from 'src/app/auth/service/authentication.servi
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
   public loginForm!: FormGroup;
   public loading = false;
   public submitted = false;
-  public returnUrl: string = "";
+  public returnUrl: string = '';
   public error = '';
   public passwordTextType: boolean = false;
 
@@ -54,10 +54,10 @@ export class LoginComponent implements OnInit {
       .login(this.f['email'].value, this.f['password'].value)
       .pipe(first())
       .subscribe(
-        data => {
+        (data) => {
           this._router.navigate([this.returnUrl]);
         },
-        error => {
+        (error) => {
           this.error = error;
           this.loading = false;
         }
@@ -67,14 +67,10 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.loginForm = this._formBuilder.group({
       email: ['admin@demo.com', [Validators.required, Validators.email]],
-      password: ['admin', Validators.required]
+      password: ['admin', Validators.required],
     });
 
     // get return url from route parameters or default to '/'
     this.returnUrl = this._route.snapshot.queryParams['returnUrl'] || '/';
-  }
-
-  ngOnDestroy(): void {
-
   }
 }

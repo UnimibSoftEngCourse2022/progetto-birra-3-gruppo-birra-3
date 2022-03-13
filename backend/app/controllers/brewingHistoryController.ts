@@ -6,7 +6,6 @@ import RecipeModel from "../models/recipeModel";
 import { UserSession } from "../types/userSessionType";
 import BrewingHistoryClass from "../class/brewingHistoryClass";
 import BrewingHistoryModel from "../models/brewingHistoryModel";
-import UserClass from "../class/userClass";
 import UserModel from "../models/userModel";
 import IngredientModel from "../models/ingredientModel";
 import IngredientClass from "../class/ingredientClass";

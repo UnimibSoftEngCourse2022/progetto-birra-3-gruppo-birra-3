@@ -1,4 +1,3 @@
-import { environment } from 'src/environments/environment';
 import { recipeBaseEndpoint } from './baseEndpoints';
 
 const recipeEndpoint = recipeBaseEndpoint();

@@ -1,4 +1,3 @@
-import { environment } from 'src/environments/environment';
 import { ingredientBaseEndpoint } from './baseEndpoints';
 
 const ingredientEndpoint = ingredientBaseEndpoint();

@@ -1,36 +1,31 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-//import malt  from '../../../assets/fakeDB/malt.json';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DlistIngredientService {
+  constructor(private http: HttpClient) {}
 
-  constructor(private http : HttpClient) { }
-  
   malt = 'fakeDB/malt.json';
-  hop= 'fakeDB/hops.json';
+  hop = 'fakeDB/hops.json';
   yeast = 'fakeDB/yeasts.json';
-  additive= 'fakeDB/additives.json';
+  additive = 'fakeDB/additives.json';
   sugar = 'fakeDB/sugar.json';
 
-  
-  getAllMatl () : any {
+  getAllMatl(): any {
     return this.malt;
   }
-  getAllHop () : any {
+  getAllHop(): any {
     return this.hop;
   }
-  getAllYeast () : any {
+  getAllYeast(): any {
     return this.yeast;
   }
-  getAllSugar () : any {
+  getAllSugar(): any {
     return this.sugar;
   }
-  getAllAdditive () : any {
+  getAllAdditive(): any {
     return this.additive;
   }
-
-
 }

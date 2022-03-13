@@ -8,12 +8,16 @@ import { User } from '../models';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
-
   public sessionUser: Observable<User>;
   private sessionUserSubject: BehaviorSubject<User | any>;
 
-  constructor(private _http: HttpClient, private messageService: MessageService) {
-    this.sessionUserSubject = new BehaviorSubject<User>(JSON.parse(<any>localStorage.getItem('sessionUser')));
+  constructor(
+    private _http: HttpClient,
+    private messageService: MessageService
+  ) {
+    this.sessionUserSubject = new BehaviorSubject<User>(
+      JSON.parse(<any>localStorage.getItem('sessionUser'))
+    );
     this.sessionUser = this.sessionUserSubject.asObservable();
   }
 
@@ -23,15 +27,15 @@ export class AuthenticationService {
 
   signUp(email: string, firstname: string, surname: string, password: string) {
     return this._http
-      .post<any>(`${environment.backendApi}auth/sign-up`, { email, password, firstname, surname })
+      .post<any>(`${environment.backendApi}auth/sign-up`, {
+        email,
+        password,
+        firstname,
+        surname,
+      })
       .pipe(
-        map(user => {
-          if (user && user.token) {
-            localStorage.setItem('sessionUser', JSON.stringify(user));
-            this.sessionUserSubject.next(user);
-          }
-
-          return user;
+        map((user) => {
+          manageSignInSuccess(user, this.sessionUserSubject);
         })
       );
   }
@@ -40,13 +44,8 @@ export class AuthenticationService {
     return this._http
       .post<any>(`${environment.backendApi}auth/sign-in`, { email, password })
       .pipe(
-        map(user => {
-          if (user && user.token) {
-            localStorage.setItem('sessionUser', JSON.stringify(user));
-            this.sessionUserSubject.next(user);
-          }
-
-          return user;
+        map((user) => {
+          manageSignInSuccess(user, this.sessionUserSubject);
         })
       );
   }
@@ -56,3 +55,15 @@ export class AuthenticationService {
     this.sessionUserSubject.next(null);
   }
 }
+
+const manageSignInSuccess = (
+  user: any,
+  sessionUserSubject: BehaviorSubject<User | any>
+) => {
+  if (user && user.token) {
+    localStorage.setItem('sessionUser', JSON.stringify(user));
+    sessionUserSubject.next(user);
+  }
+
+  return user;
+};

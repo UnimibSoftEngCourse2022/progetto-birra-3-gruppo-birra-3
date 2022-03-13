@@ -22,13 +22,13 @@
 <section class="max-w-4xl mx-auto bg-white rounded-md ring-1 ring-gray-300 dark:bg-gray-800">
   <ng-container *ngIf="_ingredients && _ingredients.length > 0; else noElements">
     <p-table styleClass="rounded-md" [value]="_ingredients" dataKey="_id" editMode="row" responsiveLayout="scroll"
-             class="rounded-md" [scrollable]="false">
+      class="rounded-md" [scrollable]="false">
       <ng-template pTemplate="header">
         <tr>
-          <th>Type</th>
-          <th>Name</th>
-          <th>Quantity</th>
-          <th></th>
+          <th id="th_ingredient_type">Type</th>
+          <th id="th_ingredient_name">Name</th>
+          <th id="th_ingredient_quantity">Quantity</th>
+          <th id="th_ingredient_opt"></th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-ingredient let-editing="editing" let-ri="rowIndex">
@@ -48,13 +48,11 @@
           </td>
           <td style="text-align:center">
             <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
-                    (click)="onRowEditInit(ingredient)" class="p-button-rounded p-button-text"></button>
+              (click)="onRowEditInit(ingredient)" class="p-button-rounded p-button-text"></button>
             <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
-                    (click)="onRowEditSave(ingredient)"
-                    class="p-button-rounded p-button-text p-button-success mr-2"></button>
+              (click)="onRowEditSave(ingredient)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
             <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
-                    (click)="onRowEditCancel(ingredient, ri)"
-                    class="p-button-rounded p-button-text p-button-danger"></button>
+              (click)="onRowEditCancel(ingredient, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
           </td>
         </tr>
       </ng-template>
@@ -64,14 +62,14 @@
     <div class="container px-6 py-8 mx-auto">
       <div class="text-center">
         <a href="#"
-           class="text-2xl font-bold text-gray-800 dark:text-white hover:text-gray-700 dark:hover:text-gray-300">Nessun
+          class="text-2xl font-bold text-gray-800 dark:text-white hover:text-gray-700 dark:hover:text-gray-300">Nessun
           elemento</a>
 
         <p class="max-w-md mx-auto mt-2 text-gray-500 dark:text-gray-400">Aggiungi un elemento alla lista</p>
 
         <div class="flex flex-col mt-4 sm:flex-row sm:items-center sm:justify-center">
           <button (click)="showModalDialog()"
-                  class="flex items-center justify-center  ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-amber-500 rounded-md hover:bg-amber-600 focus:outline-none focus:bg-amber-700">
+            class="flex items-center justify-center  ml-2 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-amber-500 rounded-md hover:bg-amber-600 focus:outline-none focus:bg-amber-700">
             <span>Aggiungi</span>
           </button>
         </div>

@@ -5,8 +5,6 @@ import {NgxSpinnerService} from 'ngx-spinner';
 import {MessageService} from 'primeng/api';
 import {Equipment, EquipmentInterface, EquipmentProfile} from 'src/app/models/equipment/equipment.model';
 import {EquipmentService} from 'src/app/services/equipment/equipment.service';
-import {INGREDIENTS_ENUM} from "../../enum/ingredients";
-import {Ingredient} from "../../models/ingredient/ingredient.model";
 
 @Component({
   selector: 'app-form-equipment',
