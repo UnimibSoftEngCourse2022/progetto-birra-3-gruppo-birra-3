@@ -8,7 +8,6 @@ import {UserSession} from "../types/userSessionType";
 import IngredientModel from "../models/ingredientModel";
 import RecipeClass from "../class/recipeClass";
 import {getParamsForLike} from "../utils/mongoDBUtils";
-import IngredientClass from "../class/ingredientClass";
 
 class RecipeController {
     static create = async (req: Request, res: Response, next: NextFunction) => {
