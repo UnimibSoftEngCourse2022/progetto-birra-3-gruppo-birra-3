@@ -172,8 +172,9 @@ export class FormRecipeComponent implements OnInit {
       if (this.editMode) {
         this.recipeService.update(this.model._id, data).subscribe({
           next: (res) => {
+            this.submitted = true;
+
             ingredientModificationSuccessFN(
-              this.submitted,
               () => this.goBack(),
               this.messageService
             );
@@ -183,8 +184,9 @@ export class FormRecipeComponent implements OnInit {
       } else {
         this.recipeService.create(data).subscribe({
           next: (res) => {
+            this.submitted = true;
+
             ingredientModificationSuccessFN(
-              this.submitted,
               () => this.goBack(),
               this.messageService
             );
@@ -236,8 +238,6 @@ export class FormRecipeComponent implements OnInit {
   }
 
   addIngredient(event: Ingredient) {
-    console.log(event);
-
     if (!this.model.ingredients) {
       this.model.ingredients = [];
     }
@@ -286,11 +286,9 @@ export class FormRecipeComponent implements OnInit {
 }
 
 const ingredientModificationSuccessFN = (
-  submitted: boolean,
   goBackFN: () => void,
   messageService: MessageService
 ) => {
-  submitted = true;
   goBackFN();
   messageService.add({
     severity: 'success',
